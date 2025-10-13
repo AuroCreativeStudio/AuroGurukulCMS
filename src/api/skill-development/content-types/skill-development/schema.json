@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "skill_developments",
+  "info": {
+    "singularName": "skill-development",
+    "pluralName": "skill-developments",
+    "displayName": "skill_development"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "about_program_desc": {
+      "type": "text"
+    },
+    "about_program_img": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "course_duration": {
+      "type": "string"
+    },
+    "course_fee": {
+      "type": "string"
+    },
+    "highlight_icons": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "highlight_desc": {
+      "type": "text"
+    }
+  }
+}

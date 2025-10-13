@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "abouts",
+  "info": {
+    "singularName": "about",
+    "pluralName": "abouts",
+    "displayName": "about"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "about_video": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "files",
+        "videos",
+        "images",
+        "audios"
+      ]
+    },
+    "quote_desc": {
+      "type": "text"
+    },
+    "quote_img": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "mission_desc": {
+      "type": "text"
+    },
+    "vision_desc": {
+      "type": "text"
+    }
+  }
+}
