@@ -556,6 +556,45 @@ export interface ApiContactContact extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
+  collectionName: 'courses';
+  info: {
+    displayName: 'course';
+    pluralName: 'courses';
+    singularName: 'course';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    class: Schema.Attribute.String;
+    course_hours: Schema.Attribute.String;
+    course_id: Schema.Attribute.String;
+    course_title: Schema.Attribute.String & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    featured_image: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+    fees: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::course.course'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    why_choose_this_program: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+  };
+}
+
 export interface ApiHomeHome extends Struct.CollectionTypeSchema {
   collectionName: 'homes';
   info: {
@@ -1183,6 +1222,7 @@ declare module '@strapi/strapi' {
       'api::activity.activity': ApiActivityActivity;
       'api::carrer.carrer': ApiCarrerCarrer;
       'api::contact.contact': ApiContactContact;
+      'api::course.course': ApiCourseCourse;
       'api::home.home': ApiHomeHome;
       'api::resource.resource': ApiResourceResource;
       'api::skill-development.skill-development': ApiSkillDevelopmentSkillDevelopment;
