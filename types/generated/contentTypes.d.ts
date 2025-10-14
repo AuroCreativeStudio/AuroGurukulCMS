@@ -494,6 +494,39 @@ export interface ApiActivityActivity extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCareerFormCareerForm extends Struct.CollectionTypeSchema {
+  collectionName: 'career_forms';
+  info: {
+    displayName: 'Career Form';
+    pluralName: 'career-forms';
+    singularName: 'career-form';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    contact_number: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    email: Schema.Attribute.Email;
+    full_name: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::career-form.career-form'
+    > &
+      Schema.Attribute.Private;
+    photo_upload: Schema.Attribute.Media<'images'>;
+    publishedAt: Schema.Attribute.DateTime;
+    resume_upload: Schema.Attribute.Media<'files'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCarrerCarrer extends Struct.SingleTypeSchema {
   collectionName: 'carrers';
   info: {
@@ -524,39 +557,6 @@ export interface ApiCarrerCarrer extends Struct.SingleTypeSchema {
     why_join: Schema.Attribute.Component<'why-join.why-join', true>;
     why_join_desc: Schema.Attribute.String;
     why_join_title: Schema.Attribute.String;
-  };
-}
-
-export interface ApiContactFormContactForm extends Struct.CollectionTypeSchema {
-  collectionName: 'contact_forms';
-  info: {
-    displayName: 'Career form';
-    pluralName: 'contact-forms';
-    singularName: 'contact-form';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    full_name: Schema.Attribute.String;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::contact-form.contact-form'
-    > &
-      Schema.Attribute.Private;
-    phone_no: Schema.Attribute.String;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    upload_image: Schema.Attribute.Media<'images'>;
-    upload_resume: Schema.Attribute.Media<'files'>;
-    why_aurogurukul_message: Schema.Attribute.Text;
-    your_email: Schema.Attribute.Email;
   };
 }
 
@@ -604,27 +604,27 @@ export interface ApiContactusFormContactusForm
     draftAndPublish: true;
   };
   attributes: {
-    brief_subject: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    email: Schema.Attribute.Email;
     full_name: Schema.Attribute.String;
+    inquiry_type: Schema.Attribute.Enumeration<
+      ['Admissions', 'Support', 'General']
+    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::contactus-form.contactus-form'
     > &
       Schema.Attribute.Private;
-    phone_no: Schema.Attribute.String;
+    message: Schema.Attribute.Text;
+    phone_number: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
-    select_inquiry_type: Schema.Attribute.Enumeration<
-      ['Admissions', 'Support', 'General']
-    >;
-    tell_us_how: Schema.Attribute.Text;
+    subject: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    your_email: Schema.Attribute.Email;
   };
 }
 
@@ -687,6 +687,8 @@ export interface ApiEnquiryFormEnquiryForm extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    email: Schema.Attribute.Email;
+    enquiry_type: Schema.Attribute.String;
     full_name: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -695,12 +697,11 @@ export interface ApiEnquiryFormEnquiryForm extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     message: Schema.Attribute.Text;
-    phone_no: Schema.Attribute.String;
+    phone_number: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    your_email: Schema.Attribute.Email;
   };
 }
 
@@ -1370,8 +1371,8 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::about.about': ApiAboutAbout;
       'api::activity.activity': ApiActivityActivity;
+      'api::career-form.career-form': ApiCareerFormCareerForm;
       'api::carrer.carrer': ApiCarrerCarrer;
-      'api::contact-form.contact-form': ApiContactFormContactForm;
       'api::contact.contact': ApiContactContact;
       'api::contactus-form.contactus-form': ApiContactusFormContactusForm;
       'api::course.course': ApiCourseCourse;

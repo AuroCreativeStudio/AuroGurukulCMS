@@ -14,14 +14,17 @@
     "full_name": {
       "type": "string"
     },
-    "your_email": {
+    "email": {
       "type": "email"
     },
-    "phone_no": {
+    "phone_number": {
       "type": "string"
     },
     "message": {
       "type": "text"
+    },
+    "enquiry_type": {
+      "type": "string"
     }
   }
 }

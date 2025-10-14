@@ -14,13 +14,13 @@
     "full_name": {
       "type": "string"
     },
-    "your_email": {
+    "email": {
       "type": "email"
     },
-    "phone_no": {
+    "phone_number": {
       "type": "string"
     },
-    "select_inquiry_type": {
+    "inquiry_type": {
       "type": "enumeration",
       "enum": [
         "Admissions",
@@ -28,10 +28,10 @@
         "General"
       ]
     },
-    "brief_subject": {
+    "subject": {
       "type": "string"
     },
-    "tell_us_how": {
+    "message": {
       "type": "text"
     }
   }

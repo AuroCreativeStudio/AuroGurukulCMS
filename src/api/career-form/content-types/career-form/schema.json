@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "contact_forms",
+  "collectionName": "career_forms",
   "info": {
-    "singularName": "contact-form",
-    "pluralName": "contact-forms",
-    "displayName": "Career form"
+    "singularName": "career-form",
+    "pluralName": "career-forms",
+    "displayName": "Career Form"
   },
   "options": {
     "draftAndPublish": true
@@ -14,23 +14,23 @@
     "full_name": {
       "type": "string"
     },
-    "your_email": {
+    "email": {
       "type": "email"
     },
-    "phone_no": {
+    "contact_number": {
       "type": "string"
     },
-    "why_aurogurukul_message": {
+    "description": {
       "type": "text"
     },
-    "upload_resume": {
+    "resume_upload": {
       "type": "media",
       "multiple": false,
       "allowedTypes": [
         "files"
       ]
     },
-    "upload_image": {
+    "photo_upload": {
       "type": "media",
       "multiple": false,
       "allowedTypes": [
