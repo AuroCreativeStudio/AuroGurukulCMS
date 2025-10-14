@@ -430,10 +430,10 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiAboutAbout extends Struct.SingleTypeSchema {
+export interface ApiAboutAbout extends Struct.CollectionTypeSchema {
   collectionName: 'abouts';
   info: {
-    displayName: 'About';
+    displayName: 'about';
     pluralName: 'abouts';
     singularName: 'about';
   };
@@ -447,16 +447,16 @@ export interface ApiAboutAbout extends Struct.SingleTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    integral_education: Schema.Attribute.Component<
-      'integral-education.integral-education',
-      true
-    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::about.about'> &
       Schema.Attribute.Private;
     mission_desc: Schema.Attribute.Text;
     publishedAt: Schema.Attribute.DateTime;
-    quote: Schema.Attribute.Component<'quote.quote', true>;
+    quote_desc: Schema.Attribute.Text;
+    quote_img: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -467,7 +467,7 @@ export interface ApiAboutAbout extends Struct.SingleTypeSchema {
 export interface ApiActivityActivity extends Struct.CollectionTypeSchema {
   collectionName: 'activities';
   info: {
-    displayName: 'Activity';
+    displayName: 'activity';
     pluralName: 'activities';
     singularName: 'activity';
   };
@@ -494,43 +494,10 @@ export interface ApiActivityActivity extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiCareerFormCareerForm extends Struct.CollectionTypeSchema {
-  collectionName: 'career_forms';
-  info: {
-    displayName: 'Career Form';
-    pluralName: 'career-forms';
-    singularName: 'career-form';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    contact_number: Schema.Attribute.String;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    description: Schema.Attribute.Text;
-    email: Schema.Attribute.Email;
-    full_name: Schema.Attribute.String;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::career-form.career-form'
-    > &
-      Schema.Attribute.Private;
-    photo_upload: Schema.Attribute.Media<'images'>;
-    publishedAt: Schema.Attribute.DateTime;
-    resume_upload: Schema.Attribute.Media<'files'>;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiCarrerCarrer extends Struct.SingleTypeSchema {
+export interface ApiCarrerCarrer extends Struct.CollectionTypeSchema {
   collectionName: 'carrers';
   info: {
-    displayName: 'Career';
+    displayName: 'carrer';
     pluralName: 'carrers';
     singularName: 'carrer';
   };
@@ -538,9 +505,9 @@ export interface ApiCarrerCarrer extends Struct.SingleTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    career_desc: Schema.Attribute.Text;
-    career_img: Schema.Attribute.Media<'images'>;
-    career_title: Schema.Attribute.String;
+    carrer_desc: Schema.Attribute.Text;
+    carrer_img: Schema.Attribute.Media<'images'>;
+    carrer_title: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -554,16 +521,13 @@ export interface ApiCarrerCarrer extends Struct.SingleTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    why_join: Schema.Attribute.Component<'why-join.why-join', true>;
-    why_join_desc: Schema.Attribute.String;
-    why_join_title: Schema.Attribute.String;
   };
 }
 
-export interface ApiContactContact extends Struct.SingleTypeSchema {
+export interface ApiContactContact extends Struct.CollectionTypeSchema {
   collectionName: 'contacts';
   info: {
-    displayName: 'Contact';
+    displayName: 'contact';
     pluralName: 'contacts';
     singularName: 'contact';
   };
@@ -592,42 +556,6 @@ export interface ApiContactContact extends Struct.SingleTypeSchema {
   };
 }
 
-export interface ApiContactusFormContactusForm
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'contactus_forms';
-  info: {
-    displayName: 'Contactus Form';
-    pluralName: 'contactus-forms';
-    singularName: 'contactus-form';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    email: Schema.Attribute.Email;
-    full_name: Schema.Attribute.String;
-    inquiry_type: Schema.Attribute.Enumeration<
-      ['Admissions', 'Support', 'General']
-    >;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::contactus-form.contactus-form'
-    > &
-      Schema.Attribute.Private;
-    message: Schema.Attribute.Text;
-    phone_number: Schema.Attribute.String;
-    publishedAt: Schema.Attribute.DateTime;
-    subject: Schema.Attribute.String;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
   collectionName: 'courses';
   info: {
@@ -639,17 +567,16 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    assessment: Schema.Attribute.Component<'assessment.assessment', true>;
-    course: Schema.Attribute.String;
+    class: Schema.Attribute.String;
     course_hours: Schema.Attribute.String;
-    course_id: Schema.Attribute.String & Schema.Attribute.Required;
-    course_overview: Schema.Attribute.Component<'course.course-overview', true>;
+    course_id: Schema.Attribute.String;
     course_title: Schema.Attribute.String & Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    duration: Schema.Attribute.String;
-    featured_image: Schema.Attribute.Media<'images'>;
+    featured_image: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
     fees: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -658,11 +585,6 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    support: Schema.Attribute.Component<'support.support', true>;
-    teaching_methodology: Schema.Attribute.Component<
-      'teaching.teaching-methodology',
-      true
-    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -673,42 +595,10 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiEnquiryFormEnquiryForm extends Struct.CollectionTypeSchema {
-  collectionName: 'enquiry_forms';
-  info: {
-    displayName: 'Enquiry form';
-    pluralName: 'enquiry-forms';
-    singularName: 'enquiry-form';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    email: Schema.Attribute.Email;
-    enquiry_type: Schema.Attribute.String;
-    full_name: Schema.Attribute.String;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::enquiry-form.enquiry-form'
-    > &
-      Schema.Attribute.Private;
-    message: Schema.Attribute.Text;
-    phone_number: Schema.Attribute.String;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiHomeHome extends Struct.SingleTypeSchema {
+export interface ApiHomeHome extends Struct.CollectionTypeSchema {
   collectionName: 'homes';
   info: {
-    displayName: 'Home';
+    displayName: 'home';
     pluralName: 'homes';
     singularName: 'home';
   };
@@ -751,10 +641,40 @@ export interface ApiHomeHome extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiProductCategoryProductCategory
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'product_categories';
+  info: {
+    displayName: 'Product_Category';
+    pluralName: 'product-categories';
+    singularName: 'product-category';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    category: Schema.Attribute.Relation<'oneToMany', 'api::resource.resource'>;
+    category_name: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-category.product-category'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiResourceResource extends Struct.CollectionTypeSchema {
   collectionName: 'resources';
   info: {
-    displayName: 'Resource';
+    displayName: 'resource';
     pluralName: 'resources';
     singularName: 'resource';
   };
@@ -785,10 +705,10 @@ export interface ApiResourceResource extends Struct.CollectionTypeSchema {
 }
 
 export interface ApiSkillDevelopmentSkillDevelopment
-  extends Struct.SingleTypeSchema {
+  extends Struct.CollectionTypeSchema {
   collectionName: 'skill_developments';
   info: {
-    displayName: 'Skill_development';
+    displayName: 'skill_development';
     pluralName: 'skill-developments';
     singularName: 'skill-development';
   };
@@ -796,10 +716,6 @@ export interface ApiSkillDevelopmentSkillDevelopment
     draftAndPublish: true;
   };
   attributes: {
-    about_program: Schema.Attribute.Component<
-      'about-program.about-program',
-      true
-    >;
     about_program_desc: Schema.Attribute.Text;
     about_program_img: Schema.Attribute.Media<'images'>;
     course_duration: Schema.Attribute.String;
@@ -807,7 +723,6 @@ export interface ApiSkillDevelopmentSkillDevelopment
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    highlight: Schema.Attribute.Component<'highlight.highlight', true>;
     highlight_desc: Schema.Attribute.Text;
     highlight_icons: Schema.Attribute.Media<'images', true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
@@ -817,45 +732,9 @@ export interface ApiSkillDevelopmentSkillDevelopment
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    skill_development: Schema.Attribute.Component<
-      'skill-development.skill-development',
-      true
-    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-  };
-}
-
-export interface ApiSocialLinkSocialLink extends Struct.SingleTypeSchema {
-  collectionName: 'social_links';
-  info: {
-    displayName: 'Social_link';
-    pluralName: 'social-links';
-    singularName: 'social-link';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    facebook: Schema.Attribute.String;
-    insagram: Schema.Attribute.String;
-    linkedin: Schema.Attribute.String;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::social-link.social-link'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    twitter: Schema.Attribute.String;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    youtube: Schema.Attribute.String;
   };
 }
 
@@ -1371,16 +1250,13 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::about.about': ApiAboutAbout;
       'api::activity.activity': ApiActivityActivity;
-      'api::career-form.career-form': ApiCareerFormCareerForm;
       'api::carrer.carrer': ApiCarrerCarrer;
       'api::contact.contact': ApiContactContact;
-      'api::contactus-form.contactus-form': ApiContactusFormContactusForm;
       'api::course.course': ApiCourseCourse;
-      'api::enquiry-form.enquiry-form': ApiEnquiryFormEnquiryForm;
       'api::home.home': ApiHomeHome;
+      'api::product-category.product-category': ApiProductCategoryProductCategory;
       'api::resource.resource': ApiResourceResource;
       'api::skill-development.skill-development': ApiSkillDevelopmentSkillDevelopment;
-      'api::social-link.social-link': ApiSocialLinkSocialLink;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

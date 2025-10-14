@@ -1,37 +1,5 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
-export interface AboutProgramAboutProgram extends Struct.ComponentSchema {
-  collectionName: 'components_about_program_about_programs';
-  info: {
-    displayName: 'about_program';
-  };
-  attributes: {
-    about_program_list: Schema.Attribute.String;
-  };
-}
-
-export interface AssessmentAssessment extends Struct.ComponentSchema {
-  collectionName: 'components_assessment_assessments';
-  info: {
-    displayName: 'assessment';
-  };
-  attributes: {
-    assessment_icons: Schema.Attribute.Media<'images'>;
-    assessment_text: Schema.Attribute.String;
-  };
-}
-
-export interface CourseCourseOverview extends Struct.ComponentSchema {
-  collectionName: 'components_course_course_overviews';
-  info: {
-    displayName: 'course-overview';
-  };
-  attributes: {
-    doubt_clearing: Schema.Attribute.String;
-    test_assessment: Schema.Attribute.Text;
-  };
-}
-
 export interface DescData extends Struct.ComponentSchema {
   collectionName: 'components_desc_data';
   info: {
@@ -42,40 +10,20 @@ export interface DescData extends Struct.ComponentSchema {
   };
 }
 
-export interface HighlightHighlight extends Struct.ComponentSchema {
-  collectionName: 'components_highlight_highlights';
+export interface DescDesc extends Struct.ComponentSchema {
+  collectionName: 'components_desc_descs';
   info: {
-    displayName: 'highlight';
+    displayName: 'desc';
   };
-  attributes: {
-    highlight_desc: Schema.Attribute.Text;
-    highlight_icons: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios'
-    >;
-  };
+  attributes: {};
 }
 
-export interface IntegralEducationIntegralEducation
-  extends Struct.ComponentSchema {
-  collectionName: 'components_integral_education_integral_educations';
+export interface DescSample extends Struct.ComponentSchema {
+  collectionName: 'components_desc_samples';
   info: {
-    displayName: 'integral_education';
+    displayName: 'sample';
   };
-  attributes: {
-    integral_desc: Schema.Attribute.Text;
-    integral_title: Schema.Attribute.String;
-  };
-}
-
-export interface QuoteQuote extends Struct.ComponentSchema {
-  collectionName: 'components_quote_quotes';
-  info: {
-    displayName: 'quote';
-  };
-  attributes: {
-    quote_desc: Schema.Attribute.Text;
-    quote_img: Schema.Attribute.Media<'images', true>;
-  };
+  attributes: {};
 }
 
 export interface SampleSampledata extends Struct.ComponentSchema {
@@ -92,65 +40,13 @@ export interface SampleSampledata extends Struct.ComponentSchema {
   };
 }
 
-export interface SkillDevelopmentSkillDevelopment
-  extends Struct.ComponentSchema {
-  collectionName: 'components_skill_development_skill_developments';
-  info: {
-    displayName: 'skill_development';
-  };
-  attributes: {
-    skill_development_list1: Schema.Attribute.String;
-    skill_development_list2: Schema.Attribute.String;
-  };
-}
-
-export interface SupportSupport extends Struct.ComponentSchema {
-  collectionName: 'components_support_supports';
-  info: {
-    displayName: 'support';
-  };
-  attributes: {
-    support_icon: Schema.Attribute.Media<'images'>;
-    support_text: Schema.Attribute.String;
-  };
-}
-
-export interface TeachingTeachingMethodology extends Struct.ComponentSchema {
-  collectionName: 'components_teaching_teaching_methodologies';
-  info: {
-    displayName: 'teaching_methodology';
-  };
-  attributes: {
-    methodology: Schema.Attribute.String;
-    teaching_sessions: Schema.Attribute.String;
-  };
-}
-
-export interface WhyJoinWhyJoin extends Struct.ComponentSchema {
-  collectionName: 'components_why_join_why_joins';
-  info: {
-    displayName: 'why_join';
-  };
-  attributes: {
-    why_join_list: Schema.Attribute.String;
-  };
-}
-
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
-      'about-program.about-program': AboutProgramAboutProgram;
-      'assessment.assessment': AssessmentAssessment;
-      'course.course-overview': CourseCourseOverview;
       'desc.data': DescData;
-      'highlight.highlight': HighlightHighlight;
-      'integral-education.integral-education': IntegralEducationIntegralEducation;
-      'quote.quote': QuoteQuote;
+      'desc.desc': DescDesc;
+      'desc.sample': DescSample;
       'sample.sampledata': SampleSampledata;
-      'skill-development.skill-development': SkillDevelopmentSkillDevelopment;
-      'support.support': SupportSupport;
-      'teaching.teaching-methodology': TeachingTeachingMethodology;
-      'why-join.why-join': WhyJoinWhyJoin;
     }
   }
 }
