@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_course_course_overviews",
+  "info": {
+    "displayName": "course-overview"
+  },
+  "options": {},
+  "attributes": {
+    "doubt_clearing": {
+      "type": "string"
+    },
+    "test_assessment": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

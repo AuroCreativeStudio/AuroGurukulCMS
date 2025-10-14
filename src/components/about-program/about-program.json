@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_about_program_about_programs",
+  "info": {
+    "displayName": "about_program"
+  },
+  "options": {},
+  "attributes": {
+    "about_program_list": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

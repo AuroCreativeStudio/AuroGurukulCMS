@@ -15,10 +15,7 @@
       "type": "string",
       "required": true
     },
-    "course_id": {
-      "type": "string"
-    },
-    "class": {
+    "course": {
       "type": "string"
     },
     "course_hours": {
@@ -28,10 +25,7 @@
       "type": "media",
       "multiple": false,
       "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
+        "images"
       ]
     },
     "fees": {
@@ -46,6 +40,33 @@
         "videos",
         "audios"
       ]
+    },
+    "course_id": {
+      "type": "string",
+      "required": true
+    },
+    "duration": {
+      "type": "string"
+    },
+    "assessment": {
+      "type": "component",
+      "component": "assessment.assessment",
+      "repeatable": true
+    },
+    "teaching_methodology": {
+      "type": "component",
+      "component": "teaching.teaching-methodology",
+      "repeatable": true
+    },
+    "course_overview": {
+      "type": "component",
+      "component": "course.course-overview",
+      "repeatable": true
+    },
+    "support": {
+      "type": "component",
+      "component": "support.support",
+      "repeatable": true
     }
   }
 }

@@ -1,10 +1,10 @@
 {
-  "kind": "collectionType",
+  "kind": "singleType",
   "collectionName": "skill_developments",
   "info": {
     "singularName": "skill-development",
     "pluralName": "skill-developments",
-    "displayName": "skill_development"
+    "displayName": "Skill_development"
   },
   "options": {
     "draftAndPublish": true
@@ -36,6 +36,21 @@
     },
     "highlight_desc": {
       "type": "text"
+    },
+    "about_program": {
+      "type": "component",
+      "component": "about-program.about-program",
+      "repeatable": true
+    },
+    "skill_development": {
+      "type": "component",
+      "component": "skill-development.skill-development",
+      "repeatable": true
+    },
+    "highlight": {
+      "type": "component",
+      "component": "highlight.highlight",
+      "repeatable": true
     }
   }
 }

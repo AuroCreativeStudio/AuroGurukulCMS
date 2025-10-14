@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_highlight_highlights",
+  "info": {
+    "displayName": "highlight"
+  },
+  "options": {},
+  "attributes": {
+    "highlight_icons": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "highlight_desc": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

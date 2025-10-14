@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_why_join_why_joins",
+  "info": {
+    "displayName": "why_join"
+  },
+  "options": {},
+  "attributes": {
+    "why_join_list": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

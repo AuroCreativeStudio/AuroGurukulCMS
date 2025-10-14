@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_skill_development_skill_developments",
+  "info": {
+    "displayName": "skill_development"
+  },
+  "options": {},
+  "attributes": {
+    "skill_development_list1": {
+      "type": "string"
+    },
+    "skill_development_list2": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

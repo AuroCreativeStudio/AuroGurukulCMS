@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_teaching_teaching_methodologies",
+  "info": {
+    "displayName": "teaching_methodology"
+  },
+  "options": {},
+  "attributes": {
+    "teaching_sessions": {
+      "type": "string"
+    },
+    "methodology": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

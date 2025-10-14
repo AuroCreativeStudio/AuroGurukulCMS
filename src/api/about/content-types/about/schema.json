@@ -1,10 +1,10 @@
 {
-  "kind": "collectionType",
+  "kind": "singleType",
   "collectionName": "abouts",
   "info": {
     "singularName": "about",
     "pluralName": "abouts",
-    "displayName": "about"
+    "displayName": "About"
   },
   "options": {
     "draftAndPublish": true
@@ -21,24 +21,21 @@
         "audios"
       ]
     },
-    "quote_desc": {
-      "type": "text"
-    },
-    "quote_img": {
-      "type": "media",
-      "multiple": true,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ]
-    },
     "mission_desc": {
       "type": "text"
     },
     "vision_desc": {
       "type": "text"
+    },
+    "quote": {
+      "type": "component",
+      "component": "quote.quote",
+      "repeatable": true
+    },
+    "integral_education": {
+      "type": "component",
+      "component": "integral-education.integral-education",
+      "repeatable": true
     }
   }
 }

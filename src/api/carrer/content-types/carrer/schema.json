@@ -1,28 +1,39 @@
 {
-  "kind": "collectionType",
+  "kind": "singleType",
   "collectionName": "carrers",
   "info": {
     "singularName": "carrer",
     "pluralName": "carrers",
-    "displayName": "carrer"
+    "displayName": "Career"
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "carrer_title": {
+    "career_title": {
       "type": "string"
     },
-    "carrer_desc": {
+    "career_desc": {
       "type": "text"
     },
-    "carrer_img": {
+    "career_img": {
       "type": "media",
       "multiple": false,
       "allowedTypes": [
         "images"
       ]
+    },
+    "why_join_title": {
+      "type": "string"
+    },
+    "why_join_desc": {
+      "type": "string"
+    },
+    "why_join": {
+      "type": "component",
+      "component": "why-join.why-join",
+      "repeatable": true
     }
   }
 }

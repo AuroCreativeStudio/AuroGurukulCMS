@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_assessment_assessments",
+  "info": {
+    "displayName": "assessment"
+  },
+  "options": {},
+  "attributes": {
+    "assessment_icons": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "assessment_text": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}
