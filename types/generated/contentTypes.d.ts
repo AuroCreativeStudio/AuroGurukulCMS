@@ -613,6 +613,7 @@ export interface ApiHomeHome extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    data: Schema.Attribute.Component<'desc.data', true>;
     hero_description: Schema.Attribute.Text;
     hero_title: Schema.Attribute.String & Schema.Attribute.Required;
     herobg_desktop: Schema.Attribute.Media<
@@ -629,7 +630,6 @@ export interface ApiHomeHome extends Struct.CollectionTypeSchema {
       'images' | 'files' | 'audios' | 'videos',
       true
     >;
-    scienceof_living: Schema.Attribute.Text;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

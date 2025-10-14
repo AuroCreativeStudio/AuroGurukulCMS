@@ -38,9 +38,6 @@
     "hero_description": {
       "type": "text"
     },
-    "scienceof_living": {
-      "type": "text"
-    },
     "resource_img": {
       "type": "media",
       "multiple": true,
@@ -73,6 +70,11 @@
         "videos",
         "audios"
       ]
+    },
+    "data": {
+      "type": "component",
+      "component": "desc.data",
+      "repeatable": true
     }
   }
 }

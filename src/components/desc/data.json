@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_desc_data",
+  "info": {
+    "displayName": "data"
+  },
+  "options": {},
+  "attributes": {
+    "scienceof_living": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

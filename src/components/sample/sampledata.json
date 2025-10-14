@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_sample_sampledata",
+  "info": {
+    "displayName": "sampledata"
+  },
+  "options": {},
+  "attributes": {
+    "desc": {
+      "type": "text"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  },
+  "config": {}
+}
