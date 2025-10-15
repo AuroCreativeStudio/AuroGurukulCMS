@@ -4,7 +4,7 @@
   "info": {
     "singularName": "course",
     "pluralName": "courses",
-    "displayName": "course"
+    "displayName": "Course"
   },
   "options": {
     "draftAndPublish": true
@@ -67,6 +67,9 @@
       "type": "component",
       "component": "support.support",
       "repeatable": true
+    },
+    "grade": {
+      "type": "string"
     }
   }
 }

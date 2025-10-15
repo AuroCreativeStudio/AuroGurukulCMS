@@ -1,33 +1,40 @@
 
 export default {
   config: {
-    // Replace the Strapi logo in auth (login) views
-
-    // Override or extend the theme
+    head: {
+      title: 'AuroGurukul CMS',
+    },
     theme: {
-      // overwrite light theme properties
       light: {
         colors: {
-          primary100: "#f6ecfc",
+          primary100: "#214587",
           primary200: "#e0c1f4",
-          primary500: "#ac73e6",
-          primary600: "#9736e8",
-          primary700: "#8312d1",
+          primary500: "#ee842c",
+          primary600: "#ee842c",
+          primary700: "#ee842c",
           danger700: "#b72b1a",
+          buttonPrimary500: '#ee842c',
+          buttonPrimary600: '#e07620',
         },
       },
-
-      // overwrite dark theme properties
       dark: {
-        // ...
+        colors: {
+          alternative100: '#bfbfffff',
+          alternative200: '#f8f8f8ff',
+          primary100: "#efd3ffff",
+          primary200: "#e0c1f4",
+          primary500: "#ee842c",
+          primary600: "#ee842c",
+          primary700: "#ee842c",
+          danger700: "#b72b1a",
+          buttonPrimary500: '#ee842c',
+          buttonPrimary600: '#e07620',
+        },
       },
     },
-
-    // Disable video tutorials
     tutorials: false,
-    // Disable notifications about new Strapi releases
     notifications: { releases: false },
   },
 
-  bootstrap() {},
+  bootstrap() { },
 };
