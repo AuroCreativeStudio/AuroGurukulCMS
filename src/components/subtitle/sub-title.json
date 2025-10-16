@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_subtitle_sub_titles",
+  "info": {
+    "displayName": "sub_title"
+  },
+  "options": {},
+  "attributes": {
+    "hero_subtitle": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

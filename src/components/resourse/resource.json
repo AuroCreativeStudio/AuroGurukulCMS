@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_resourse_resources",
+  "info": {
+    "displayName": "resource"
+  },
+  "options": {},
+  "attributes": {
+    "resource_content": {
+      "type": "string"
+    },
+    "resource_img": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  },
+  "config": {}
+}

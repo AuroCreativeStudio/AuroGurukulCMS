@@ -813,10 +813,8 @@ export interface ApiHomeHome extends Struct.SingleTypeSchema {
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::home.home'> &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    resource_img: Schema.Attribute.Media<
-      'images' | 'files' | 'audios' | 'videos',
-      true
-    >;
+    resourse: Schema.Attribute.Component<'resourse.resource', true>;
+    subtitle: Schema.Attribute.Component<'subtitle.sub-title', true>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

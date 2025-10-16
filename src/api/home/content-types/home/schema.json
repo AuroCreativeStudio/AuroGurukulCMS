@@ -38,16 +38,6 @@
     "hero_description": {
       "type": "text"
     },
-    "resource_img": {
-      "type": "media",
-      "multiple": true,
-      "allowedTypes": [
-        "images",
-        "files",
-        "audios",
-        "videos"
-      ]
-    },
     "course_img": {
       "type": "media",
       "multiple": true,
@@ -74,6 +64,16 @@
     "data": {
       "type": "component",
       "component": "desc.data",
+      "repeatable": true
+    },
+    "resourse": {
+      "type": "component",
+      "component": "resourse.resource",
+      "repeatable": true
+    },
+    "subtitle": {
+      "type": "component",
+      "component": "subtitle.sub-title",
       "repeatable": true
     }
   }

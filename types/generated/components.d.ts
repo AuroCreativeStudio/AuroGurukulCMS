@@ -87,6 +87,17 @@ export interface QuoteQuote extends Struct.ComponentSchema {
   };
 }
 
+export interface ResourseResource extends Struct.ComponentSchema {
+  collectionName: 'components_resourse_resources';
+  info: {
+    displayName: 'resource';
+  };
+  attributes: {
+    resource_content: Schema.Attribute.String;
+    resource_img: Schema.Attribute.Media<'images'>;
+  };
+}
+
 export interface SampleSampledata extends Struct.ComponentSchema {
   collectionName: 'components_sample_sampledata';
   info: {
@@ -141,6 +152,24 @@ export interface StudyStudyMaterials extends Struct.ComponentSchema {
   };
 }
 
+export interface SubtitleSubTitle extends Struct.ComponentSchema {
+  collectionName: 'components_subtitle_sub_titles';
+  info: {
+    displayName: 'sub_title';
+  };
+  attributes: {
+    hero_subtitle: Schema.Attribute.String;
+  };
+}
+
+export interface SubtitleSubtitle extends Struct.ComponentSchema {
+  collectionName: 'components_subtitle_subtitles';
+  info: {
+    displayName: 'subtitle';
+  };
+  attributes: {};
+}
+
 export interface SupportSupport extends Struct.ComponentSchema {
   collectionName: 'components_support_supports';
   info: {
@@ -193,11 +222,14 @@ declare module '@strapi/strapi' {
       'highlight.highlight': HighlightHighlight;
       'integral-education.integral-education': IntegralEducationIntegralEducation;
       'quote.quote': QuoteQuote;
+      'resourse.resource': ResourseResource;
       'sample.sampledata': SampleSampledata;
       'sessions.teaching-sessions': SessionsTeachingSessions;
       'sessions.teaching-sessionss': SessionsTeachingSessionss;
       'skill-development.skill-development': SkillDevelopmentSkillDevelopment;
       'study.study-materials': StudyStudyMaterials;
+      'subtitle.sub-title': SubtitleSubTitle;
+      'subtitle.subtitle': SubtitleSubtitle;
       'support.support': SupportSupport;
       'teaching.teaching-methodology': TeachingTeachingMethodology;
       'test.test-assessment': TestTestAssessment;
