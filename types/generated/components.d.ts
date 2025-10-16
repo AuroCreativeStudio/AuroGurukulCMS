@@ -48,6 +48,9 @@ export interface DurationDurationComponent extends Struct.ComponentSchema {
   };
   attributes: {
     duration: Schema.Attribute.String;
+    duration_icon: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
   };
 }
 
