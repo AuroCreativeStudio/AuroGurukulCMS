@@ -15,9 +15,6 @@
       "type": "string",
       "required": true
     },
-    "course": {
-      "type": "string"
-    },
     "course_hours": {
       "type": "string"
     },
@@ -65,9 +62,6 @@
       "component": "support.support",
       "repeatable": true
     },
-    "grade": {
-      "type": "string"
-    },
     "duration_component": {
       "type": "component",
       "component": "duration.duration-component",
@@ -87,6 +81,18 @@
       "type": "component",
       "component": "study.study-materials",
       "repeatable": true
+    },
+    "all_course": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::all-course.all-course",
+      "inversedBy": "courses"
+    },
+    "all_grade": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::all-grade.all-grade",
+      "inversedBy": "courses"
     }
   }
 }

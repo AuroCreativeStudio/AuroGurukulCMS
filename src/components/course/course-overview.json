@@ -7,9 +7,6 @@
   "attributes": {
     "doubt_clearing": {
       "type": "string"
-    },
-    "test_assessment": {
-      "type": "text"
     }
   },
   "config": {}

@@ -494,6 +494,64 @@ export interface ApiActivityActivity extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAllCourseAllCourse extends Struct.CollectionTypeSchema {
+  collectionName: 'all_courses';
+  info: {
+    displayName: 'All Course';
+    pluralName: 'all-courses';
+    singularName: 'all-course';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    course: Schema.Attribute.String;
+    courses: Schema.Attribute.Relation<'oneToMany', 'api::course.course'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::all-course.all-course'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiAllGradeAllGrade extends Struct.CollectionTypeSchema {
+  collectionName: 'all_grades';
+  info: {
+    displayName: 'All Grade';
+    pluralName: 'all-grades';
+    singularName: 'all-grade';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    courses: Schema.Attribute.Relation<'oneToMany', 'api::course.course'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    grade: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::all-grade.all-grade'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCareerFormCareerForm extends Struct.CollectionTypeSchema {
   collectionName: 'career_forms';
   info: {
@@ -639,8 +697,15 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    all_course: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::all-course.all-course'
+    >;
+    all_grade: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::all-grade.all-grade'
+    >;
     assessment: Schema.Attribute.Component<'assessment.assessment', true>;
-    course: Schema.Attribute.String;
     course_hours: Schema.Attribute.String;
     course_id: Schema.Attribute.String & Schema.Attribute.Required;
     course_title: Schema.Attribute.String & Schema.Attribute.Required;
@@ -657,7 +722,6 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
     >;
     featured_image: Schema.Attribute.Media<'images'>;
     fees: Schema.Attribute.String;
-    grade: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -1414,6 +1478,8 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::about.about': ApiAboutAbout;
       'api::activity.activity': ApiActivityActivity;
+      'api::all-course.all-course': ApiAllCourseAllCourse;
+      'api::all-grade.all-grade': ApiAllGradeAllGrade;
       'api::career-form.career-form': ApiCareerFormCareerForm;
       'api::carrer.carrer': ApiCarrerCarrer;
       'api::contact.contact': ApiContactContact;

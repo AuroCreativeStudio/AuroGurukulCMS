@@ -28,7 +28,6 @@ export interface CourseCourseOverview extends Struct.ComponentSchema {
   };
   attributes: {
     doubt_clearing: Schema.Attribute.String;
-    test_assessment: Schema.Attribute.Text;
   };
 }
 
