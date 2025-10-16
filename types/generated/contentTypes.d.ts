@@ -643,12 +643,18 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
     course: Schema.Attribute.String;
     course_hours: Schema.Attribute.String;
     course_id: Schema.Attribute.String & Schema.Attribute.Required;
-    course_overview: Schema.Attribute.Component<'course.course-overview', true>;
     course_title: Schema.Attribute.String & Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    duration: Schema.Attribute.String;
+    doubt_clearing_sessions: Schema.Attribute.Component<
+      'course.course-overview',
+      true
+    >;
+    duration_component: Schema.Attribute.Component<
+      'duration.duration-component',
+      true
+    >;
     featured_image: Schema.Attribute.Media<'images'>;
     fees: Schema.Attribute.String;
     grade: Schema.Attribute.String;
@@ -659,11 +665,17 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    study_materials: Schema.Attribute.Component<'study.study-materials', true>;
     support: Schema.Attribute.Component<'support.support', true>;
     teaching_methodology: Schema.Attribute.Component<
       'teaching.teaching-methodology',
       true
     >;
+    teaching_sessions: Schema.Attribute.Component<
+      'sessions.teaching-sessionss',
+      true
+    >;
+    test_assessment: Schema.Attribute.Component<'test.test-assessment', true>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

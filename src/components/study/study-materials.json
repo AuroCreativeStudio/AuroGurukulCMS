@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_study_study_materials",
+  "info": {
+    "displayName": "study_materials"
+  },
+  "options": {},
+  "attributes": {
+    "study_material": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

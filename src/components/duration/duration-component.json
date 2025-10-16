@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_duration_duration_components",
+  "info": {
+    "displayName": "duration_component"
+  },
+  "options": {},
+  "attributes": {
+    "duration": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

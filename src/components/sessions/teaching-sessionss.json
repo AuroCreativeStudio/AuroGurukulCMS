@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_sessions_teaching_sessionsses",
+  "info": {
+    "displayName": "teaching_sessionss"
+  },
+  "options": {},
+  "attributes": {
+    "teaching_sessions": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

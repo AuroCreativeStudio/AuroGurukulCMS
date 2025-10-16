@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_test_test_assessments",
+  "info": {
+    "displayName": "test_assessment"
+  },
+  "options": {},
+  "attributes": {
+    "test_assessment": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

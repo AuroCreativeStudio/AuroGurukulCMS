@@ -45,9 +45,6 @@
       "type": "string",
       "required": true
     },
-    "duration": {
-      "type": "string"
-    },
     "assessment": {
       "type": "component",
       "component": "assessment.assessment",
@@ -58,7 +55,7 @@
       "component": "teaching.teaching-methodology",
       "repeatable": true
     },
-    "course_overview": {
+    "doubt_clearing_sessions": {
       "type": "component",
       "component": "course.course-overview",
       "repeatable": true
@@ -70,6 +67,26 @@
     },
     "grade": {
       "type": "string"
+    },
+    "duration_component": {
+      "type": "component",
+      "component": "duration.duration-component",
+      "repeatable": true
+    },
+    "teaching_sessions": {
+      "type": "component",
+      "component": "sessions.teaching-sessionss",
+      "repeatable": true
+    },
+    "test_assessment": {
+      "type": "component",
+      "component": "test.test-assessment",
+      "repeatable": true
+    },
+    "study_materials": {
+      "type": "component",
+      "component": "study.study-materials",
+      "repeatable": true
     }
   }
 }

@@ -42,6 +42,16 @@ export interface DescData extends Struct.ComponentSchema {
   };
 }
 
+export interface DurationDurationComponent extends Struct.ComponentSchema {
+  collectionName: 'components_duration_duration_components';
+  info: {
+    displayName: 'duration_component';
+  };
+  attributes: {
+    duration: Schema.Attribute.String;
+  };
+}
+
 export interface HighlightHighlight extends Struct.ComponentSchema {
   collectionName: 'components_highlight_highlights';
   info: {
@@ -92,6 +102,24 @@ export interface SampleSampledata extends Struct.ComponentSchema {
   };
 }
 
+export interface SessionsTeachingSessions extends Struct.ComponentSchema {
+  collectionName: 'components_sessions_teaching_sessions';
+  info: {
+    displayName: 'teaching_sessions';
+  };
+  attributes: {};
+}
+
+export interface SessionsTeachingSessionss extends Struct.ComponentSchema {
+  collectionName: 'components_sessions_teaching_sessionsses';
+  info: {
+    displayName: 'teaching_sessionss';
+  };
+  attributes: {
+    teaching_sessions: Schema.Attribute.String;
+  };
+}
+
 export interface SkillDevelopmentSkillDevelopment
   extends Struct.ComponentSchema {
   collectionName: 'components_skill_development_skill_developments';
@@ -101,6 +129,16 @@ export interface SkillDevelopmentSkillDevelopment
   attributes: {
     skill_development_list1: Schema.Attribute.String;
     skill_development_list2: Schema.Attribute.String;
+  };
+}
+
+export interface StudyStudyMaterials extends Struct.ComponentSchema {
+  collectionName: 'components_study_study_materials';
+  info: {
+    displayName: 'study_materials';
+  };
+  attributes: {
+    study_material: Schema.Attribute.String;
   };
 }
 
@@ -122,7 +160,16 @@ export interface TeachingTeachingMethodology extends Struct.ComponentSchema {
   };
   attributes: {
     methodology: Schema.Attribute.String;
-    teaching_sessions: Schema.Attribute.String;
+  };
+}
+
+export interface TestTestAssessment extends Struct.ComponentSchema {
+  collectionName: 'components_test_test_assessments';
+  info: {
+    displayName: 'test_assessment';
+  };
+  attributes: {
+    test_assessment: Schema.Attribute.String;
   };
 }
 
@@ -143,13 +190,18 @@ declare module '@strapi/strapi' {
       'assessment.assessment': AssessmentAssessment;
       'course.course-overview': CourseCourseOverview;
       'desc.data': DescData;
+      'duration.duration-component': DurationDurationComponent;
       'highlight.highlight': HighlightHighlight;
       'integral-education.integral-education': IntegralEducationIntegralEducation;
       'quote.quote': QuoteQuote;
       'sample.sampledata': SampleSampledata;
+      'sessions.teaching-sessions': SessionsTeachingSessions;
+      'sessions.teaching-sessionss': SessionsTeachingSessionss;
       'skill-development.skill-development': SkillDevelopmentSkillDevelopment;
+      'study.study-materials': StudyStudyMaterials;
       'support.support': SupportSupport;
       'teaching.teaching-methodology': TeachingTeachingMethodology;
+      'test.test-assessment': TestTestAssessment;
       'why-join.why-join': WhyJoinWhyJoin;
     }
   }
