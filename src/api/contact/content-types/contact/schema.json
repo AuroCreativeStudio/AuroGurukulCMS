@@ -20,11 +20,14 @@
     "email": {
       "type": "email"
     },
-    "office_hour": {
+    "whatsapp": {
       "type": "string"
     },
     "map_location": {
       "type": "text"
+    },
+    "laneline": {
+      "type": "string"
     }
   }
 }
