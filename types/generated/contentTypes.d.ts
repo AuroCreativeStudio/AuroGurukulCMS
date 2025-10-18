@@ -494,6 +494,40 @@ export interface ApiActivityActivity extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiAllActivityAllActivity extends Struct.CollectionTypeSchema {
+  collectionName: 'all_activities';
+  info: {
+    displayName: 'all-activity';
+    pluralName: 'all-activities';
+    singularName: 'all-activity';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    activity_description: Schema.Attribute.Text;
+    activity_list: Schema.Attribute.Component<'list.activity-list', true>;
+    activity_title: Schema.Attribute.String;
+    catalogue_pdf: Schema.Attribute.Media<'files'>;
+    course_fees: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    featured_image: Schema.Attribute.Media<'images'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::all-activity.all-activity'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiAllCourseAllCourse extends Struct.CollectionTypeSchema {
   collectionName: 'all_courses';
   info: {
@@ -1476,6 +1510,7 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::about.about': ApiAboutAbout;
       'api::activity.activity': ApiActivityActivity;
+      'api::all-activity.all-activity': ApiAllActivityAllActivity;
       'api::all-course.all-course': ApiAllCourseAllCourse;
       'api::all-grade.all-grade': ApiAllGradeAllGrade;
       'api::career-form.career-form': ApiCareerFormCareerForm;

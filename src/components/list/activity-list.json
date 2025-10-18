@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_list_activity_lists",
+  "info": {
+    "displayName": "activity-list"
+  },
+  "options": {},
+  "attributes": {
+    "description": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

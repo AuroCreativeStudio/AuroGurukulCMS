@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "all_activities",
+  "info": {
+    "singularName": "all-activity",
+    "pluralName": "all-activities",
+    "displayName": "all-activity"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "activity_title": {
+      "type": "string"
+    },
+    "activity_description": {
+      "type": "text"
+    },
+    "featured_image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "activity_list": {
+      "type": "component",
+      "component": "list.activity-list",
+      "repeatable": true
+    },
+    "course_fees": {
+      "type": "string"
+    },
+    "catalogue_pdf": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "files"
+      ]
+    }
+  }
+}

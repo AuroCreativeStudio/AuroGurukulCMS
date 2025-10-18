@@ -94,6 +94,16 @@ export interface IntegralEducationIntegralEducation
   };
 }
 
+export interface ListActivityList extends Struct.ComponentSchema {
+  collectionName: 'components_list_activity_lists';
+  info: {
+    displayName: 'activity-list';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+  };
+}
+
 export interface QuoteQuote extends Struct.ComponentSchema {
   collectionName: 'components_quote_quotes';
   info: {
@@ -240,6 +250,7 @@ declare module '@strapi/strapi' {
       'duration.duration-component': DurationDurationComponent;
       'highlight.highlight': HighlightHighlight;
       'integral-education.integral-education': IntegralEducationIntegralEducation;
+      'list.activity-list': ListActivityList;
       'quote.quote': QuoteQuote;
       'resourse.resource': ResourseResource;
       'sample.sampledata': SampleSampledata;
