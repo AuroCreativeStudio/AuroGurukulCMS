@@ -19,8 +19,7 @@ export interface ActivityActivityList extends Struct.ComponentSchema {
     activity_icon: Schema.Attribute.Media<'images'>;
     activity_title: Schema.Attribute.String;
     featured_image: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios',
-      true
+      'images' | 'files' | 'videos' | 'audios'
     >;
   };
 }

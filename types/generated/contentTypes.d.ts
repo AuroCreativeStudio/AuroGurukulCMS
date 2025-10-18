@@ -497,7 +497,7 @@ export interface ApiActivityActivity extends Struct.SingleTypeSchema {
 export interface ApiAllActivityAllActivity extends Struct.CollectionTypeSchema {
   collectionName: 'all_activities';
   info: {
-    displayName: 'all-activity';
+    displayName: 'All Acitivity';
     pluralName: 'all-activities';
     singularName: 'all-activity';
   };
@@ -754,7 +754,9 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
       'duration.duration-component',
       true
     >;
-    featured_image: Schema.Attribute.Media<'images'>;
+    featured_image: Schema.Attribute.Media<
+      'images' | 'videos' | 'audios' | 'files'
+    >;
     fees: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<

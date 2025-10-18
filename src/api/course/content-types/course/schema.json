@@ -22,11 +22,11 @@
       "type": "media",
       "multiple": false,
       "allowedTypes": [
-        "images"
+        "images",
+        "videos",
+        "audios",
+        "files"
       ]
-    },
-    "fees": {
-      "type": "string"
     },
     "why_choose_this_program": {
       "type": "media",
@@ -37,6 +37,9 @@
         "videos",
         "audios"
       ]
+    },
+    "fees": {
+      "type": "string"
     },
     "course_id": {
       "type": "string",
