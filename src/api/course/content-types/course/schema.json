@@ -96,6 +96,10 @@
       "relation": "manyToOne",
       "target": "api::all-grade.all-grade",
       "inversedBy": "courses"
+    },
+    "Brochure": {
+      "type": "media",
+      "multiple": false
     }
   }
 }

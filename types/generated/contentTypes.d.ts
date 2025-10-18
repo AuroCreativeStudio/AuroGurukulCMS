@@ -741,6 +741,7 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
       'api::all-grade.all-grade'
     >;
     assessment: Schema.Attribute.Component<'assessment.assessment', true>;
+    Brochure: Schema.Attribute.Media;
     course_hours: Schema.Attribute.String;
     course_id: Schema.Attribute.String & Schema.Attribute.Required;
     course_title: Schema.Attribute.String & Schema.Attribute.Required;
