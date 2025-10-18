@@ -464,7 +464,7 @@ export interface ApiAboutAbout extends Struct.SingleTypeSchema {
   };
 }
 
-export interface ApiActivityActivity extends Struct.CollectionTypeSchema {
+export interface ApiActivityActivity extends Struct.SingleTypeSchema {
   collectionName: 'activities';
   info: {
     displayName: 'Activity';
@@ -476,11 +476,11 @@ export interface ApiActivityActivity extends Struct.CollectionTypeSchema {
   };
   attributes: {
     activities_desc: Schema.Attribute.Text;
+    activity_list: Schema.Attribute.Component<'activity.activity-list', true>;
+    activity_subheading: Schema.Attribute.Text;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    listof_activities_desc: Schema.Attribute.Text;
-    listof_activities_img: Schema.Attribute.Media<'images', true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',

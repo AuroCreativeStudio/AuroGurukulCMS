@@ -10,6 +10,21 @@ export interface AboutProgramAboutProgram extends Struct.ComponentSchema {
   };
 }
 
+export interface ActivityActivityList extends Struct.ComponentSchema {
+  collectionName: 'components_activity_activity_lists';
+  info: {
+    displayName: 'activity-list';
+  };
+  attributes: {
+    activity_icon: Schema.Attribute.Media<'images'>;
+    activity_title: Schema.Attribute.String;
+    featured_image: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+  };
+}
+
 export interface AssessmentAssessment extends Struct.ComponentSchema {
   collectionName: 'components_assessment_assessments';
   info: {
@@ -218,6 +233,7 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'about-program.about-program': AboutProgramAboutProgram;
+      'activity.activity-list': ActivityActivityList;
       'assessment.assessment': AssessmentAssessment;
       'course.course-overview': CourseCourseOverview;
       'desc.data': DescData;

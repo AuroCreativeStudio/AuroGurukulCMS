@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_activity_activity_lists",
+  "info": {
+    "displayName": "activity-list"
+  },
+  "options": {},
+  "attributes": {
+    "activity_title": {
+      "type": "string"
+    },
+    "activity_icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "featured_image": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  },
+  "config": {}
+}

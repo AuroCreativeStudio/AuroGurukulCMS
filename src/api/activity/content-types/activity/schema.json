@@ -1,5 +1,5 @@
 {
-  "kind": "collectionType",
+  "kind": "singleType",
   "collectionName": "activities",
   "info": {
     "singularName": "activity",
@@ -14,15 +14,13 @@
     "activities_desc": {
       "type": "text"
     },
-    "listof_activities_img": {
-      "type": "media",
-      "multiple": true,
-      "allowedTypes": [
-        "images"
-      ]
-    },
-    "listof_activities_desc": {
+    "activity_subheading": {
       "type": "text"
+    },
+    "activity_list": {
+      "type": "component",
+      "component": "activity.activity-list",
+      "repeatable": true
     }
   }
 }
