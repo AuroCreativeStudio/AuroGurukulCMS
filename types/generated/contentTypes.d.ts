@@ -897,7 +897,7 @@ export interface ApiProductCategoryProductCategory
 export interface ApiResourceResource extends Struct.CollectionTypeSchema {
   collectionName: 'resources';
   info: {
-    displayName: 'Resource';
+    displayName: 'All Resource';
     pluralName: 'resources';
     singularName: 'resource';
   };
