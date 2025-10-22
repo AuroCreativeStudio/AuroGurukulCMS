@@ -509,10 +509,16 @@ export interface ApiAllActivityAllActivity extends Struct.CollectionTypeSchema {
     activity_list: Schema.Attribute.Component<'list.activity-list', true>;
     activity_title: Schema.Attribute.String;
     catalogue_pdf: Schema.Attribute.Media<'files'>;
+    course_description: Schema.Attribute.Text;
     course_fees: Schema.Attribute.String;
+    course_list: Schema.Attribute.Component<'course-list.course-list', true>;
+    course_title: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    feature_description: Schema.Attribute.Text;
+    feature_list: Schema.Attribute.Component<'feature-list.feature-list', true>;
+    feature_title: Schema.Attribute.String;
     featured_image: Schema.Attribute.Media<'images'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<

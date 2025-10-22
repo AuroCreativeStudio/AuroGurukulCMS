@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_feature_list_feature_lists",
+  "info": {
+    "displayName": "feature-list"
+  },
+  "options": {},
+  "attributes": {
+    "feature_list": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

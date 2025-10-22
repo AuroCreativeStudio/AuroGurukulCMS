@@ -41,6 +41,28 @@
       "allowedTypes": [
         "files"
       ]
+    },
+    "feature_title": {
+      "type": "string"
+    },
+    "feature_description": {
+      "type": "text"
+    },
+    "feature_list": {
+      "type": "component",
+      "component": "feature-list.feature-list",
+      "repeatable": true
+    },
+    "course_title": {
+      "type": "string"
+    },
+    "course_description": {
+      "type": "text"
+    },
+    "course_list": {
+      "type": "component",
+      "component": "course-list.course-list",
+      "repeatable": true
     }
   }
 }

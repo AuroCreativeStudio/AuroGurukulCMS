@@ -35,6 +35,17 @@ export interface AssessmentAssessment extends Struct.ComponentSchema {
   };
 }
 
+export interface CourseListCourseList extends Struct.ComponentSchema {
+  collectionName: 'components_course_list_course_lists';
+  info: {
+    displayName: 'course-list';
+  };
+  attributes: {
+    course_list: Schema.Attribute.Component<'courses.course-list', true>;
+    course_title: Schema.Attribute.String;
+  };
+}
+
 export interface CourseCourseOverview extends Struct.ComponentSchema {
   collectionName: 'components_course_course_overviews';
   info: {
@@ -42,6 +53,16 @@ export interface CourseCourseOverview extends Struct.ComponentSchema {
   };
   attributes: {
     doubt_clearing: Schema.Attribute.String;
+  };
+}
+
+export interface CoursesCourseList extends Struct.ComponentSchema {
+  collectionName: 'components_courses_course_lists';
+  info: {
+    displayName: 'course-list';
+  };
+  attributes: {
+    course_list: Schema.Attribute.Text;
   };
 }
 
@@ -65,6 +86,16 @@ export interface DurationDurationComponent extends Struct.ComponentSchema {
     duration_icon: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     >;
+  };
+}
+
+export interface FeatureListFeatureList extends Struct.ComponentSchema {
+  collectionName: 'components_feature_list_feature_lists';
+  info: {
+    displayName: 'feature-list';
+  };
+  attributes: {
+    feature_list: Schema.Attribute.String;
   };
 }
 
@@ -244,9 +275,12 @@ declare module '@strapi/strapi' {
       'about-program.about-program': AboutProgramAboutProgram;
       'activity.activity-list': ActivityActivityList;
       'assessment.assessment': AssessmentAssessment;
+      'course-list.course-list': CourseListCourseList;
       'course.course-overview': CourseCourseOverview;
+      'courses.course-list': CoursesCourseList;
       'desc.data': DescData;
       'duration.duration-component': DurationDurationComponent;
+      'feature-list.feature-list': FeatureListFeatureList;
       'highlight.highlight': HighlightHighlight;
       'integral-education.integral-education': IntegralEducationIntegralEducation;
       'list.activity-list': ListActivityList;
