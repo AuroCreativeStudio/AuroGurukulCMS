@@ -62,7 +62,7 @@ export interface CoursesCourseList extends Struct.ComponentSchema {
     displayName: 'course-list';
   };
   attributes: {
-    course_list: Schema.Attribute.Text;
+    course_list: Schema.Attribute.String;
   };
 }
 
@@ -130,7 +130,7 @@ export interface ListActivityList extends Struct.ComponentSchema {
     displayName: 'activity-list';
   };
   attributes: {
-    description: Schema.Attribute.Text;
+    description: Schema.Attribute.String;
   };
 }
 

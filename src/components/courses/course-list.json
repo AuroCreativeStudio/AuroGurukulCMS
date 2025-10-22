@@ -6,7 +6,7 @@
   "options": {},
   "attributes": {
     "course_list": {
-      "type": "text"
+      "type": "string"
     }
   },
   "config": {}
