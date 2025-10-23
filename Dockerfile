@@ -1,3 +1,4 @@
+# Stage 1: Build
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
@@ -5,10 +6,11 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
+# Stage 2: Production
 FROM node:20-alpine
 WORKDIR /app
 ENV NODE_ENV=production
-ENV PORT 8080
 COPY --from=builder /app ./
 EXPOSE 8080
-CMD ["sh", "-c", "HOST=0.0.0.0 PORT=${PORT} npm start"]
+# Use Cloud Run PORT variable dynamically
+CMD ["sh", "-c", "strapi start --host 0.0.0.0 --port ${PORT}"]
