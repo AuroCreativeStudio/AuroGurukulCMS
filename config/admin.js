@@ -17,4 +17,8 @@ module.exports = ({ env }) => ({
     nps: env.bool('FLAG_NPS', true),
     promoteEE: env.bool('FLAG_PROMOTE_EE', true),
   },
+    cookie: {
+    secure: false,  // allows cookies over HTTP behind proxy
+    sameSite: 'lax', // recommended for admin panel
+  },
 });
