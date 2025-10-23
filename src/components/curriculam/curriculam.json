@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_curriculam_curriculams",
+  "info": {
+    "displayName": "curriculam"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "description1": {
+      "type": "text"
+    },
+    "description2": {
+      "type": "string"
+    },
+    "feature": {
+      "type": "component",
+      "component": "feature.feature",
+      "repeatable": true
+    },
+    "title": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

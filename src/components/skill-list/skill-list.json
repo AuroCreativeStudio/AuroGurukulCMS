@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_skill_list_skill_lists",
+  "info": {
+    "displayName": "skill-list"
+  },
+  "options": {},
+  "attributes": {
+    "points": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

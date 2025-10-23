@@ -66,6 +66,20 @@ export interface CoursesCourseList extends Struct.ComponentSchema {
   };
 }
 
+export interface CurriculamCurriculam extends Struct.ComponentSchema {
+  collectionName: 'components_curriculam_curriculams';
+  info: {
+    displayName: 'curriculam';
+  };
+  attributes: {
+    description1: Schema.Attribute.Text;
+    description2: Schema.Attribute.String;
+    feature: Schema.Attribute.Component<'feature.feature', true>;
+    image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    title: Schema.Attribute.String;
+  };
+}
+
 export interface DescData extends Struct.ComponentSchema {
   collectionName: 'components_desc_data';
   info: {
@@ -96,6 +110,17 @@ export interface FeatureListFeatureList extends Struct.ComponentSchema {
   };
   attributes: {
     feature_list: Schema.Attribute.String;
+  };
+}
+
+export interface FeatureFeature extends Struct.ComponentSchema {
+  collectionName: 'components_feature_features';
+  info: {
+    displayName: 'feature';
+  };
+  attributes: {
+    content: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
   };
 }
 
@@ -134,6 +159,19 @@ export interface ListActivityList extends Struct.ComponentSchema {
   };
 }
 
+export interface MembersTeam extends Struct.ComponentSchema {
+  collectionName: 'components_members_teams';
+  info: {
+    displayName: 'team';
+  };
+  attributes: {
+    team_description: Schema.Attribute.Text;
+    team_designation: Schema.Attribute.String;
+    team_img: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    team_name: Schema.Attribute.String;
+  };
+}
+
 export interface QuoteQuote extends Struct.ComponentSchema {
   collectionName: 'components_quote_quotes';
   info: {
@@ -141,7 +179,7 @@ export interface QuoteQuote extends Struct.ComponentSchema {
   };
   attributes: {
     quote_desc: Schema.Attribute.Text;
-    quote_img: Schema.Attribute.Media<'images', true>;
+    quote_img: Schema.Attribute.Media<'images'>;
   };
 }
 
@@ -195,8 +233,18 @@ export interface SkillDevelopmentSkillDevelopment
     displayName: 'skill_development';
   };
   attributes: {
-    skill_development_list1: Schema.Attribute.String;
-    skill_development_list2: Schema.Attribute.String;
+    skill_list: Schema.Attribute.Component<'skill-list.skill-list', true>;
+    title: Schema.Attribute.String;
+  };
+}
+
+export interface SkillListSkillList extends Struct.ComponentSchema {
+  collectionName: 'components_skill_list_skill_lists';
+  info: {
+    displayName: 'skill-list';
+  };
+  attributes: {
+    points: Schema.Attribute.String;
   };
 }
 
@@ -278,18 +326,22 @@ declare module '@strapi/strapi' {
       'course-list.course-list': CourseListCourseList;
       'course.course-overview': CourseCourseOverview;
       'courses.course-list': CoursesCourseList;
+      'curriculam.curriculam': CurriculamCurriculam;
       'desc.data': DescData;
       'duration.duration-component': DurationDurationComponent;
       'feature-list.feature-list': FeatureListFeatureList;
+      'feature.feature': FeatureFeature;
       'highlight.highlight': HighlightHighlight;
       'integral-education.integral-education': IntegralEducationIntegralEducation;
       'list.activity-list': ListActivityList;
+      'members.team': MembersTeam;
       'quote.quote': QuoteQuote;
       'resourse.resource': ResourseResource;
       'sample.sampledata': SampleSampledata;
       'sessions.teaching-sessions': SessionsTeachingSessions;
       'sessions.teaching-sessionss': SessionsTeachingSessionss;
       'skill-development.skill-development': SkillDevelopmentSkillDevelopment;
+      'skill-list.skill-list': SkillListSkillList;
       'study.study-materials': StudyStudyMaterials;
       'subtitle.sub-title': SubtitleSubTitle;
       'subtitle.subtitle': SubtitleSubtitle;

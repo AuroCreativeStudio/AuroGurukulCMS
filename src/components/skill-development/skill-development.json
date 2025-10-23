@@ -5,11 +5,13 @@
   },
   "options": {},
   "attributes": {
-    "skill_development_list1": {
+    "title": {
       "type": "string"
     },
-    "skill_development_list2": {
-      "type": "string"
+    "skill_list": {
+      "type": "component",
+      "component": "skill-list.skill-list",
+      "repeatable": true
     }
   },
   "config": {}

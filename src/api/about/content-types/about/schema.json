@@ -32,10 +32,21 @@
       "component": "quote.quote",
       "repeatable": true
     },
-    "integral_education": {
+    "team": {
       "type": "component",
-      "component": "integral-education.integral-education",
+      "component": "members.team",
       "repeatable": true
+    },
+    "integral_edu_title": {
+      "type": "string"
+    },
+    "integral_edu_description": {
+      "type": "text"
+    },
+    "curriculam": {
+      "type": "component",
+      "component": "curriculam.curriculam",
+      "repeatable": false
     }
   }
 }

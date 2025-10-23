@@ -7,7 +7,7 @@
   "attributes": {
     "quote_img": {
       "type": "media",
-      "multiple": true,
+      "multiple": false,
       "allowedTypes": [
         "images"
       ]

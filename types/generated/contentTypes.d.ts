@@ -447,16 +447,16 @@ export interface ApiAboutAbout extends Struct.SingleTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    integral_education: Schema.Attribute.Component<
-      'integral-education.integral-education',
-      true
-    >;
+    curriculam: Schema.Attribute.Component<'curriculam.curriculam', false>;
+    integral_edu_description: Schema.Attribute.Text;
+    integral_edu_title: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::about.about'> &
       Schema.Attribute.Private;
     mission_desc: Schema.Attribute.Text;
     publishedAt: Schema.Attribute.DateTime;
     quote: Schema.Attribute.Component<'quote.quote', true>;
+    team: Schema.Attribute.Component<'members.team', true>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

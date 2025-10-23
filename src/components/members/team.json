@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_members_teams",
+  "info": {
+    "displayName": "team"
+  },
+  "options": {},
+  "attributes": {
+    "team_img": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "team_name": {
+      "type": "string"
+    },
+    "team_designation": {
+      "type": "string"
+    },
+    "team_description": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}
