@@ -1,6 +1,6 @@
 module.exports = ({ env }) => ({
   host: env('HOST', '0.0.0.0'),
-  port: env.int('PORT', 1337), // Cloud Run sets PORT dynamically
+  port: env.int('PORT', 8080), // fallback for local dev, Cloud Run will override
   app: {
     keys: env.array('APP_KEYS'),
   },
