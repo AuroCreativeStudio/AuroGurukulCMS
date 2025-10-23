@@ -12,5 +12,5 @@ WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=builder /app ./
 EXPOSE 8080
-# Use Cloud Run PORT variable dynamically
+# Use the Cloud Run PORT dynamically
 CMD ["sh", "-c", "strapi start --host 0.0.0.0 --port ${PORT}"]
