@@ -12,4 +12,11 @@ module.exports = ({ env }) => ({
   webhooks: {
     populateRelations: env.bool('WEBHOOKS_POPULATE_RELATIONS', false),
   },
+  admin: {
+    auth: {
+      secret: env('ADMIN_JWT_SECRET'),
+      // Ensure cookies are not marked secure (Cloud Run terminates HTTPS at the load balancer)
+      secure: false,
+    },
+  },
 });
