@@ -1,6 +1,12 @@
 module.exports = ({ env }) => ({
   auth: {
     secret: env('ADMIN_JWT_SECRET'),
+    sessions: {
+      cookie: {
+        secure: false,
+        sameSite: 'lax',
+      },
+    },
   },
   apiToken: {
     salt: env('API_TOKEN_SALT'),
@@ -17,9 +23,4 @@ module.exports = ({ env }) => ({
     nps: env.bool('FLAG_NPS', true),
     promoteEE: env.bool('FLAG_PROMOTE_EE', true),
   },
-  cookie: {
-    secure: false,
-    sameSite: 'lax',
-  },
-  proxy: true,     
 });
