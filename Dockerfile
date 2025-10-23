@@ -11,9 +11,9 @@ FROM node:20-alpine
 WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=builder /app ./
-RUN npm install --production  # ensure dependencies are installed
+RUN npm install  # install all dependencies so 'strapi' CLI is available
 
 EXPOSE 8080
 
-# Use Cloud Run PORT automatically
-CMD ["npx", "strapi", "start", "--no-telemetry", "--host", "0.0.0.0", "--port", "$PORT"]
+# Start Strapi using shell to expand $PORT
+CMD ["sh", "-c", "npx strapi start --no-telemetry --host 0.0.0.0 --port $PORT"]
