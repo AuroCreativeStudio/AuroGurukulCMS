@@ -10,7 +10,10 @@ RUN npm run build
 FROM node:20-alpine
 WORKDIR /app
 ENV NODE_ENV=production
+ENV PORT=8080
 COPY --from=builder /app ./
+RUN npm ci --only=production
+RUN apk add --no-cache bash curl
+
 EXPOSE 8080
-# Use the Cloud Run PORT dynamically
 CMD ["sh", "-c", "strapi start --host 0.0.0.0 --port ${PORT}"]
