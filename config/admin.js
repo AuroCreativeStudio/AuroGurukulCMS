@@ -2,9 +2,19 @@ module.exports = ({ env }) => ({
   auth: {
     secret: env('ADMIN_JWT_SECRET'),
     sessions: {
+      // Access token cookie settings
       cookie: {
         secure: false,
         sameSite: 'lax',
+        httpOnly: true,
+      },
+      // IMPORTANT: Refresh token cookie settings (this is what's missing!)
+      refreshToken: {
+        cookie: {
+          secure: false,
+          sameSite: 'lax',
+          httpOnly: true,
+        },
       },
     },
   },
