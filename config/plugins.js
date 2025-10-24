@@ -11,7 +11,7 @@ module.exports = ({ env }) => {
           bucketName: env("GCS_BUCKET_NAME"),
           publicFiles: true, // <-- no public ACLs
           uniform: true,  
-          basePath: "",
+          basePath: "cms_uploads",
           serviceAccount: gcsServiceAccount,
         },
       },
