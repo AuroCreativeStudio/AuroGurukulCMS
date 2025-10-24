@@ -7,7 +7,9 @@ module.exports = ({ env }) => ({
         publicFiles: true,
         uniform: false,
         basePath: "",
-        serviceAccount: env("GCS_SERVICE_ACCOUNT_BASE64"),
+        serviceAccount: JSON.parse(
+          Buffer.from(env("GCS_SERVICE_ACCOUNT_JSON"), "base64").toString("utf8")
+        ),
       },
     },
   },
