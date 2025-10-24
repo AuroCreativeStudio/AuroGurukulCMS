@@ -7,7 +7,7 @@ module.exports = ({ env }) => ({
         publicFiles: true,
         uniform: false,
         basePath: "",
-        // no serviceAccount needed
+       serviceAccount: require("../gcs-service-account.json"),
       },
     },
   },
