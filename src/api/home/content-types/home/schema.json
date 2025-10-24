@@ -75,6 +75,13 @@
       "type": "component",
       "component": "subtitle.sub-title",
       "repeatable": true
+    },
+    "course_mobile_img": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images"
+      ]
     }
   }
 }
