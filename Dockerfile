@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-COPY config/gcs-service-account.json ./config/gcs-service-account.json
+
 RUN npm run build
 
 # Stage 2: Production
