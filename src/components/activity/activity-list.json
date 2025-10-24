@@ -24,6 +24,9 @@
         "videos",
         "audios"
       ]
+    },
+    "slug": {
+      "type": "string"
     }
   },
   "config": {}
