@@ -6,8 +6,8 @@ module.exports = ({ env }) => ({
         bucketName: env("GCS_BUCKET_NAME"),
         publicFiles: true,
         uniform: false,
-        basePath: "", // optional
-        serviceAccount: JSON.parse(env("GCS_SERVICE_ACCOUNT_JSON")),
+        basePath: "",
+        // no serviceAccount needed
       },
     },
   },
