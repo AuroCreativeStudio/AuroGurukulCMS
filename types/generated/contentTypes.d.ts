@@ -511,6 +511,7 @@ export interface ApiAllActivityAllActivity extends Struct.CollectionTypeSchema {
     catalogue_pdf: Schema.Attribute.Media<'files'>;
     course_description: Schema.Attribute.Text;
     course_fees: Schema.Attribute.String;
+    course_gst: Schema.Attribute.String;
     course_list: Schema.Attribute.Component<'course-list.course-list', true>;
     course_title: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
