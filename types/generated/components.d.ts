@@ -36,6 +36,24 @@ export interface AssessmentAssessment extends Struct.ComponentSchema {
   };
 }
 
+export interface CourseContentCourseContent extends Struct.ComponentSchema {
+  collectionName: 'components_course_content_course_contents';
+  info: {
+    displayName: 'course_content';
+  };
+  attributes: {
+    course_img: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    course_mobile_img: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    link: Schema.Attribute.String;
+  };
+}
+
 export interface CourseListCourseList extends Struct.ComponentSchema {
   collectionName: 'components_course_list_course_lists';
   info: {
@@ -44,6 +62,7 @@ export interface CourseListCourseList extends Struct.ComponentSchema {
   attributes: {
     course_list: Schema.Attribute.Component<'courses.course-list', true>;
     course_title: Schema.Attribute.String;
+    course_video: Schema.Attribute.Media<'videos'>;
   };
 }
 
@@ -190,6 +209,7 @@ export interface ResourseResource extends Struct.ComponentSchema {
     displayName: 'resource';
   };
   attributes: {
+    link: Schema.Attribute.String;
     resource_content: Schema.Attribute.String;
     resource_img: Schema.Attribute.Media<'images'>;
   };
@@ -324,6 +344,7 @@ declare module '@strapi/strapi' {
       'about-program.about-program': AboutProgramAboutProgram;
       'activity.activity-list': ActivityActivityList;
       'assessment.assessment': AssessmentAssessment;
+      'course-content.course-content': CourseContentCourseContent;
       'course-list.course-list': CourseListCourseList;
       'course.course-overview': CourseCourseOverview;
       'courses.course-list': CoursesCourseList;

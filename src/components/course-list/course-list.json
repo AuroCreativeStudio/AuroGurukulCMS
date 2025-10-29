@@ -12,6 +12,13 @@
       "type": "component",
       "component": "courses.course-list",
       "repeatable": true
+    },
+    "course_video": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "videos"
+      ]
     }
   },
   "config": {}

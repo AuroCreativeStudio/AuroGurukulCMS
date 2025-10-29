@@ -66,6 +66,13 @@
       "type": "component",
       "component": "course-list.course-list",
       "repeatable": true
+    },
+    "testimonial_video": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "videos"
+      ]
     }
   }
 }

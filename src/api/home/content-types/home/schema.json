@@ -82,6 +82,11 @@
       "allowedTypes": [
         "images"
       ]
+    },
+    "course_content": {
+      "type": "component",
+      "component": "course-content.course-content",
+      "repeatable": true
     }
   }
 }

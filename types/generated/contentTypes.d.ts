@@ -528,6 +528,7 @@ export interface ApiAllActivityAllActivity extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.String;
+    testimonial_video: Schema.Attribute.Media<'videos', true>;
     title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -838,6 +839,10 @@ export interface ApiHomeHome extends Struct.SingleTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    course_content: Schema.Attribute.Component<
+      'course-content.course-content',
+      true
+    >;
     course_img: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true

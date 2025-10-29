@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_course_content_course_contents",
+  "info": {
+    "displayName": "course_content"
+  },
+  "options": {},
+  "attributes": {
+    "course_img": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "course_mobile_img": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "link": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}
