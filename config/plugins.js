@@ -12,6 +12,7 @@ module.exports = ({ env }) => {
           publicFiles: true, // <-- no public ACLs
           uniform: true,  
           basePath: "cms_uploads",
+          baseUrl: "https://storage.googleapis.com/cms_uploads",
           serviceAccount: gcsServiceAccount,
         },
       },

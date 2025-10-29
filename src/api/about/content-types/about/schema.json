@@ -11,16 +11,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "about_video": {
-      "type": "media",
-      "multiple": false,
-      "allowedTypes": [
-        "files",
-        "videos",
-        "images",
-        "audios"
-      ]
-    },
     "mission_desc": {
       "type": "text"
     },

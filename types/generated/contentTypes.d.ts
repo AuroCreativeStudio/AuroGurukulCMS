@@ -441,9 +441,6 @@ export interface ApiAboutAbout extends Struct.SingleTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    about_video: Schema.Attribute.Media<
-      'files' | 'videos' | 'images' | 'audios'
-    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -461,6 +458,44 @@ export interface ApiAboutAbout extends Struct.SingleTypeSchema {
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     vision_desc: Schema.Attribute.Text;
+  };
+}
+
+export interface ApiActivityFormActivityForm
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'activity_forms';
+  info: {
+    displayName: 'Activity Form';
+    pluralName: 'activity-forms';
+    singularName: 'activity-form';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    city: Schema.Attribute.String;
+    course: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    email: Schema.Attribute.Email;
+    full_name: Schema.Attribute.String;
+    grade: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::activity-form.activity-form'
+    > &
+      Schema.Attribute.Private;
+    payment_type: Schema.Attribute.String;
+    phone_number: Schema.Attribute.BigInteger;
+    publishedAt: Schema.Attribute.DateTime;
+    school_name: Schema.Attribute.String;
+    screenshot: Schema.Attribute.Media<'images' | 'files'>;
+    state: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -730,6 +765,43 @@ export interface ApiContactusFormContactusForm
   };
 }
 
+export interface ApiCourseFormCourseForm extends Struct.CollectionTypeSchema {
+  collectionName: 'course_forms';
+  info: {
+    displayName: 'Course Form';
+    pluralName: 'course-forms';
+    singularName: 'course-form';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    city: Schema.Attribute.String;
+    class_section: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    email: Schema.Attribute.String;
+    full_name: Schema.Attribute.String;
+    grade: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::course-form.course-form'
+    > &
+      Schema.Attribute.Private;
+    payment_type: Schema.Attribute.String;
+    phone_number: Schema.Attribute.BigInteger;
+    publishedAt: Schema.Attribute.DateTime;
+    school_name: Schema.Attribute.String;
+    screenshot: Schema.Attribute.Media<'images' | 'files'>;
+    state: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
   collectionName: 'courses';
   info: {
@@ -935,6 +1007,44 @@ export interface ApiResourceResource extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     resource_price: Schema.Attribute.String;
     resource_title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSkillDevelopmentFormSkillDevelopmentForm
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'skill_development_forms';
+  info: {
+    displayName: 'Skill Development Form';
+    pluralName: 'skill-development-forms';
+    singularName: 'skill-development-form';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    city: Schema.Attribute.String;
+    course: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    email: Schema.Attribute.Email;
+    full_name: Schema.Attribute.String;
+    grade: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::skill-development-form.skill-development-form'
+    > &
+      Schema.Attribute.Private;
+    payment_type: Schema.Attribute.String;
+    phone_number: Schema.Attribute.BigInteger;
+    publishedAt: Schema.Attribute.DateTime;
+    school_name: Schema.Attribute.String;
+    screenshot: Schema.Attribute.Media<'images'>;
+    state: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1527,6 +1637,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::about.about': ApiAboutAbout;
+      'api::activity-form.activity-form': ApiActivityFormActivityForm;
       'api::activity.activity': ApiActivityActivity;
       'api::all-activity.all-activity': ApiAllActivityAllActivity;
       'api::all-course.all-course': ApiAllCourseAllCourse;
@@ -1535,11 +1646,13 @@ declare module '@strapi/strapi' {
       'api::carrer.carrer': ApiCarrerCarrer;
       'api::contact.contact': ApiContactContact;
       'api::contactus-form.contactus-form': ApiContactusFormContactusForm;
+      'api::course-form.course-form': ApiCourseFormCourseForm;
       'api::course.course': ApiCourseCourse;
       'api::enquiry-form.enquiry-form': ApiEnquiryFormEnquiryForm;
       'api::home.home': ApiHomeHome;
       'api::product-category.product-category': ApiProductCategoryProductCategory;
       'api::resource.resource': ApiResourceResource;
+      'api::skill-development-form.skill-development-form': ApiSkillDevelopmentFormSkillDevelopmentForm;
       'api::skill-development.skill-development': ApiSkillDevelopmentSkillDevelopment;
       'api::social-link.social-link': ApiSocialLinkSocialLink;
       'plugin::content-releases.release': PluginContentReleasesRelease;

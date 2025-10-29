@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "skill_development_forms",
+  "info": {
+    "singularName": "skill-development-form",
+    "pluralName": "skill-development-forms",
+    "displayName": "Skill Development Form"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "full_name": {
+      "type": "string"
+    },
+    "phone_number": {
+      "type": "biginteger"
+    },
+    "email": {
+      "type": "email"
+    },
+    "school_name": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "payment_type": {
+      "type": "string"
+    },
+    "grade": {
+      "type": "string"
+    },
+    "course": {
+      "type": "string"
+    },
+    "screenshot": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}
