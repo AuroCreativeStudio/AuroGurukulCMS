@@ -21,16 +21,6 @@
         "audios"
       ]
     },
-    "herobg_mobile": {
-      "type": "media",
-      "multiple": false,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ]
-    },
     "hero_title": {
       "type": "string",
       "required": true

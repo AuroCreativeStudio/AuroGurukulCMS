@@ -934,9 +934,6 @@ export interface ApiHomeHome extends Struct.SingleTypeSchema {
     herobg_desktop: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     >;
-    herobg_mobile: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios'
-    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::home.home'> &
       Schema.Attribute.Private;
@@ -1119,8 +1116,6 @@ export interface ApiSkillDevelopmentSkillDevelopment
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     highlight: Schema.Attribute.Component<'highlight.highlight', true>;
-    highlight_desc: Schema.Attribute.Text;
-    highlight_icons: Schema.Attribute.Media<'images', true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',

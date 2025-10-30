@@ -27,16 +27,6 @@
     "course_fee": {
       "type": "string"
     },
-    "highlight_icons": {
-      "type": "media",
-      "multiple": true,
-      "allowedTypes": [
-        "images"
-      ]
-    },
-    "highlight_desc": {
-      "type": "text"
-    },
     "about_program": {
       "type": "component",
       "component": "about-program.about-program",
