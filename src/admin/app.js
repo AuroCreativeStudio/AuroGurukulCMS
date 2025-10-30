@@ -1,8 +1,10 @@
+import logo from "./extensions/fav.png";
 
 export default {
   config: {
     head: {
       title: 'AuroGurukul CMS',
+      favicon: logo,
     },
     theme: {
       light: {
@@ -30,6 +32,16 @@ export default {
           buttonPrimary500: '#ee842c',
           buttonPrimary600: '#e07620',
         },
+      },
+    },
+    translations: {
+      en: {
+        "app.components.LeftMenu.navbrand.title": "Store Dashboard",
+        "app.components.LeftMenu.navbrand.workplace": "Dashboard",
+        "Auth.form.welcome.title": "Welcome to Auro Gurukul",
+        "Auth.form.welcome.subtitle": "Login to your account",
+        "Settings.profile.form.section.experience.interfaceLanguageHelp":
+          "Preference changes will apply only to you.",
       },
     },
     tutorials: false,
