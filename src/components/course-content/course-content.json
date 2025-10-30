@@ -7,7 +7,7 @@
   "attributes": {
     "course_img": {
       "type": "media",
-      "multiple": true,
+      "multiple": false,
       "allowedTypes": [
         "images",
         "files",
@@ -17,7 +17,7 @@
     },
     "course_mobile_img": {
       "type": "media",
-      "multiple": true,
+      "multiple": false,
       "allowedTypes": [
         "images",
         "files",

@@ -549,6 +549,9 @@ export interface ApiAllActivityAllActivity extends Struct.CollectionTypeSchema {
     course_gst: Schema.Attribute.String;
     course_list: Schema.Attribute.Component<'course-list.course-list', true>;
     course_title: Schema.Attribute.String;
+    course_video: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

@@ -76,6 +76,16 @@
       "allowedTypes": [
         "videos"
       ]
+    },
+    "course_video": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     }
   }
 }

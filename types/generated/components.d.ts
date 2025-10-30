@@ -43,12 +43,10 @@ export interface CourseContentCourseContent extends Struct.ComponentSchema {
   };
   attributes: {
     course_img: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios',
-      true
+      'images' | 'files' | 'videos' | 'audios'
     >;
     course_mobile_img: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios',
-      true
+      'images' | 'files' | 'videos' | 'audios'
     >;
     link: Schema.Attribute.String;
   };
