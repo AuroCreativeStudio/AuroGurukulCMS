@@ -142,6 +142,18 @@ export interface FeatureFeature extends Struct.ComponentSchema {
   };
 }
 
+export interface FeaturedListFeaturedList extends Struct.ComponentSchema {
+  collectionName: 'components_featured_list_featured_lists';
+  info: {
+    displayName: 'featured-list';
+  };
+  attributes: {
+    Description: Schema.Attribute.Text;
+    Icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    Title: Schema.Attribute.String;
+  };
+}
+
 export interface HighlightHighlight extends Struct.ComponentSchema {
   collectionName: 'components_highlight_highlights';
   info: {
@@ -224,6 +236,17 @@ export interface SampleSampledata extends Struct.ComponentSchema {
       'images' | 'files' | 'videos' | 'audios',
       true
     >;
+  };
+}
+
+export interface SciencequoteQuote extends Struct.ComponentSchema {
+  collectionName: 'components_sciencequote_quotes';
+  info: {
+    displayName: 'quote';
+  };
+  attributes: {
+    Quote_author: Schema.Attribute.String;
+    Quote_title: Schema.Attribute.String;
   };
 }
 
@@ -351,6 +374,7 @@ declare module '@strapi/strapi' {
       'duration.duration-component': DurationDurationComponent;
       'feature-list.feature-list': FeatureListFeatureList;
       'feature.feature': FeatureFeature;
+      'featured-list.featured-list': FeaturedListFeaturedList;
       'highlight.highlight': HighlightHighlight;
       'integral-education.integral-education': IntegralEducationIntegralEducation;
       'list.activity-list': ListActivityList;
@@ -358,6 +382,7 @@ declare module '@strapi/strapi' {
       'quote.quote': QuoteQuote;
       'resourse.resource': ResourseResource;
       'sample.sampledata': SampleSampledata;
+      'sciencequote.quote': SciencequoteQuote;
       'sessions.teaching-sessions': SessionsTeachingSessions;
       'sessions.teaching-sessionss': SessionsTeachingSessionss;
       'skill-development.skill-development': SkillDevelopmentSkillDevelopment;

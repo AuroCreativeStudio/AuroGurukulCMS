@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_featured_list_featured_lists",
+  "info": {
+    "displayName": "featured-list"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "Icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "Description": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

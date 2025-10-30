@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_sciencequote_quotes",
+  "info": {
+    "displayName": "quote"
+  },
+  "options": {},
+  "attributes": {
+    "Quote_title": {
+      "type": "string"
+    },
+    "Quote_author": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

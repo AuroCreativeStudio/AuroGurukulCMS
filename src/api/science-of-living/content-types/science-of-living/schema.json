@@ -1,0 +1,47 @@
+{
+  "kind": "singleType",
+  "collectionName": "science_of_livings",
+  "info": {
+    "singularName": "science-of-living",
+    "pluralName": "science-of-livings",
+    "displayName": "science of living"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Hero_background_image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "Title": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "text"
+    },
+    "Journey_of_self_discovery": {
+      "type": "text"
+    },
+    "featured_list": {
+      "type": "component",
+      "component": "featured-list.featured-list",
+      "repeatable": true
+    },
+    "Discipline_section_description": {
+      "type": "text"
+    },
+    "quote": {
+      "type": "component",
+      "component": "sciencequote.quote",
+      "repeatable": false
+    }
+  }
+}

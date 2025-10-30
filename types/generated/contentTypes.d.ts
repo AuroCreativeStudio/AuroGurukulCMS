@@ -1016,6 +1016,46 @@ export interface ApiResourceResource extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiScienceOfLivingScienceOfLiving
+  extends Struct.SingleTypeSchema {
+  collectionName: 'science_of_livings';
+  info: {
+    displayName: 'science of living';
+    pluralName: 'science-of-livings';
+    singularName: 'science-of-living';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Description: Schema.Attribute.Text;
+    Discipline_section_description: Schema.Attribute.Text;
+    featured_list: Schema.Attribute.Component<
+      'featured-list.featured-list',
+      true
+    >;
+    Hero_background_image: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+    Journey_of_self_discovery: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::science-of-living.science-of-living'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    quote: Schema.Attribute.Component<'sciencequote.quote', false>;
+    Title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiSkillDevelopmentFormSkillDevelopmentForm
   extends Struct.CollectionTypeSchema {
   collectionName: 'skill_development_forms';
@@ -1655,6 +1695,7 @@ declare module '@strapi/strapi' {
       'api::home.home': ApiHomeHome;
       'api::product-category.product-category': ApiProductCategoryProductCategory;
       'api::resource.resource': ApiResourceResource;
+      'api::science-of-living.science-of-living': ApiScienceOfLivingScienceOfLiving;
       'api::skill-development-form.skill-development-form': ApiSkillDevelopmentFormSkillDevelopmentForm;
       'api::skill-development.skill-development': ApiSkillDevelopmentSkillDevelopment;
       'api::social-link.social-link': ApiSocialLinkSocialLink;
