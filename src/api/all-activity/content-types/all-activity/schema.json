@@ -79,7 +79,7 @@
     },
     "course_video": {
       "type": "media",
-      "multiple": false,
+      "multiple": true,
       "allowedTypes": [
         "images",
         "files",
