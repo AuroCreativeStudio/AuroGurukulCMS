@@ -920,11 +920,6 @@ export interface ApiHomeHome extends Struct.SingleTypeSchema {
       'course-content.course-content',
       true
     >;
-    course_img: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios',
-      true
-    >;
-    course_mobile_img: Schema.Attribute.Media<'images', true>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1018,7 +1013,7 @@ export interface ApiScienceOfLivingScienceOfLiving
   extends Struct.SingleTypeSchema {
   collectionName: 'science_of_livings';
   info: {
-    displayName: 'science of living';
+    displayName: 'Science of living';
     pluralName: 'science-of-livings';
     singularName: 'science-of-living';
   };

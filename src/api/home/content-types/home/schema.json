@@ -28,16 +28,6 @@
     "hero_description": {
       "type": "text"
     },
-    "course_img": {
-      "type": "media",
-      "multiple": true,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ]
-    },
     "why_aurogurukul_desc": {
       "type": "text"
     },
@@ -65,13 +55,6 @@
       "type": "component",
       "component": "subtitle.sub-title",
       "repeatable": true
-    },
-    "course_mobile_img": {
-      "type": "media",
-      "multiple": true,
-      "allowedTypes": [
-        "images"
-      ]
     },
     "course_content": {
       "type": "component",
