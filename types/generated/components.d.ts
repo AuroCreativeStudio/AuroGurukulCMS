@@ -219,9 +219,9 @@ export interface ResourseResource extends Struct.ComponentSchema {
     displayName: 'resource';
   };
   attributes: {
+    activity_content: Schema.Attribute.String;
+    activity_img: Schema.Attribute.Media<'images'>;
     link: Schema.Attribute.String;
-    resource_content: Schema.Attribute.String;
-    resource_img: Schema.Attribute.Media<'images'>;
   };
 }
 

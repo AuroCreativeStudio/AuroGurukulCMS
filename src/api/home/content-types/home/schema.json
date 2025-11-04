@@ -11,7 +11,7 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "herobg_desktop": {
+    "hero_section": {
       "type": "media",
       "multiple": false,
       "allowedTypes": [
@@ -41,12 +41,12 @@
         "audios"
       ]
     },
-    "data": {
+    "science_of_living_section": {
       "type": "component",
       "component": "desc.data",
       "repeatable": true
     },
-    "resourse": {
+    "activity_section": {
       "type": "component",
       "component": "resourse.resource",
       "repeatable": true

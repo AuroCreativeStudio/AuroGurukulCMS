@@ -916,6 +916,7 @@ export interface ApiHomeHome extends Struct.SingleTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    activity_section: Schema.Attribute.Component<'resourse.resource', true>;
     course_content: Schema.Attribute.Component<
       'course-content.course-content',
       true
@@ -923,17 +924,16 @@ export interface ApiHomeHome extends Struct.SingleTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    data: Schema.Attribute.Component<'desc.data', true>;
     hero_description: Schema.Attribute.Text;
-    hero_title: Schema.Attribute.String & Schema.Attribute.Required;
-    herobg_desktop: Schema.Attribute.Media<
+    hero_section: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     >;
+    hero_title: Schema.Attribute.String & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::home.home'> &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    resourse: Schema.Attribute.Component<'resourse.resource', true>;
+    science_of_living_section: Schema.Attribute.Component<'desc.data', true>;
     subtitle: Schema.Attribute.Component<'subtitle.sub-title', true>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

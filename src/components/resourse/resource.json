@@ -5,10 +5,10 @@
   },
   "options": {},
   "attributes": {
-    "resource_content": {
+    "activity_content": {
       "type": "string"
     },
-    "resource_img": {
+    "activity_img": {
       "type": "media",
       "multiple": false,
       "allowedTypes": [
