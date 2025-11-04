@@ -36,6 +36,14 @@ export interface AssessmentAssessment extends Struct.ComponentSchema {
   };
 }
 
+export interface CouponsCoupons extends Struct.ComponentSchema {
+  collectionName: 'components_coupons_coupons';
+  info: {
+    displayName: 'Coupons';
+  };
+  attributes: {};
+}
+
 export interface CourseContentCourseContent extends Struct.ComponentSchema {
   collectionName: 'components_course_content_course_contents';
   info: {
@@ -179,6 +187,14 @@ export interface IntegralEducationIntegralEducation
   };
 }
 
+export interface InvoiceInvoice extends Struct.ComponentSchema {
+  collectionName: 'components_invoice_invoices';
+  info: {
+    displayName: 'Invoice';
+  };
+  attributes: {};
+}
+
 export interface ListActivityList extends Struct.ComponentSchema {
   collectionName: 'components_list_activity_lists';
   info: {
@@ -200,6 +216,14 @@ export interface MembersTeam extends Struct.ComponentSchema {
     team_img: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     team_name: Schema.Attribute.String;
   };
+}
+
+export interface OrderHistoryOrderHistory extends Struct.ComponentSchema {
+  collectionName: 'components_order_history_order_histories';
+  info: {
+    displayName: 'Order-History';
+  };
+  attributes: {};
 }
 
 export interface QuoteQuote extends Struct.ComponentSchema {
@@ -365,6 +389,7 @@ declare module '@strapi/strapi' {
       'about-program.about-program': AboutProgramAboutProgram;
       'activity.activity-list': ActivityActivityList;
       'assessment.assessment': AssessmentAssessment;
+      'coupons.coupons': CouponsCoupons;
       'course-content.course-content': CourseContentCourseContent;
       'course-list.course-list': CourseListCourseList;
       'course.course-overview': CourseCourseOverview;
@@ -377,8 +402,10 @@ declare module '@strapi/strapi' {
       'featured-list.featured-list': FeaturedListFeaturedList;
       'highlight.highlight': HighlightHighlight;
       'integral-education.integral-education': IntegralEducationIntegralEducation;
+      'invoice.invoice': InvoiceInvoice;
       'list.activity-list': ListActivityList;
       'members.team': MembersTeam;
+      'order-history.order-history': OrderHistoryOrderHistory;
       'quote.quote': QuoteQuote;
       'resourse.resource': ResourseResource;
       'sample.sampledata': SampleSampledata;

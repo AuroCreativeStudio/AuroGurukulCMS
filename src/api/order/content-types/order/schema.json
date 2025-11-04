@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "Order"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Order_ID": {
+      "type": "uid"
+    },
+    "Item": {
+      "type": "string"
+    },
+    "Price": {
+      "type": "string"
+    },
+    "Date": {
+      "type": "date"
+    },
+    "Payment_Status": {
+      "type": "boolean"
+    },
+    "Billing_Address": {
+      "type": "text"
+    },
+    "Shipping_Address": {
+      "type": "text"
+    },
+    "Coupons": {
+      "type": "component",
+      "component": "coupons.coupons",
+      "repeatable": false
+    },
+    "Invoice": {
+      "type": "component",
+      "component": "invoice.invoice",
+      "repeatable": false
+    }
+  }
+}
