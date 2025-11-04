@@ -1001,6 +1001,7 @@ export interface ApiResourceResource extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    resource_id: Schema.Attribute.UID;
     resource_price: Schema.Attribute.String;
     resource_title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
