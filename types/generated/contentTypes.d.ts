@@ -700,6 +700,35 @@ export interface ApiCarrerCarrer extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiCartCart extends Struct.CollectionTypeSchema {
+  collectionName: 'carts';
+  info: {
+    displayName: 'cart';
+    pluralName: 'carts';
+    singularName: 'cart';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    cart_product: Schema.Attribute.Component<
+      'cart-product.cart-product',
+      false
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::cart.cart'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<'oneToOne', 'admin::user'>;
+  };
+}
+
 export interface ApiContactContact extends Struct.SingleTypeSchema {
   collectionName: 'contacts';
   info: {
@@ -1791,6 +1820,7 @@ declare module '@strapi/strapi' {
       'api::all-grade.all-grade': ApiAllGradeAllGrade;
       'api::career-form.career-form': ApiCareerFormCareerForm;
       'api::carrer.carrer': ApiCarrerCarrer;
+      'api::cart.cart': ApiCartCart;
       'api::contact.contact': ApiContactContact;
       'api::contactus-form.contactus-form': ApiContactusFormContactusForm;
       'api::course-form.course-form': ApiCourseFormCourseForm;

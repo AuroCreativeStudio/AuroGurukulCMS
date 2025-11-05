@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_cart_product_cart_products",
+  "info": {
+    "displayName": "cart-product"
+  },
+  "options": {},
+  "attributes": {
+    "Product_Id": {
+      "type": "string"
+    },
+    "Product_title": {
+      "type": "string"
+    },
+    "Price": {
+      "type": "string"
+    },
+    "Quantity": {
+      "type": "integer"
+    }
+  },
+  "config": {}
+}

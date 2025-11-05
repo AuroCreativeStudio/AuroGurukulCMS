@@ -36,6 +36,19 @@ export interface AssessmentAssessment extends Struct.ComponentSchema {
   };
 }
 
+export interface CartProductCartProduct extends Struct.ComponentSchema {
+  collectionName: 'components_cart_product_cart_products';
+  info: {
+    displayName: 'cart-product';
+  };
+  attributes: {
+    Price: Schema.Attribute.String;
+    Product_Id: Schema.Attribute.String;
+    Product_title: Schema.Attribute.String;
+    Quantity: Schema.Attribute.Integer;
+  };
+}
+
 export interface CouponsCoupons extends Struct.ComponentSchema {
   collectionName: 'components_coupons_coupons';
   info: {
@@ -389,6 +402,7 @@ declare module '@strapi/strapi' {
       'about-program.about-program': AboutProgramAboutProgram;
       'activity.activity-list': ActivityActivityList;
       'assessment.assessment': AssessmentAssessment;
+      'cart-product.cart-product': CartProductCartProduct;
       'coupons.coupons': CouponsCoupons;
       'course-content.course-content': CourseContentCourseContent;
       'course-list.course-list': CourseListCourseList;
