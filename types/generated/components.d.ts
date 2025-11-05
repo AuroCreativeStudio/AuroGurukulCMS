@@ -42,9 +42,7 @@ export interface CartProductCartProduct extends Struct.ComponentSchema {
     displayName: 'cart-product';
   };
   attributes: {
-    Price: Schema.Attribute.String;
-    Product_Id: Schema.Attribute.String;
-    Product_title: Schema.Attribute.String;
+    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
     Quantity: Schema.Attribute.Integer;
   };
 }

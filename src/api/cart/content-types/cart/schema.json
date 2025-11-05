@@ -19,7 +19,7 @@
     "cart_product": {
       "type": "component",
       "component": "cart-product.cart-product",
-      "repeatable": false
+      "repeatable": true
     }
   }
 }

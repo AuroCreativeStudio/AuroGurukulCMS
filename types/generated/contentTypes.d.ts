@@ -711,10 +711,7 @@ export interface ApiCartCart extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    cart_product: Schema.Attribute.Component<
-      'cart-product.cart-product',
-      false
-    >;
+    cart_product: Schema.Attribute.Component<'cart-product.cart-product', true>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

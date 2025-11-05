@@ -5,17 +5,13 @@
   },
   "options": {},
   "attributes": {
-    "Product_Id": {
-      "type": "string"
-    },
-    "Product_title": {
-      "type": "string"
-    },
-    "Price": {
-      "type": "string"
-    },
     "Quantity": {
       "type": "integer"
+    },
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product"
     }
   },
   "config": {}
