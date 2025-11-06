@@ -36,6 +36,23 @@ export interface AssessmentAssessment extends Struct.ComponentSchema {
   };
 }
 
+export interface BillingAddressBillingAddress extends Struct.ComponentSchema {
+  collectionName: 'components_billing_address_billing_addresses';
+  info: {
+    displayName: 'Billing_Address';
+  };
+  attributes: {
+    Address: Schema.Attribute.Text;
+    City: Schema.Attribute.String;
+    Email: Schema.Attribute.Email;
+    Firstname: Schema.Attribute.String;
+    Lastname: Schema.Attribute.String;
+    Phone: Schema.Attribute.String;
+    State: Schema.Attribute.String;
+    Zipcode: Schema.Attribute.String;
+  };
+}
+
 export interface CartProductCartProduct extends Struct.ComponentSchema {
   collectionName: 'components_cart_product_cart_products';
   info: {
@@ -68,6 +85,20 @@ export interface CourseContentCourseContent extends Struct.ComponentSchema {
       'images' | 'files' | 'videos' | 'audios'
     >;
     link: Schema.Attribute.String;
+  };
+}
+
+export interface CourseItemCourseItem extends Struct.ComponentSchema {
+  collectionName: 'components_course_item_course_items';
+  info: {
+    displayName: 'Course_Item';
+  };
+  attributes: {
+    Class: Schema.Attribute.String;
+    Course_Fees: Schema.Attribute.String;
+    Course_Id: Schema.Attribute.String;
+    Course_Title: Schema.Attribute.String;
+    School: Schema.Attribute.String;
   };
 }
 
@@ -237,6 +268,18 @@ export interface OrderHistoryOrderHistory extends Struct.ComponentSchema {
   attributes: {};
 }
 
+export interface ProductItemProductItem extends Struct.ComponentSchema {
+  collectionName: 'components_product_item_product_items';
+  info: {
+    displayName: 'Product_Item';
+  };
+  attributes: {
+    Product_Id: Schema.Attribute.String;
+    Product_Price: Schema.Attribute.String;
+    Product_Title: Schema.Attribute.String;
+  };
+}
+
 export interface QuoteQuote extends Struct.ComponentSchema {
   collectionName: 'components_quote_quotes';
   info: {
@@ -300,6 +343,23 @@ export interface SessionsTeachingSessionss extends Struct.ComponentSchema {
   };
   attributes: {
     teaching_sessions: Schema.Attribute.String;
+  };
+}
+
+export interface ShippingAddressShippingAddress extends Struct.ComponentSchema {
+  collectionName: 'components_shipping_address_shipping_addresses';
+  info: {
+    displayName: 'Shipping_Address';
+  };
+  attributes: {
+    Address: Schema.Attribute.String;
+    City: Schema.Attribute.String;
+    Email: Schema.Attribute.Email;
+    Firstname: Schema.Attribute.String;
+    Lastname: Schema.Attribute.String;
+    Phone: Schema.Attribute.String;
+    State: Schema.Attribute.String;
+    Zipcode: Schema.Attribute.String;
   };
 }
 
@@ -400,9 +460,11 @@ declare module '@strapi/strapi' {
       'about-program.about-program': AboutProgramAboutProgram;
       'activity.activity-list': ActivityActivityList;
       'assessment.assessment': AssessmentAssessment;
+      'billing-address.billing-address': BillingAddressBillingAddress;
       'cart-product.cart-product': CartProductCartProduct;
       'coupons.coupons': CouponsCoupons;
       'course-content.course-content': CourseContentCourseContent;
+      'course-item.course-item': CourseItemCourseItem;
       'course-list.course-list': CourseListCourseList;
       'course.course-overview': CourseCourseOverview;
       'courses.course-list': CoursesCourseList;
@@ -418,12 +480,14 @@ declare module '@strapi/strapi' {
       'list.activity-list': ListActivityList;
       'members.team': MembersTeam;
       'order-history.order-history': OrderHistoryOrderHistory;
+      'product-item.product-item': ProductItemProductItem;
       'quote.quote': QuoteQuote;
       'resourse.resource': ResourseResource;
       'sample.sampledata': SampleSampledata;
       'sciencequote.quote': SciencequoteQuote;
       'sessions.teaching-sessions': SessionsTeachingSessions;
       'sessions.teaching-sessionss': SessionsTeachingSessionss;
+      'shipping-address.shipping-address': ShippingAddressShippingAddress;
       'skill-development.skill-development': SkillDevelopmentSkillDevelopment;
       'skill-list.skill-list': SkillListSkillList;
       'study.study-materials': StudyStudyMaterials;

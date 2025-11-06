@@ -6,9 +6,8 @@ module.exports = ({ env }) => ({
     koa: true
   },
 
-  url: env('PUBLIC_URL', 'https://aurogurukul-cms-526588758494.europe-west1.run.app'),
+  // url: env('PUBLIC_URL', 'https://aurogurukul-cms-526588758494.europe-west1.run.app'),
 
-  
   app: {
     keys: env.array('APP_KEYS'),
   },
