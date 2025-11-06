@@ -86,27 +86,19 @@
     "Website": {
       "type": "string"
     },
-    "Billing_Address": {
-      "type": "text"
-    },
-    "Shipping_Address": {
-      "type": "text"
-    },
-    "Zip_Code": {
-      "type": "string"
-    },
-    "City": {
-      "type": "string"
-    },
-    "State": {
-      "type": "string"
-    },
-    "Region": {
-      "type": "string"
-    },
     "Order_History": {
       "type": "component",
       "component": "order-history.order-history",
+      "repeatable": false
+    },
+    "Billing_Address": {
+      "type": "component",
+      "component": "billing-address.billing-address",
+      "repeatable": false
+    },
+    "Shipping_Address": {
+      "type": "component",
+      "component": "shipping-address.shipping-address",
       "repeatable": false
     }
   }

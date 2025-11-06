@@ -14,9 +14,6 @@
     "Order_ID": {
       "type": "uid"
     },
-    "Item": {
-      "type": "string"
-    },
     "Price": {
       "type": "string"
     },
@@ -25,12 +22,6 @@
     },
     "Payment_Status": {
       "type": "boolean"
-    },
-    "Billing_Address": {
-      "type": "text"
-    },
-    "Shipping_Address": {
-      "type": "text"
     },
     "Coupons": {
       "type": "component",
@@ -41,6 +32,31 @@
       "type": "component",
       "component": "invoice.invoice",
       "repeatable": false
+    },
+    "Billing_Address": {
+      "type": "component",
+      "component": "billing-address.billing-address",
+      "repeatable": false
+    },
+    "Shipping_Address": {
+      "type": "component",
+      "component": "shipping-address.shipping-address",
+      "repeatable": false
+    },
+    "Product_Item": {
+      "type": "component",
+      "component": "product-item.product-item",
+      "repeatable": true
+    },
+    "Course_Item": {
+      "type": "component",
+      "component": "course-item.course-item",
+      "repeatable": false
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
     }
   }
 }

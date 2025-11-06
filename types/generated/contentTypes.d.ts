@@ -986,25 +986,36 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    Billing_Address: Schema.Attribute.Text;
+    Billing_Address: Schema.Attribute.Component<
+      'billing-address.billing-address',
+      false
+    >;
     Coupons: Schema.Attribute.Component<'coupons.coupons', false>;
+    Course_Item: Schema.Attribute.Component<'course-item.course-item', false>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     Date: Schema.Attribute.Date;
     Invoice: Schema.Attribute.Component<'invoice.invoice', false>;
-    Item: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::order.order'> &
       Schema.Attribute.Private;
     Order_ID: Schema.Attribute.UID;
     Payment_Status: Schema.Attribute.Boolean;
     Price: Schema.Attribute.String;
+    Product_Item: Schema.Attribute.Component<'product-item.product-item', true>;
     publishedAt: Schema.Attribute.DateTime;
-    Shipping_Address: Schema.Attribute.Text;
+    Shipping_Address: Schema.Attribute.Component<
+      'shipping-address.shipping-address',
+      false
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -1744,9 +1755,11 @@ export interface PluginUsersPermissionsUser
     draftAndPublish: false;
   };
   attributes: {
-    Billing_Address: Schema.Attribute.Text;
+    Billing_Address: Schema.Attribute.Component<
+      'billing-address.billing-address',
+      false
+    >;
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    City: Schema.Attribute.String;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     createdAt: Schema.Attribute.DateTime;
@@ -1778,14 +1791,15 @@ export interface PluginUsersPermissionsUser
     >;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
-    Region: Schema.Attribute.String;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;
     role: Schema.Attribute.Relation<
       'manyToOne',
       'plugin::users-permissions.role'
     >;
-    Shipping_Address: Schema.Attribute.Text;
-    State: Schema.Attribute.String;
+    Shipping_Address: Schema.Attribute.Component<
+      'shipping-address.shipping-address',
+      false
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1797,7 +1811,6 @@ export interface PluginUsersPermissionsUser
       }>;
     Verified: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     Website: Schema.Attribute.String;
-    Zip_Code: Schema.Attribute.String;
   };
 }
 
