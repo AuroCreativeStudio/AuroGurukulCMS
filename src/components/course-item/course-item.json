@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_course_item_course_items",
+  "info": {
+    "displayName": "Course_Item"
+  },
+  "options": {},
+  "attributes": {
+    "Course_Id": {
+      "type": "string"
+    },
+    "Course_Title": {
+      "type": "string"
+    },
+    "Course_Fees": {
+      "type": "string"
+    },
+    "School": {
+      "type": "string"
+    },
+    "Class": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_shipping_address_shipping_addresses",
+  "info": {
+    "displayName": "Shipping_Address"
+  },
+  "options": {},
+  "attributes": {
+    "Firstname": {
+      "type": "string"
+    },
+    "Lastname": {
+      "type": "string"
+    },
+    "Address": {
+      "type": "string"
+    },
+    "State": {
+      "type": "string"
+    },
+    "City": {
+      "type": "string"
+    },
+    "Zipcode": {
+      "type": "string"
+    },
+    "Phone": {
+      "type": "string"
+    },
+    "Email": {
+      "type": "email"
+    }
+  },
+  "config": {}
+}
