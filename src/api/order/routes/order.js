@@ -1,9 +1,38 @@
-'use strict';
+module.exports = {
+  routes: [
+    {
+      method: "POST",
+      path: "/orders",
+      handler: "order.create",
+      config: {
+        auth: { scope: [] },
+      },
+    },
+    {
+      method: "GET",
+      path: "/orders",
+      handler: "order.find",
+      config: {
+        auth: { scope: [] },
+      },
+    },
 
-/**
- * order router
- */
+    {
+      method: "POST",
+      path: "/orders/pay",
+      handler: "order.createPayment",
+      config: {
+        auth: false,
+      },
+    },
 
-const { createCoreRouter } = require('@strapi/strapi').factories;
-
-module.exports = createCoreRouter('api::order.order');
+    {
+      method: "POST",
+      path: "/orders/verify",
+      handler: "order.verify",
+      config: {
+        auth: false,
+      },
+    },
+  ],
+};
