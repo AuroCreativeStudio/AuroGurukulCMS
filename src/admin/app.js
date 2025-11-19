@@ -50,7 +50,6 @@ export default {
     translations: {
       en: {
         "HomePage.header.title": "Hello {name}",
-
         "app.components.LeftMenu.navbrand.title": "Store Dashboard",
         "app.components.LeftMenu.navbrand.workplace": "Dashboard",
         "app.components.HomePage.welcome.title": "Welcome to My Admin Panel!",
