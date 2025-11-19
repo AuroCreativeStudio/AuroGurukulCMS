@@ -922,10 +922,6 @@ export interface ApiDiscountCouponDiscountCoupon
       'oneToMany',
       'api::all-course.all-course'
     >;
-    all_resources: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::resource.resource'
-    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -942,7 +938,9 @@ export interface ApiDiscountCouponDiscountCoupon
       Schema.Attribute.Private;
     Max_Spend: Schema.Attribute.BigInteger;
     Min_Spend: Schema.Attribute.BigInteger;
+    Overall_cart: Schema.Attribute.Boolean;
     Price: Schema.Attribute.BigInteger;
+    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1145,6 +1143,10 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     Description: Schema.Attribute.Text;
+    discount_coupon: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::discount-coupon.discount-coupon'
+    >;
     Image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -1178,10 +1180,6 @@ export interface ApiResourceResource extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.Text;
-    discount_coupon: Schema.Attribute.Relation<
-      'manyToOne',
-      'api::discount-coupon.discount-coupon'
-    >;
     featured_img: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     >;
@@ -1261,6 +1259,7 @@ export interface ApiShippingShipping extends Struct.CollectionTypeSchema {
       'api::shipping.shipping'
     > &
       Schema.Attribute.Private;
+    order: Schema.Attribute.Relation<'oneToOne', 'api::order.order'>;
     Order_Status: Schema.Attribute.Enumeration<
       [
         'Pending',
@@ -1275,11 +1274,8 @@ export interface ApiShippingShipping extends Struct.CollectionTypeSchema {
       ]
     >;
     publishedAt: Schema.Attribute.DateTime;
-    shipping: Schema.Attribute.Relation<'oneToOne', 'api::shipping.shipping'>;
     Shipping_Cost: Schema.Attribute.BigInteger;
-    Shipping_ID: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
+    Shipping_ID: Schema.Attribute.String & Schema.Attribute.Unique;
     Shipping_Method: Schema.Attribute.Enumeration<
       ['Standard', 'Express', 'Same-Day', 'Free Shipping', 'Pickup']
     >;
@@ -1439,7 +1435,7 @@ export interface ApiWishlistWishlist extends Struct.CollectionTypeSchema {
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     users_permissions_user: Schema.Attribute.Relation<
-      'manyToOne',
+      'oneToOne',
       'plugin::users-permissions.user'
     >;
   };

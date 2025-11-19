@@ -13,8 +13,8 @@
   "attributes": {
     "Shipping_ID": {
       "type": "string",
-      "required": true,
-      "unique": true
+      "unique": true,
+      "configurable": false
     },
     "Shipping_Method": {
       "type": "enumeration",
@@ -40,10 +40,10 @@
         "Refunded"
       ]
     },
-    "shipping": {
+    "order": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "api::shipping.shipping"
+      "target": "api::order.order"
     },
     "Shipping_Cost": {
       "type": "biginteger"

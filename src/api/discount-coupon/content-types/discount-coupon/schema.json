@@ -34,17 +34,21 @@
     "Min_Spend": {
       "type": "biginteger"
     },
-    "all_resources": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::resource.resource",
-      "mappedBy": "discount_coupon"
-    },
     "all_courses": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::all-course.all-course",
       "mappedBy": "discount_coupon"
+    },
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product",
+      "mappedBy": "discount_coupon"
+    },
+    "Overall_cart": {
+      "type": "boolean",
+      "required": false
     }
   }
 }

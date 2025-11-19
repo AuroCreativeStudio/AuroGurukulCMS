@@ -32,12 +32,6 @@
     },
     "resource_id": {
       "type": "uid"
-    },
-    "discount_coupon": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::discount-coupon.discount-coupon",
-      "inversedBy": "all_resources"
     }
   }
 }
