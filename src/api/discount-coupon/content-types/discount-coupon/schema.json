@@ -1,0 +1,50 @@
+{
+  "kind": "collectionType",
+  "collectionName": "discount_coupons",
+  "info": {
+    "singularName": "discount-coupon",
+    "pluralName": "discount-coupons",
+    "displayName": "Discount_Coupon"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Discount_ID": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "Discount_Type": {
+      "type": "string"
+    },
+    "Price": {
+      "type": "biginteger"
+    },
+    "Expiry_Date": {
+      "type": "date"
+    },
+    "Usage_Limit": {
+      "type": "integer"
+    },
+    "Max_Spend": {
+      "type": "biginteger"
+    },
+    "Min_Spend": {
+      "type": "biginteger"
+    },
+    "all_resources": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::resource.resource",
+      "mappedBy": "discount_coupon"
+    },
+    "all_courses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::all-course.all-course",
+      "mappedBy": "discount_coupon"
+    }
+  }
+}

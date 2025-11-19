@@ -592,6 +592,10 @@ export interface ApiAllCourseAllCourse extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    discount_coupon: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::discount-coupon.discount-coupon'
+    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -902,6 +906,51 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiDiscountCouponDiscountCoupon
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'discount_coupons';
+  info: {
+    displayName: 'Discount_Coupon';
+    pluralName: 'discount-coupons';
+    singularName: 'discount-coupon';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    all_courses: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::all-course.all-course'
+    >;
+    all_resources: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::resource.resource'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Discount_ID: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    Discount_Type: Schema.Attribute.String;
+    Expiry_Date: Schema.Attribute.Date;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::discount-coupon.discount-coupon'
+    > &
+      Schema.Attribute.Private;
+    Max_Spend: Schema.Attribute.BigInteger;
+    Min_Spend: Schema.Attribute.BigInteger;
+    Price: Schema.Attribute.BigInteger;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Usage_Limit: Schema.Attribute.Integer;
+  };
+}
+
 export interface ApiEnquiryFormEnquiryForm extends Struct.CollectionTypeSchema {
   collectionName: 'enquiry_forms';
   info: {
@@ -1110,6 +1159,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    wishlist: Schema.Attribute.Relation<'manyToOne', 'api::wishlist.wishlist'>;
   };
 }
 
@@ -1128,6 +1178,10 @@ export interface ApiResourceResource extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.Text;
+    discount_coupon: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::discount-coupon.discount-coupon'
+    >;
     featured_img: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     >;
@@ -1184,6 +1238,67 @@ export interface ApiScienceOfLivingScienceOfLiving
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiShippingShipping extends Struct.CollectionTypeSchema {
+  collectionName: 'shippings';
+  info: {
+    displayName: 'Shipping';
+    pluralName: 'shippings';
+    singularName: 'shipping';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::shipping.shipping'
+    > &
+      Schema.Attribute.Private;
+    Order_Status: Schema.Attribute.Enumeration<
+      [
+        'Pending',
+        'Processing',
+        'Shipped',
+        'Out for Delivery',
+        'Delivered',
+        'Cancelled',
+        'Returned',
+        'Failed',
+        'Refunded',
+      ]
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    shipping: Schema.Attribute.Relation<'oneToOne', 'api::shipping.shipping'>;
+    Shipping_Cost: Schema.Attribute.BigInteger;
+    Shipping_ID: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    Shipping_Method: Schema.Attribute.Enumeration<
+      ['Standard', 'Express', 'Same-Day', 'Free Shipping', 'Pickup']
+    >;
+    Shipping_Status: Schema.Attribute.Enumeration<
+      [
+        'Not Shipped',
+        'Packed',
+        'Dispatched',
+        'In Transit',
+        'Out for Delivery',
+        'Delivered',
+        'Delivery Failed',
+        'Returned',
+      ]
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Zip_Code: Schema.Attribute.String;
   };
 }
 
@@ -1295,6 +1410,38 @@ export interface ApiSocialLinkSocialLink extends Struct.SingleTypeSchema {
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     youtube: Schema.Attribute.String;
+  };
+}
+
+export interface ApiWishlistWishlist extends Struct.CollectionTypeSchema {
+  collectionName: 'wishlists';
+  info: {
+    displayName: 'Wishlist';
+    pluralName: 'wishlists';
+    singularName: 'wishlist';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::wishlist.wishlist'
+    > &
+      Schema.Attribute.Private;
+    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -1755,10 +1902,6 @@ export interface PluginUsersPermissionsUser
     draftAndPublish: false;
   };
   attributes: {
-    Billing_Address: Schema.Attribute.Component<
-      'billing-address.billing-address',
-      false
-    >;
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -1796,10 +1939,6 @@ export interface PluginUsersPermissionsUser
       'manyToOne',
       'plugin::users-permissions.role'
     >;
-    Shipping_Address: Schema.Attribute.Component<
-      'shipping-address.shipping-address',
-      false
-    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1811,6 +1950,7 @@ export interface PluginUsersPermissionsUser
       }>;
     Verified: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     Website: Schema.Attribute.String;
+    wishlists: Schema.Attribute.Relation<'oneToMany', 'api::wishlist.wishlist'>;
   };
 }
 
@@ -1838,6 +1978,7 @@ declare module '@strapi/strapi' {
       'api::contactus-form.contactus-form': ApiContactusFormContactusForm;
       'api::course-form.course-form': ApiCourseFormCourseForm;
       'api::course.course': ApiCourseCourse;
+      'api::discount-coupon.discount-coupon': ApiDiscountCouponDiscountCoupon;
       'api::enquiry-form.enquiry-form': ApiEnquiryFormEnquiryForm;
       'api::home.home': ApiHomeHome;
       'api::order.order': ApiOrderOrder;
@@ -1846,9 +1987,11 @@ declare module '@strapi/strapi' {
       'api::product.product': ApiProductProduct;
       'api::resource.resource': ApiResourceResource;
       'api::science-of-living.science-of-living': ApiScienceOfLivingScienceOfLiving;
+      'api::shipping.shipping': ApiShippingShipping;
       'api::skill-development-form.skill-development-form': ApiSkillDevelopmentFormSkillDevelopmentForm;
       'api::skill-development.skill-development': ApiSkillDevelopmentSkillDevelopment;
       'api::social-link.social-link': ApiSocialLinkSocialLink;
+      'api::wishlist.wishlist': ApiWishlistWishlist;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

@@ -91,15 +91,13 @@
       "component": "order-history.order-history",
       "repeatable": false
     },
-    "Billing_Address": {
-      "type": "component",
-      "component": "billing-address.billing-address",
-      "repeatable": false
-    },
-    "Shipping_Address": {
-      "type": "component",
-      "component": "shipping-address.shipping-address",
-      "repeatable": false
+   
+    "wishlists": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::wishlist.wishlist",
+      "mappedBy": "users_permissions_user"
     }
   }
+
 }

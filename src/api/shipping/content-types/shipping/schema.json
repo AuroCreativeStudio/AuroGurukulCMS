@@ -1,0 +1,68 @@
+{
+  "kind": "collectionType",
+  "collectionName": "shippings",
+  "info": {
+    "singularName": "shipping",
+    "pluralName": "shippings",
+    "displayName": "Shipping"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Shipping_ID": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "Shipping_Method": {
+      "type": "enumeration",
+      "enum": [
+        "Standard",
+        "Express",
+        "Same-Day",
+        "Free Shipping",
+        "Pickup"
+      ]
+    },
+    "Order_Status": {
+      "type": "enumeration",
+      "enum": [
+        "Pending",
+        "Processing",
+        "Shipped",
+        "Out for Delivery",
+        "Delivered",
+        "Cancelled",
+        "Returned",
+        "Failed",
+        "Refunded"
+      ]
+    },
+    "shipping": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::shipping.shipping"
+    },
+    "Shipping_Cost": {
+      "type": "biginteger"
+    },
+    "Zip_Code": {
+      "type": "string"
+    },
+    "Shipping_Status": {
+      "type": "enumeration",
+      "enum": [
+        "Not Shipped",
+        "Packed",
+        "Dispatched",
+        "In Transit",
+        "Out for Delivery",
+        "Delivered",
+        "Delivery Failed",
+        "Returned"
+      ]
+    }
+  }
+}
