@@ -33,12 +33,6 @@
     "Description": {
       "type": "text"
     },
-    "wishlist": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::wishlist.wishlist",
-      "inversedBy": "products"
-    },
     "discount_coupon": {
       "type": "relation",
       "relation": "manyToOne",

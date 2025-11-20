@@ -1161,7 +1161,6 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    wishlist: Schema.Attribute.Relation<'manyToOne', 'api::wishlist.wishlist'>;
   };
 }
 
@@ -1429,7 +1428,6 @@ export interface ApiWishlistWishlist extends Struct.CollectionTypeSchema {
       'api::wishlist.wishlist'
     > &
       Schema.Attribute.Private;
-    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1438,6 +1436,7 @@ export interface ApiWishlistWishlist extends Struct.CollectionTypeSchema {
       'oneToOne',
       'plugin::users-permissions.user'
     >;
+    wishlist: Schema.Attribute.Component<'wishlist.wishlist', true>;
   };
 }
 

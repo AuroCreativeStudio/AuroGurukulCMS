@@ -16,11 +16,10 @@
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user"
     },
-    "products": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product.product",
-      "mappedBy": "wishlist"
+    "wishlist": {
+      "type": "component",
+      "component": "wishlist.wishlist",
+      "repeatable": true
     }
   }
 }

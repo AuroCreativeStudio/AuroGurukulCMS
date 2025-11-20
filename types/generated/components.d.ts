@@ -454,6 +454,16 @@ export interface WhyJoinWhyJoin extends Struct.ComponentSchema {
   };
 }
 
+export interface WishlistWishlist extends Struct.ComponentSchema {
+  collectionName: 'components_wishlist_wishlists';
+  info: {
+    displayName: 'wishlist';
+  };
+  attributes: {
+    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
@@ -497,6 +507,7 @@ declare module '@strapi/strapi' {
       'teaching.teaching-methodology': TeachingTeachingMethodology;
       'test.test-assessment': TestTestAssessment;
       'why-join.why-join': WhyJoinWhyJoin;
+      'wishlist.wishlist': WishlistWishlist;
     }
   }
 }
