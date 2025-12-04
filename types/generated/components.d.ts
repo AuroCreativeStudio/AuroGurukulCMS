@@ -258,7 +258,9 @@ export interface InvoiceInvoice extends Struct.ComponentSchema {
   info: {
     displayName: 'Invoice';
   };
-  attributes: {};
+  attributes: {
+    file: Schema.Attribute.Media<'files'>;
+  };
 }
 
 export interface ListActivityList extends Struct.ComponentSchema {

@@ -4,6 +4,14 @@
     "displayName": "Invoice"
   },
   "options": {},
-  "attributes": {},
+  "attributes": {
+    "file": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "files"
+      ]
+    }
+  },
   "config": {}
 }
