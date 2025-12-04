@@ -114,6 +114,30 @@ export interface CourseListCourseList extends Struct.ComponentSchema {
   };
 }
 
+export interface CourseTestimonialSliderCourseTestimonialSlider
+  extends Struct.ComponentSchema {
+  collectionName: 'components_course_testimonial_slider_course_testimonial_sliders';
+  info: {
+    displayName: 'course_testimonial_slider';
+  };
+  attributes: {
+    Content: Schema.Attribute.String;
+    Video: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+  };
+}
+
+export interface CourseVideoSliderCourseVideoSlider
+  extends Struct.ComponentSchema {
+  collectionName: 'components_course_video_slider_course_video_sliders';
+  info: {
+    displayName: 'course__video_slider';
+  };
+  attributes: {
+    Content: Schema.Attribute.String;
+    Video: Schema.Attribute.Media<'images' | 'videos' | 'audios' | 'files'>;
+  };
+}
+
 export interface CourseCourseOverview extends Struct.ComponentSchema {
   collectionName: 'components_course_course_overviews';
   info: {
@@ -476,6 +500,8 @@ declare module '@strapi/strapi' {
       'course-content.course-content': CourseContentCourseContent;
       'course-item.course-item': CourseItemCourseItem;
       'course-list.course-list': CourseListCourseList;
+      'course-testimonial-slider.course-testimonial-slider': CourseTestimonialSliderCourseTestimonialSlider;
+      'course-video-slider.course-video-slider': CourseVideoSliderCourseVideoSlider;
       'course.course-overview': CourseCourseOverview;
       'courses.course-list': CoursesCourseList;
       'curriculam.curriculam': CurriculamCurriculam;

@@ -28,6 +28,9 @@
     },
     "laneline": {
       "type": "string"
+    },
+    "additional_whatsapp_number": {
+      "type": "string"
     }
   }
 }

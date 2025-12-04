@@ -100,6 +100,16 @@
     "Brochure": {
       "type": "media",
       "multiple": false
+    },
+    "Course_Video_Slider": {
+      "type": "component",
+      "component": "course-video-slider.course-video-slider",
+      "repeatable": true
+    },
+    "Testimonial_Video_Slider": {
+      "type": "component",
+      "component": "course-testimonial-slider.course-testimonial-slider",
+      "repeatable": true
     }
   }
 }

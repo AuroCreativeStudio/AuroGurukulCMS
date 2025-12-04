@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_course_video_slider_course_video_sliders",
+  "info": {
+    "displayName": "course__video_slider"
+  },
+  "options": {},
+  "attributes": {
+    "Video": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "videos",
+        "audios",
+        "files"
+      ]
+    },
+    "Content": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

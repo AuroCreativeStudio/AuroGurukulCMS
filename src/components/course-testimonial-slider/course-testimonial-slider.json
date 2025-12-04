@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_course_testimonial_slider_course_testimonial_sliders",
+  "info": {
+    "displayName": "course_testimonial_slider"
+  },
+  "options": {},
+  "attributes": {
+    "Video": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "Content": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

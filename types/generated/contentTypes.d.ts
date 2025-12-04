@@ -744,6 +744,7 @@ export interface ApiContactContact extends Struct.SingleTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    additional_whatsapp_number: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -863,6 +864,10 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
     course_hours: Schema.Attribute.String;
     course_id: Schema.Attribute.String & Schema.Attribute.Required;
     course_title: Schema.Attribute.String & Schema.Attribute.Required;
+    Course_Video_Slider: Schema.Attribute.Component<
+      'course-video-slider.course-video-slider',
+      true
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -896,6 +901,10 @@ export interface ApiCourseCourse extends Struct.CollectionTypeSchema {
       true
     >;
     test_assessment: Schema.Attribute.Component<'test.test-assessment', true>;
+    Testimonial_Video_Slider: Schema.Attribute.Component<
+      'course-testimonial-slider.course-testimonial-slider',
+      true
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
