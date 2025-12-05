@@ -6,12 +6,43 @@ const fs = require("fs");
 const path = require("path");
 
 const invoiceService = require("../services/invoice");
-const { generatePhonePeToken } = require("../../../utils/phonepeAuth");
+
+// Cache token (optional)
+let cachedToken = null;
+let tokenExpiry = null;
 
 module.exports = factories.createCoreController("api::order.order", ({ strapi }) => ({
 
   //------------------------------------------------------------------
-  // 1. CREATE ORDER + GENERATE INVOICE + SAVE TO INVOICE COMPONENT
+  // HELPER: GET PHONEPE AUTH TOKEN (OAuth PG-V2)
+  //------------------------------------------------------------------
+  async getPhonePeAuthToken(ctx) {
+    try {
+      const url = `${process.env.PHONEPE_HOST}/v1/oauth/token`;
+
+      const params = new URLSearchParams();
+      params.append("client_id", process.env.PHONEPE_CLIENT_ID);
+      params.append("client_secret", process.env.PHONEPE_CLIENT_SECRET);
+      params.append("grant_type", "client_credentials");
+      params.append("client_version", process.env.PHONEPE_CLIENT_VERSION);
+
+      const response = await axios.post(url, params, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "accept": "application/json"
+        }
+      });
+
+      return response.data.access_token;
+
+    } catch (err) {
+      console.error("PhonePe Auth Token Error:", err.response?.data || err);
+      throw new Error("Unable to authenticate with PhonePe");
+    }
+  },
+
+  //------------------------------------------------------------------
+  // CREATE ORDER + GENERATE INVOICE
   //------------------------------------------------------------------
   async create(ctx) {
     try {
@@ -34,9 +65,6 @@ module.exports = factories.createCoreController("api::order.order", ({ strapi })
         delete data.Product_Item;
       }
 
-      //------------------------------------------------------------------
-      // CREATE ORDER
-      //------------------------------------------------------------------
       const entry = await strapi.entityService.create("api::order.order", {
         data,
         populate: {
@@ -45,12 +73,9 @@ module.exports = factories.createCoreController("api::order.order", ({ strapi })
           Product_Item: true,
           Course_Item: true,
           users_permissions_user: true,
-        },
+        }
       });
 
-      //------------------------------------------------------------------
-      // GENERATE INVOICE PDF
-      //------------------------------------------------------------------
       const invoice = await invoiceService.generateInvoice(entry);
 
       if (!invoice?.filePath) {
@@ -63,61 +88,11 @@ module.exports = factories.createCoreController("api::order.order", ({ strapi })
         throw new Error("Generated invoice file not found at: " + safePath);
       }
 
-      //------------------------------------------------------------------
-      // VERIFY UPLOAD CONFIG IS LOADED (STRAPI V5 CORRECT PATH)
-      //------------------------------------------------------------------
-      const uploadConfig = strapi.config.get("plugin::upload.config");
-
-      console.log("UPLOAD CONFIG:", uploadConfig);
-
-      if (!uploadConfig) {
-        throw new Error("Upload configuration missing. Check config/plugins.js");
-      }
-
-
-
-      //------------------------------------------------------------------
-      // UPLOAD FILE USING BUFFER MODE
-      //------------------------------------------------------------------
-      const fileBuffer = fs.readFileSync(safePath);
-
-      const fileToUpload = {
-        name: invoice.fileName,
-        type: "application/pdf",
-        size: fileBuffer.length,
-        buffer: fileBuffer,
-      };
-
-      const uploadService = strapi.plugin("upload").service("upload");
-      const uploaded = await uploadService.upload({
-        data: {},
-        files: { file: fileToUpload },
-      });
-
-      const fileData = uploaded?.[0];
-      if (!fileData?.id) {
-        throw new Error("Invoice upload failed — invalid upload response");
-      }
-
-      //------------------------------------------------------------------
-      // SAVE THE FILE INSIDE THE INVOICE COMPONENT
-      //------------------------------------------------------------------
-      await strapi.entityService.update("api::order.order", entry.id, {
-        data: {
-          Invoice: {
-            file: fileData.id,
-          },
-        },
-      });
-
-      //------------------------------------------------------------------
-      // SUCCESS RESPONSE
-      //------------------------------------------------------------------
       return {
         success: true,
         orderId: entry.Order_ID,
-        invoiceUrl: fileData.url,
-        entry,
+        invoicePath: safePath,
+        entry
       };
 
     } catch (error) {
@@ -127,7 +102,7 @@ module.exports = factories.createCoreController("api::order.order", ({ strapi })
   },
 
   //------------------------------------------------------------------
-  // 2. GET USER ORDERS
+  // GET USER ORDERS
   //------------------------------------------------------------------
   async find(ctx) {
     try {
@@ -147,100 +122,130 @@ module.exports = factories.createCoreController("api::order.order", ({ strapi })
   },
 
   //------------------------------------------------------------------
-  // 3. CREATE PHONEPE PAYMENT SESSION
+  // CREATE PHONEPE PAYMENT (PG V2)
   //------------------------------------------------------------------
   async createPayment(ctx) {
     try {
       const { orderId, amount } = ctx.request.body;
-      if (!orderId || !amount) {
-        return ctx.badRequest("orderId & amount required");
-      }
+      if (!orderId || !amount) return ctx.badRequest("orderId & amount required");
 
-      const clientId = process.env.PHONEPE_CLIENT_ID;
-      const clientSecret = process.env.PHONEPE_CLIENT_SECRET;
-      const version = process.env.PHONEPE_CLIENT_VERSION;
-      const merchantId = process.env.PHONEPE_MID;
-      const host = process.env.PHONEPE_HOST;
+      const authToken = await this.getPhonePeAuthToken(ctx);
 
       const payload = {
-        merchantId,
-        merchantTransactionId: orderId,
-        merchantUserId: "user01",
-        amount: amount * 100,
-        redirectUrl: `${process.env.FRONTEND_URL}/payment/success`,
-        callbackUrl: `${process.env.STRAPI_URL}/api/orders/verify`,
-        paymentInstrument: { type: "PAY_PAGE" },
+        amount: Math.round(amount * 100),
+        expireAfter: 1200,
+        metaInfo: { udf1: "additional-information-1" },
+        paymentFlow: {
+          type: "PG_CHECKOUT",
+          message: `Payment for ${orderId}`,
+          merchantUrls: {
+            // PhonePe will return here (WITHOUT QUERY PARAMS)
+            redirectUrl: `${process.env.FRONTEND_URL}/payment/success`
+          }
+        },
+        merchantOrderId: orderId
       };
 
-      const rawBody = JSON.stringify(payload);
-      const token = generatePhonePeToken(clientId, clientSecret, rawBody, version);
-      const url = `${host}/apis/hermes/pg/v3/pay`;
-
+      const url = `${process.env.PHONEPE_HOST}${process.env.PHONEPE_BASE}/pay`;
       const response = await axios.post(url, payload, {
         headers: {
           "Content-Type": "application/json",
-          "X-CLIENT-ID": clientId,
-          "X-CLIENT-VERSION": version,
-          "Authorization": `Bearer ${token}`,
-        },
+          "Authorization": `O-Bearer ${authToken}`
+        }
       });
 
-      return { success: true, data: response.data };
+      const phonepeOrderId = response.data.orderId;
+
+      // STEP 1 — Save PhonePe Order ID in Strapi
+      await strapi.db.query("api::order.order").update({
+        where: { Order_ID: orderId },
+        data: { PhonePe_Order_Id: phonepeOrderId }
+      });
+
+      return {
+        success: true,
+        redirectUrl: response.data.redirectUrl
+      };
 
     } catch (err) {
-      console.log("PhonePe Payment Error:", err.response?.data || err);
-      return ctx.internalServerError("PhonePe payment failed");
+      console.error("PhonePe Payment Error:", err.response?.data || err);
+      return ctx.internalServerError("Payment initiation failed");
     }
   },
 
+
   //------------------------------------------------------------------
-  // 4. VERIFY PAYMENT
+  // VERIFY PAYMENT STATUS
   //------------------------------------------------------------------
   async verify(ctx) {
+    let phonepeOrderId = null;
+    let url = null;
+    let responseData = null;
+
     try {
-      let { merchantTransactionId } = ctx.request.body;
-      if (ctx.request.body?.data?.merchantTransactionId) {
-        merchantTransactionId = ctx.request.body.data.merchantTransactionId;
+const merchantOrderId = ctx.request.body?.data?.merchantOrderId;
+
+      if (!merchantOrderId) {
+        return ctx.badRequest("merchantOrderId required");
       }
 
-      if (!merchantTransactionId) {
-        return ctx.badRequest("merchantTransactionId missing");
+      // Step 3.1: Fetch order
+      const order = await strapi.db.query("api::order.order").findOne({
+        where: { Order_ID: merchantOrderId }
+      });
+
+      if (!order) return ctx.notFound("Order not found");
+
+      // Step 3.2: Get PhonePe order ID from DB
+      phonepeOrderId = order.PhonePe_Order_Id;
+
+      if (!phonepeOrderId) {
+        return ctx.badRequest("PhonePe_Order_Id missing. Payment was not initialized.");
       }
 
-      const clientId = process.env.PHONEPE_CLIENT_ID;
-      const clientSecret = process.env.PHONEPE_CLIENT_SECRET;
-      const version = process.env.PHONEPE_CLIENT_VERSION;
-      const merchantId = process.env.PHONEPE_MID;
-      const host = process.env.PHONEPE_HOST;
+      const authToken = await this.getPhonePeAuthToken(ctx);
 
-      const token = generatePhonePeToken(clientId, clientSecret, "", version);
-      const url = `${host}/apis/hermes/pg/v3/status/${merchantId}/${merchantTransactionId}`;
+      // Step 3.3: Build URL
+      url = `${process.env.PHONEPE_HOST}${process.env.PHONEPE_BASE}/order/${phonepeOrderId}`;
+      console.log("VERIFY URL:", url);
 
       const response = await axios.get(url, {
         headers: {
           "Content-Type": "application/json",
-          "X-CLIENT-ID": clientId,
-          "X-CLIENT-VERSION": version,
-          "Authorization": `Bearer ${token}`,
-        },
+          "Authorization": `O-Bearer ${authToken}`
+        }
       });
 
-      const status = response.data?.data?.state;
+      responseData = response.data;
+      console.log("PHONEPE RAW RESPONSE:", responseData);
 
+      const paymentState = response.data.state;
+      const isSuccess = paymentState === "COMPLETED";
+
+      // Step 3.4 Update Order
       await strapi.db.query("api::order.order").update({
-        where: { Order_ID: merchantTransactionId },
+        where: { id: order.id },
         data: {
-          Payment_Status: status === "SUCCESS",
-          Payment_Response: response.data,
-        },
+          Payment_Status: isSuccess,
+          Payment_Response: response.data
+        }
       });
 
-      return { success: true, paymentStatus: status };
+      return {
+        success: true,
+        paymentStatus: paymentState,
+        isPaymentSuccessful: isSuccess,
+        data: response.data
+      };
 
     } catch (err) {
-      console.log("PhonePe Verify Error:", err.response?.data || err);
+      console.error("PhonePe Verify Error:", err.response?.data || err.message);
+      console.log("DEBUG LOGS:");
+      console.log("  merchantOrderId:", ctx.request.body?.merchantOrderId);
+      console.log("  phonepeOrderId:", phonepeOrderId);
+      console.log("  verifyURL:", url);
+      console.log("  rawResponse:", responseData);
       return ctx.internalServerError("Payment verification failed");
     }
-  },
-
+  }
 }));

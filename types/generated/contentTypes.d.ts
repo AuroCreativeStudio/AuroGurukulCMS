@@ -1058,6 +1058,7 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     Order_ID: Schema.Attribute.UID;
     Payment_Status: Schema.Attribute.Boolean;
+    PhonePe_Order_Id: Schema.Attribute.String;
     Price: Schema.Attribute.String;
     Product_Item: Schema.Attribute.Component<'product-item.product-item', true>;
     publishedAt: Schema.Attribute.DateTime;
