@@ -7,6 +7,9 @@
   "attributes": {
     "points": {
       "type": "string"
+    },
+    "link": {
+      "type": "string"
     }
   },
   "config": {}

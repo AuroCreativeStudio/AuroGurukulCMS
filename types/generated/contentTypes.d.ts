@@ -1131,6 +1131,7 @@ export interface ApiProductCategoryProductCategory
       'api::product-category.product-category'
     > &
       Schema.Attribute.Private;
+    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1149,6 +1150,10 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    all_resource: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::resource.resource'
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1157,6 +1162,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'manyToOne',
       'api::discount-coupon.discount-coupon'
     >;
+    Download_Catalogue: Schema.Attribute.Media<'images' | 'files'>;
     Image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -1165,12 +1171,19 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     Price: Schema.Attribute.String;
+    product_category: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::product-category.product-category'
+    >;
     Product_Id: Schema.Attribute.UID;
     publishedAt: Schema.Attribute.DateTime;
+    short_description: Schema.Attribute.Text;
+    Testimonials_videos: Schema.Attribute.Media<'videos', true>;
     Title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    video: Schema.Attribute.Media<'videos'>;
   };
 }
 
@@ -1198,6 +1211,11 @@ export interface ApiResourceResource extends Struct.CollectionTypeSchema {
       'api::resource.resource'
     > &
       Schema.Attribute.Private;
+    product_category: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::product-category.product-category'
+    >;
+    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
     publishedAt: Schema.Attribute.DateTime;
     resource_id: Schema.Attribute.UID;
     resource_price: Schema.Attribute.String;

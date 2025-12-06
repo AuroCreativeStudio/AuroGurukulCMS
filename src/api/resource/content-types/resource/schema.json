@@ -32,6 +32,18 @@
     },
     "resource_id": {
       "type": "uid"
+    },
+    "product_category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product-category.product-category",
+      "inversedBy": "category"
+    },
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product",
+      "mappedBy": "all_resource"
     }
   }
 }
