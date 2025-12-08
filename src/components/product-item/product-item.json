@@ -13,6 +13,9 @@
     },
     "Product_Price": {
       "type": "string"
+    },
+    "Quantity": {
+      "type": "integer"
     }
   },
   "config": {}

@@ -1926,7 +1926,9 @@ export interface PluginUsersPermissionsUser
     draftAndPublish: false;
   };
   attributes: {
+    address: Schema.Attribute.String;
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    city: Schema.Attribute.String;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     createdAt: Schema.Attribute.DateTime;
@@ -1963,6 +1965,7 @@ export interface PluginUsersPermissionsUser
       'manyToOne',
       'plugin::users-permissions.role'
     >;
+    state: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1975,6 +1978,7 @@ export interface PluginUsersPermissionsUser
     Verified: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     Website: Schema.Attribute.String;
     wishlists: Schema.Attribute.Relation<'oneToMany', 'api::wishlist.wishlist'>;
+    zip_code: Schema.Attribute.Integer;
   };
 }
 

@@ -304,6 +304,7 @@ export interface ProductItemProductItem extends Struct.ComponentSchema {
     Product_Id: Schema.Attribute.String;
     Product_Price: Schema.Attribute.String;
     Product_Title: Schema.Attribute.String;
+    Quantity: Schema.Attribute.Integer;
   };
 }
 
