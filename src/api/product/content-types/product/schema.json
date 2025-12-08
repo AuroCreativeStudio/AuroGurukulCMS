@@ -12,7 +12,7 @@
   "pluginOptions": {},
   "attributes": {
     "Product_Id": {
-      "type": "uid"
+      "type": "string"
     },
     "Title": {
       "type": "string"

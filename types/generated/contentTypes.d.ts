@@ -1175,7 +1175,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'manyToOne',
       'api::product-category.product-category'
     >;
-    Product_Id: Schema.Attribute.UID;
+    Product_Id: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     short_description: Schema.Attribute.Text;
     Testimonials_videos: Schema.Attribute.Media<'videos', true>;
@@ -1205,6 +1205,7 @@ export interface ApiResourceResource extends Struct.CollectionTypeSchema {
     featured_img: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     >;
+    link: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
