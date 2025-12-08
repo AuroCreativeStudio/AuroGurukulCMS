@@ -57,6 +57,9 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user"
+    },
+    "PhonePe_Order_Id": {
+      "type": "string"
     }
   }
 }

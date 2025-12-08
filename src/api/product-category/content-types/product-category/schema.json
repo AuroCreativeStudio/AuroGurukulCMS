@@ -19,6 +19,12 @@
       "relation": "oneToMany",
       "target": "api::resource.resource",
       "mappedBy": "product_category"
+    },
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product",
+      "mappedBy": "product_category"
     }
   }
 }

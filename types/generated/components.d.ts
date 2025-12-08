@@ -155,6 +155,7 @@ export interface CoursesCourseList extends Struct.ComponentSchema {
   };
   attributes: {
     course_list: Schema.Attribute.String;
+    link: Schema.Attribute.String;
   };
 }
 
@@ -408,6 +409,7 @@ export interface SkillListSkillList extends Struct.ComponentSchema {
     displayName: 'skill-list';
   };
   attributes: {
+    link: Schema.Attribute.String;
     points: Schema.Attribute.String;
   };
 }
