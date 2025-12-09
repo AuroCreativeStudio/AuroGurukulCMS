@@ -14,9 +14,6 @@
     "resource_title": {
       "type": "string"
     },
-    "resource_price": {
-      "type": "string"
-    },
     "featured_img": {
       "type": "media",
       "multiple": false,

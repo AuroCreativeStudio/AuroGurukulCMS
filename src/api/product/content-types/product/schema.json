@@ -11,9 +11,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Product_Id": {
-      "type": "string"
-    },
     "Title": {
       "type": "string"
     },
@@ -75,6 +72,11 @@
         "images",
         "files"
       ]
+    },
+    "Product_Id": {
+      "type": "uid",
+      "targetField": "Title",
+      "required": true
     }
   }
 }
