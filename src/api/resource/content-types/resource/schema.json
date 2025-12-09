@@ -31,13 +31,8 @@
       "type": "text"
     },
     "resource_id": {
-      "type": "uid"
-    },
-    "product_category": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::product-category.product-category",
-      "inversedBy": "category"
+      "type": "uid",
+      "targetField": "resource_title"
     },
     "products": {
       "type": "relation",

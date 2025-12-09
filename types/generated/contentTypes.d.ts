@@ -1120,7 +1120,6 @@ export interface ApiProductCategoryProductCategory
     draftAndPublish: true;
   };
   attributes: {
-    category: Schema.Attribute.Relation<'oneToMany', 'api::resource.resource'>;
     category_name: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1212,13 +1211,9 @@ export interface ApiResourceResource extends Struct.CollectionTypeSchema {
       'api::resource.resource'
     > &
       Schema.Attribute.Private;
-    product_category: Schema.Attribute.Relation<
-      'manyToOne',
-      'api::product-category.product-category'
-    >;
     products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
     publishedAt: Schema.Attribute.DateTime;
-    resource_id: Schema.Attribute.UID;
+    resource_id: Schema.Attribute.UID<'resource_title'>;
     resource_price: Schema.Attribute.String;
     resource_title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;

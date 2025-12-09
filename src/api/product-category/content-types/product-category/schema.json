@@ -14,12 +14,6 @@
     "category_name": {
       "type": "string"
     },
-    "category": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::resource.resource",
-      "mappedBy": "product_category"
-    },
     "products": {
       "type": "relation",
       "relation": "oneToMany",
