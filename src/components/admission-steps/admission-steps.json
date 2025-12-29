@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_admission_steps_admission_steps",
+  "info": {
+    "displayName": "Admission_steps"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "text"
+    },
+    "description": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

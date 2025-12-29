@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_checklist_checklists",
+  "info": {
+    "displayName": "checklist"
+  },
+  "options": {},
+  "attributes": {
+    "checklist": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

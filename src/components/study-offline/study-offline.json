@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_study_offline_study_offlines",
+  "info": {
+    "displayName": "study_offline"
+  },
+  "options": {},
+  "attributes": {
+    "study_offline": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

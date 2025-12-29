@@ -1,0 +1,194 @@
+{
+  "kind": "singleType",
+  "collectionName": "landing_pages",
+  "info": {
+    "singularName": "landing-page",
+    "pluralName": "landing-pages",
+    "displayName": "landing-page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "offer": {
+      "type": "string"
+    },
+    "headline": {
+      "type": "string"
+    },
+    "Subheadline": {
+      "type": "text"
+    },
+    "checklist": {
+      "type": "component",
+      "component": "checklist.checklist",
+      "repeatable": true
+    },
+    "hero_image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "branch_heading": {
+      "type": "string"
+    },
+    "branch_subheading": {
+      "type": "text"
+    },
+    "branch_description": {
+      "type": "text"
+    },
+    "Offline_description": {
+      "type": "text"
+    },
+    "pondicherry_center": {
+      "type": "text"
+    },
+    "offline_points": {
+      "type": "component",
+      "component": "offline-points.offline-points",
+      "repeatable": true
+    },
+    "online_description": {
+      "type": "text"
+    },
+    "online_points": {
+      "type": "component",
+      "component": "online-points.online-points",
+      "repeatable": true
+    },
+    "features_description": {
+      "type": "text"
+    },
+    "features": {
+      "type": "component",
+      "component": "features.features",
+      "repeatable": true
+    },
+    "features_image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "offer_heading": {
+      "type": "text"
+    },
+    "offer_description": {
+      "type": "text"
+    },
+    "offer_points": {
+      "type": "component",
+      "component": "offer-points.offer-points",
+      "repeatable": true
+    },
+    "urgency_line": {
+      "type": "text"
+    },
+    "preparation_heading": {
+      "type": "text"
+    },
+    "preparation_subheading": {
+      "type": "text"
+    },
+    "preparation_cards": {
+      "type": "component",
+      "component": "preparation-cards.preparation-cards",
+      "repeatable": true
+    },
+    "tracks_heading": {
+      "type": "string"
+    },
+    "tracks_subheading": {
+      "type": "string"
+    },
+    "NEET_track": {
+      "type": "component",
+      "component": "neet-track.neet-track",
+      "repeatable": true
+    },
+    "JEE_track": {
+      "type": "component",
+      "component": "jee-track.jee-track",
+      "repeatable": true
+    },
+    "families_description": {
+      "type": "text"
+    },
+    "Families_points": {
+      "type": "component",
+      "component": "families-points.families-points",
+      "repeatable": true
+    },
+    "Families_image1": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Families_image2": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Study_heading": {
+      "type": "text"
+    },
+    "Study_subheading": {
+      "type": "text"
+    },
+    "study_offline": {
+      "type": "component",
+      "component": "study-offline.study-offline",
+      "repeatable": true
+    },
+    "study_online": {
+      "type": "component",
+      "component": "study-online.study-online",
+      "repeatable": true
+    },
+    "Testimonials": {
+      "type": "component",
+      "component": "testimonials.testimonials",
+      "repeatable": true
+    },
+    "faq": {
+      "type": "component",
+      "component": "faq.faq",
+      "repeatable": true
+    },
+    "Admission_heading": {
+      "type": "text"
+    },
+    "Admission_subheading": {
+      "type": "text"
+    },
+    "Admission_steps": {
+      "type": "component",
+      "component": "admission-steps.admission-steps",
+      "repeatable": true
+    },
+    "form_heading": {
+      "type": "text"
+    },
+    "form_subheading": {
+      "type": "text"
+    },
+    "form_number": {
+      "type": "string"
+    },
+    "form_mail": {
+      "type": "string"
+    },
+    "form_addres": {
+      "type": "string"
+    }
+  }
+}

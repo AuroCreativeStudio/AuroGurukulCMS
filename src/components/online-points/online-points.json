@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_online_points_online_points",
+  "info": {
+    "displayName": "online_points"
+  },
+  "options": {},
+  "attributes": {
+    "online_points": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

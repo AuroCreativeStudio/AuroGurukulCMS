@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_integrated_programs_integrated_programs",
+  "info": {
+    "displayName": "integrated_programs"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "list": {
+      "type": "component",
+      "component": "list.list",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

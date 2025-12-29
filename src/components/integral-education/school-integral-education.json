@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_integral_education_school_integral_educations",
+  "info": {
+    "displayName": "school_integral_education"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "list_1": {
+      "type": "text"
+    },
+    "list_2": {
+      "type": "text"
+    },
+    "list_3": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_list_lists",
+  "info": {
+    "displayName": "list"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "list": {
+      "type": "text"
+    },
+    "sub_list": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

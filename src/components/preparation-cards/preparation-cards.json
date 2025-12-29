@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_preparation_cards_preparation_cards",
+  "info": {
+    "displayName": "preparation_cards"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

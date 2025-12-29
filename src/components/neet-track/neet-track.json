@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_neet_track_neet_tracks",
+  "info": {
+    "displayName": "NEET_track"
+  },
+  "options": {},
+  "attributes": {
+    "NEET_track": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

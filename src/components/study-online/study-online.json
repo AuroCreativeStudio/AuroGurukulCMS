@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_study_online_study_onlines",
+  "info": {
+    "displayName": "study_online"
+  },
+  "options": {},
+  "attributes": {
+    "study_online": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

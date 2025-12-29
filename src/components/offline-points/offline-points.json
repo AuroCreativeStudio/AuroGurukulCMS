@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_offline_points_offline_points",
+  "info": {
+    "displayName": "offline_points"
+  },
+  "options": {},
+  "attributes": {
+    "offline_points": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

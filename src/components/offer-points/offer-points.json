@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_offer_points_offer_points",
+  "info": {
+    "displayName": "offer_points"
+  },
+  "options": {},
+  "attributes": {
+    "offer_points": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

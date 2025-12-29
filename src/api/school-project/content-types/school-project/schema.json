@@ -1,0 +1,41 @@
+{
+  "kind": "singleType",
+  "collectionName": "school_projects",
+  "info": {
+    "singularName": "school-project",
+    "pluralName": "school-projects",
+    "displayName": "school_project"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "hero_title": {
+      "type": "string"
+    },
+    "hero_image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "hero_desc": {
+      "type": "text"
+    },
+    "description": {
+      "type": "text"
+    },
+    "integrated_programs": {
+      "type": "component",
+      "component": "integrated-programs.integrated-programs",
+      "repeatable": true
+    },
+    "integral_education": {
+      "type": "component",
+      "component": "integral-education.school-integral-education",
+      "repeatable": true
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_families_points_families_points",
+  "info": {
+    "displayName": "Families_points"
+  },
+  "options": {},
+  "attributes": {
+    "Families_points": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

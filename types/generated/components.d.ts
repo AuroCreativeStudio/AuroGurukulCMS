@@ -25,6 +25,17 @@ export interface ActivityActivityList extends Struct.ComponentSchema {
   };
 }
 
+export interface AdmissionStepsAdmissionSteps extends Struct.ComponentSchema {
+  collectionName: 'components_admission_steps_admission_steps';
+  info: {
+    displayName: 'Admission_steps';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    title: Schema.Attribute.Text;
+  };
+}
+
 export interface AssessmentAssessment extends Struct.ComponentSchema {
   collectionName: 'components_assessment_assessments';
   info: {
@@ -61,6 +72,16 @@ export interface CartProductCartProduct extends Struct.ComponentSchema {
   attributes: {
     products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
     Quantity: Schema.Attribute.Integer;
+  };
+}
+
+export interface ChecklistChecklist extends Struct.ComponentSchema {
+  collectionName: 'components_checklist_checklists';
+  info: {
+    displayName: 'checklist';
+  };
+  attributes: {
+    checklist: Schema.Attribute.String;
   };
 }
 
@@ -196,6 +217,27 @@ export interface DurationDurationComponent extends Struct.ComponentSchema {
   };
 }
 
+export interface FamiliesPointsFamiliesPoints extends Struct.ComponentSchema {
+  collectionName: 'components_families_points_families_points';
+  info: {
+    displayName: 'Families_points';
+  };
+  attributes: {
+    Families_points: Schema.Attribute.Text;
+  };
+}
+
+export interface FaqFaq extends Struct.ComponentSchema {
+  collectionName: 'components_faq_faqs';
+  info: {
+    displayName: 'faq';
+  };
+  attributes: {
+    answer: Schema.Attribute.Text;
+    question: Schema.Attribute.Text;
+  };
+}
+
 export interface FeatureListFeatureList extends Struct.ComponentSchema {
   collectionName: 'components_feature_list_feature_lists';
   info: {
@@ -229,6 +271,17 @@ export interface FeaturedListFeaturedList extends Struct.ComponentSchema {
   };
 }
 
+export interface FeaturesFeatures extends Struct.ComponentSchema {
+  collectionName: 'components_features_features';
+  info: {
+    displayName: 'features';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    title: Schema.Attribute.String;
+  };
+}
+
 export interface HighlightHighlight extends Struct.ComponentSchema {
   collectionName: 'components_highlight_highlights';
   info: {
@@ -254,6 +307,34 @@ export interface IntegralEducationIntegralEducation
   };
 }
 
+export interface IntegralEducationSchoolIntegralEducation
+  extends Struct.ComponentSchema {
+  collectionName: 'components_integral_education_school_integral_educations';
+  info: {
+    displayName: 'school_integral_education';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    list_1: Schema.Attribute.Text;
+    list_2: Schema.Attribute.Text;
+    list_3: Schema.Attribute.Text;
+    title: Schema.Attribute.String;
+  };
+}
+
+export interface IntegratedProgramsIntegratedPrograms
+  extends Struct.ComponentSchema {
+  collectionName: 'components_integrated_programs_integrated_programs';
+  info: {
+    displayName: 'integrated_programs';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    list: Schema.Attribute.Component<'list.list', true>;
+    title: Schema.Attribute.String;
+  };
+}
+
 export interface InvoiceInvoice extends Struct.ComponentSchema {
   collectionName: 'components_invoice_invoices';
   info: {
@@ -264,6 +345,16 @@ export interface InvoiceInvoice extends Struct.ComponentSchema {
   };
 }
 
+export interface JeeTrackJeeTrack extends Struct.ComponentSchema {
+  collectionName: 'components_jee_track_jee_tracks';
+  info: {
+    displayName: 'JEE_track';
+  };
+  attributes: {
+    JEE_track: Schema.Attribute.String;
+  };
+}
+
 export interface ListActivityList extends Struct.ComponentSchema {
   collectionName: 'components_list_activity_lists';
   info: {
@@ -271,6 +362,18 @@ export interface ListActivityList extends Struct.ComponentSchema {
   };
   attributes: {
     description: Schema.Attribute.String;
+  };
+}
+
+export interface ListList extends Struct.ComponentSchema {
+  collectionName: 'components_list_lists';
+  info: {
+    displayName: 'list';
+  };
+  attributes: {
+    list: Schema.Attribute.Text;
+    sub_list: Schema.Attribute.Text;
+    title: Schema.Attribute.String;
   };
 }
 
@@ -287,12 +390,64 @@ export interface MembersTeam extends Struct.ComponentSchema {
   };
 }
 
+export interface NeetTrackNeetTrack extends Struct.ComponentSchema {
+  collectionName: 'components_neet_track_neet_tracks';
+  info: {
+    displayName: 'NEET_track';
+  };
+  attributes: {
+    NEET_track: Schema.Attribute.String;
+  };
+}
+
+export interface OfferPointsOfferPoints extends Struct.ComponentSchema {
+  collectionName: 'components_offer_points_offer_points';
+  info: {
+    displayName: 'offer_points';
+  };
+  attributes: {
+    offer_points: Schema.Attribute.Text;
+  };
+}
+
+export interface OfflinePointsOfflinePoints extends Struct.ComponentSchema {
+  collectionName: 'components_offline_points_offline_points';
+  info: {
+    displayName: 'offline_points';
+  };
+  attributes: {
+    offline_points: Schema.Attribute.Text;
+  };
+}
+
+export interface OnlinePointsOnlinePoints extends Struct.ComponentSchema {
+  collectionName: 'components_online_points_online_points';
+  info: {
+    displayName: 'online_points';
+  };
+  attributes: {
+    online_points: Schema.Attribute.Text;
+  };
+}
+
 export interface OrderHistoryOrderHistory extends Struct.ComponentSchema {
   collectionName: 'components_order_history_order_histories';
   info: {
     displayName: 'Order-History';
   };
   attributes: {};
+}
+
+export interface PreparationCardsPreparationCards
+  extends Struct.ComponentSchema {
+  collectionName: 'components_preparation_cards_preparation_cards';
+  info: {
+    displayName: 'preparation_cards';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    title: Schema.Attribute.String;
+  };
 }
 
 export interface ProductItemProductItem extends Struct.ComponentSchema {
@@ -414,6 +569,26 @@ export interface SkillListSkillList extends Struct.ComponentSchema {
   };
 }
 
+export interface StudyOfflineStudyOffline extends Struct.ComponentSchema {
+  collectionName: 'components_study_offline_study_offlines';
+  info: {
+    displayName: 'study_offline';
+  };
+  attributes: {
+    study_offline: Schema.Attribute.Text;
+  };
+}
+
+export interface StudyOnlineStudyOnline extends Struct.ComponentSchema {
+  collectionName: 'components_study_online_study_onlines';
+  info: {
+    displayName: 'study_online';
+  };
+  attributes: {
+    study_online: Schema.Attribute.Text;
+  };
+}
+
 export interface StudyStudyMaterials extends Struct.ComponentSchema {
   collectionName: 'components_study_study_materials';
   info: {
@@ -473,6 +648,18 @@ export interface TestTestAssessment extends Struct.ComponentSchema {
   };
 }
 
+export interface TestimonialsTestimonials extends Struct.ComponentSchema {
+  collectionName: 'components_testimonials_testimonials';
+  info: {
+    displayName: 'Testimonials';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    name: Schema.Attribute.String;
+    role: Schema.Attribute.String;
+  };
+}
+
 export interface WhyJoinWhyJoin extends Struct.ComponentSchema {
   collectionName: 'components_why_join_why_joins';
   info: {
@@ -498,9 +685,11 @@ declare module '@strapi/strapi' {
     export interface ComponentSchemas {
       'about-program.about-program': AboutProgramAboutProgram;
       'activity.activity-list': ActivityActivityList;
+      'admission-steps.admission-steps': AdmissionStepsAdmissionSteps;
       'assessment.assessment': AssessmentAssessment;
       'billing-address.billing-address': BillingAddressBillingAddress;
       'cart-product.cart-product': CartProductCartProduct;
+      'checklist.checklist': ChecklistChecklist;
       'coupons.coupons': CouponsCoupons;
       'course-content.course-content': CourseContentCourseContent;
       'course-item.course-item': CourseItemCourseItem;
@@ -512,15 +701,27 @@ declare module '@strapi/strapi' {
       'curriculam.curriculam': CurriculamCurriculam;
       'desc.data': DescData;
       'duration.duration-component': DurationDurationComponent;
+      'families-points.families-points': FamiliesPointsFamiliesPoints;
+      'faq.faq': FaqFaq;
       'feature-list.feature-list': FeatureListFeatureList;
       'feature.feature': FeatureFeature;
       'featured-list.featured-list': FeaturedListFeaturedList;
+      'features.features': FeaturesFeatures;
       'highlight.highlight': HighlightHighlight;
       'integral-education.integral-education': IntegralEducationIntegralEducation;
+      'integral-education.school-integral-education': IntegralEducationSchoolIntegralEducation;
+      'integrated-programs.integrated-programs': IntegratedProgramsIntegratedPrograms;
       'invoice.invoice': InvoiceInvoice;
+      'jee-track.jee-track': JeeTrackJeeTrack;
       'list.activity-list': ListActivityList;
+      'list.list': ListList;
       'members.team': MembersTeam;
+      'neet-track.neet-track': NeetTrackNeetTrack;
+      'offer-points.offer-points': OfferPointsOfferPoints;
+      'offline-points.offline-points': OfflinePointsOfflinePoints;
+      'online-points.online-points': OnlinePointsOnlinePoints;
       'order-history.order-history': OrderHistoryOrderHistory;
+      'preparation-cards.preparation-cards': PreparationCardsPreparationCards;
       'product-item.product-item': ProductItemProductItem;
       'quote.quote': QuoteQuote;
       'resourse.resource': ResourseResource;
@@ -531,12 +732,15 @@ declare module '@strapi/strapi' {
       'shipping-address.shipping-address': ShippingAddressShippingAddress;
       'skill-development.skill-development': SkillDevelopmentSkillDevelopment;
       'skill-list.skill-list': SkillListSkillList;
+      'study-offline.study-offline': StudyOfflineStudyOffline;
+      'study-online.study-online': StudyOnlineStudyOnline;
       'study.study-materials': StudyStudyMaterials;
       'subtitle.sub-title': SubtitleSubTitle;
       'subtitle.subtitle': SubtitleSubtitle;
       'support.support': SupportSupport;
       'teaching.teaching-methodology': TeachingTeachingMethodology;
       'test.test-assessment': TestTestAssessment;
+      'testimonials.testimonials': TestimonialsTestimonials;
       'why-join.why-join': WhyJoinWhyJoin;
       'wishlist.wishlist': WishlistWishlist;
     }

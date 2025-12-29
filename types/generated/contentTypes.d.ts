@@ -1062,6 +1062,96 @@ export interface ApiHomeHome extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiLandingPageLandingPage extends Struct.SingleTypeSchema {
+  collectionName: 'landing_pages';
+  info: {
+    displayName: 'landing-page';
+    pluralName: 'landing-pages';
+    singularName: 'landing-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Admission_heading: Schema.Attribute.Text;
+    Admission_steps: Schema.Attribute.Component<
+      'admission-steps.admission-steps',
+      true
+    >;
+    Admission_subheading: Schema.Attribute.Text;
+    branch_description: Schema.Attribute.Text;
+    branch_heading: Schema.Attribute.String;
+    branch_subheading: Schema.Attribute.Text;
+    checklist: Schema.Attribute.Component<'checklist.checklist', true>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    families_description: Schema.Attribute.Text;
+    Families_image1: Schema.Attribute.Media<'images'>;
+    Families_image2: Schema.Attribute.Media<'images'>;
+    Families_points: Schema.Attribute.Component<
+      'families-points.families-points',
+      true
+    >;
+    faq: Schema.Attribute.Component<'faq.faq', true>;
+    features: Schema.Attribute.Component<'features.features', true>;
+    features_description: Schema.Attribute.Text;
+    features_image: Schema.Attribute.Media<'images'>;
+    form_addres: Schema.Attribute.String;
+    form_heading: Schema.Attribute.Text;
+    form_mail: Schema.Attribute.String;
+    form_number: Schema.Attribute.String;
+    form_subheading: Schema.Attribute.Text;
+    headline: Schema.Attribute.String;
+    hero_image: Schema.Attribute.Media<'images'>;
+    JEE_track: Schema.Attribute.Component<'jee-track.jee-track', true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::landing-page.landing-page'
+    > &
+      Schema.Attribute.Private;
+    NEET_track: Schema.Attribute.Component<'neet-track.neet-track', true>;
+    offer: Schema.Attribute.String;
+    offer_description: Schema.Attribute.Text;
+    offer_heading: Schema.Attribute.Text;
+    offer_points: Schema.Attribute.Component<'offer-points.offer-points', true>;
+    Offline_description: Schema.Attribute.Text;
+    offline_points: Schema.Attribute.Component<
+      'offline-points.offline-points',
+      true
+    >;
+    online_description: Schema.Attribute.Text;
+    online_points: Schema.Attribute.Component<
+      'online-points.online-points',
+      true
+    >;
+    pondicherry_center: Schema.Attribute.Text;
+    preparation_cards: Schema.Attribute.Component<
+      'preparation-cards.preparation-cards',
+      true
+    >;
+    preparation_heading: Schema.Attribute.Text;
+    preparation_subheading: Schema.Attribute.Text;
+    publishedAt: Schema.Attribute.DateTime;
+    Study_heading: Schema.Attribute.Text;
+    study_offline: Schema.Attribute.Component<
+      'study-offline.study-offline',
+      true
+    >;
+    study_online: Schema.Attribute.Component<'study-online.study-online', true>;
+    Study_subheading: Schema.Attribute.Text;
+    Subheadline: Schema.Attribute.Text;
+    Testimonials: Schema.Attribute.Component<'testimonials.testimonials', true>;
+    tracks_heading: Schema.Attribute.String;
+    tracks_subheading: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    urgency_line: Schema.Attribute.Text;
+  };
+}
+
 export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
   collectionName: 'orders';
   info: {
@@ -1246,6 +1336,45 @@ export interface ApiResourceResource extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     resource_id: Schema.Attribute.UID<'resource_title'>;
     resource_title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSchoolProjectSchoolProject extends Struct.SingleTypeSchema {
+  collectionName: 'school_projects';
+  info: {
+    displayName: 'school_project';
+    pluralName: 'school-projects';
+    singularName: 'school-project';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    hero_desc: Schema.Attribute.Text;
+    hero_image: Schema.Attribute.Media<'images'>;
+    hero_title: Schema.Attribute.String;
+    integral_education: Schema.Attribute.Component<
+      'integral-education.school-integral-education',
+      true
+    >;
+    integrated_programs: Schema.Attribute.Component<
+      'integrated-programs.integrated-programs',
+      true
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::school-project.school-project'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -2035,11 +2164,13 @@ declare module '@strapi/strapi' {
       'api::enquiry-form.enquiry-form': ApiEnquiryFormEnquiryForm;
       'api::gallery.gallery': ApiGalleryGallery;
       'api::home.home': ApiHomeHome;
+      'api::landing-page.landing-page': ApiLandingPageLandingPage;
       'api::order.order': ApiOrderOrder;
       'api::payment.payment': ApiPaymentPayment;
       'api::product-category.product-category': ApiProductCategoryProductCategory;
       'api::product.product': ApiProductProduct;
       'api::resource.resource': ApiResourceResource;
+      'api::school-project.school-project': ApiSchoolProjectSchoolProject;
       'api::science-of-living.science-of-living': ApiScienceOfLivingScienceOfLiving;
       'api::shipping.shipping': ApiShippingShipping;
       'api::skill-development-form.skill-development-form': ApiSkillDevelopmentFormSkillDevelopmentForm;

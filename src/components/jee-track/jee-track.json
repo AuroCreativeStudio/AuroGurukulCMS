@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_jee_track_jee_tracks",
+  "info": {
+    "displayName": "JEE_track"
+  },
+  "options": {},
+  "attributes": {
+    "JEE_track": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}
