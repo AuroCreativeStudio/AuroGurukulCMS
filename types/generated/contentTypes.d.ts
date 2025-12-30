@@ -1362,7 +1362,7 @@ export interface ApiSchoolProjectSchoolProject extends Struct.SingleTypeSchema {
     hero_title: Schema.Attribute.String;
     integral_education: Schema.Attribute.Component<
       'integral-education.school-integral-education',
-      true
+      false
     >;
     integrated_programs: Schema.Attribute.Component<
       'integrated-programs.integrated-programs',

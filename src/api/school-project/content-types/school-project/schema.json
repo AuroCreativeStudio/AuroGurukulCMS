@@ -35,7 +35,7 @@
     "integral_education": {
       "type": "component",
       "component": "integral-education.school-integral-education",
-      "repeatable": true
+      "repeatable": false
     }
   }
 }

@@ -315,9 +315,10 @@ export interface IntegralEducationSchoolIntegralEducation
   };
   attributes: {
     description: Schema.Attribute.Text;
-    list_1: Schema.Attribute.Text;
-    list_2: Schema.Attribute.Text;
-    list_3: Schema.Attribute.Text;
+    School_integral_education_list: Schema.Attribute.Component<
+      'school-integral-education-list.school-integral-education-list',
+      true
+    >;
     title: Schema.Attribute.String;
   };
 }
@@ -330,6 +331,7 @@ export interface IntegratedProgramsIntegratedPrograms
   };
   attributes: {
     description: Schema.Attribute.Text;
+    icon: Schema.Attribute.Media<'images'>;
     list: Schema.Attribute.Component<'list.list', true>;
     title: Schema.Attribute.String;
   };
@@ -497,6 +499,18 @@ export interface SampleSampledata extends Struct.ComponentSchema {
       'images' | 'files' | 'videos' | 'audios',
       true
     >;
+  };
+}
+
+export interface SchoolIntegralEducationListSchoolIntegralEducationList
+  extends Struct.ComponentSchema {
+  collectionName: 'components_school_integral_education_list_school_integral_education_lists';
+  info: {
+    displayName: 'School_integral_education_list';
+  };
+  attributes: {
+    icon: Schema.Attribute.Media<'images'>;
+    text: Schema.Attribute.Text;
   };
 }
 
@@ -726,6 +740,7 @@ declare module '@strapi/strapi' {
       'quote.quote': QuoteQuote;
       'resourse.resource': ResourseResource;
       'sample.sampledata': SampleSampledata;
+      'school-integral-education-list.school-integral-education-list': SchoolIntegralEducationListSchoolIntegralEducationList;
       'sciencequote.quote': SciencequoteQuote;
       'sessions.teaching-sessions': SessionsTeachingSessions;
       'sessions.teaching-sessionss': SessionsTeachingSessionss;

@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_school_integral_education_list_school_integral_education_lists",
+  "info": {
+    "displayName": "School_integral_education_list"
+  },
+  "options": {},
+  "attributes": {
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "text": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

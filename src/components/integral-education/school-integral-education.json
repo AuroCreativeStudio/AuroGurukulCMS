@@ -11,14 +11,10 @@
     "description": {
       "type": "text"
     },
-    "list_1": {
-      "type": "text"
-    },
-    "list_2": {
-      "type": "text"
-    },
-    "list_3": {
-      "type": "text"
+    "School_integral_education_list": {
+      "type": "component",
+      "component": "school-integral-education-list.school-integral-education-list",
+      "repeatable": true
     }
   },
   "config": {}
