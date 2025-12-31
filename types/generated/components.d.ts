@@ -32,6 +32,7 @@ export interface AdmissionStepsAdmissionSteps extends Struct.ComponentSchema {
   };
   attributes: {
     description: Schema.Attribute.Text;
+    icon: Schema.Attribute.Media<'images'>;
     title: Schema.Attribute.Text;
   };
 }
@@ -224,6 +225,7 @@ export interface FamiliesPointsFamiliesPoints extends Struct.ComponentSchema {
   };
   attributes: {
     Families_points: Schema.Attribute.Text;
+    icon: Schema.Attribute.Media<'images'>;
   };
 }
 
@@ -278,6 +280,7 @@ export interface FeaturesFeatures extends Struct.ComponentSchema {
   };
   attributes: {
     description: Schema.Attribute.Text;
+    icon: Schema.Attribute.Media<'images'>;
     title: Schema.Attribute.String;
   };
 }
@@ -448,6 +451,7 @@ export interface PreparationCardsPreparationCards
   };
   attributes: {
     description: Schema.Attribute.Text;
+    icon: Schema.Attribute.Media<'images'>;
     title: Schema.Attribute.String;
   };
 }
@@ -668,6 +672,7 @@ export interface TestimonialsTestimonials extends Struct.ComponentSchema {
     displayName: 'Testimonials';
   };
   attributes: {
+    avatar: Schema.Attribute.Media<'images'>;
     description: Schema.Attribute.Text;
     name: Schema.Attribute.String;
     role: Schema.Attribute.String;

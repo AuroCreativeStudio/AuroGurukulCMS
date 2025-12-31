@@ -20,6 +20,11 @@
         "videos",
         "audios"
       ]
+    },
+    "gallery_type": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::gallery-type.gallery-type"
     }
   }
 }

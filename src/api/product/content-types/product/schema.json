@@ -30,6 +30,20 @@
     "Description": {
       "type": "text"
     },
+    "description_image": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "description_video": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "videos"
+      ]
+    },
     "discount_coupon": {
       "type": "relation",
       "relation": "manyToOne",

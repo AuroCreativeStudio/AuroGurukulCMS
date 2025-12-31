@@ -990,6 +990,34 @@ export interface ApiEnquiryFormEnquiryForm extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiGalleryTypeGalleryType extends Struct.CollectionTypeSchema {
+  collectionName: 'gallery_types';
+  info: {
+    displayName: 'Gallery_type';
+    pluralName: 'gallery-types';
+    singularName: 'gallery-type';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    gallery_type: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::gallery-type.gallery-type'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiGalleryGallery extends Struct.CollectionTypeSchema {
   collectionName: 'galleries';
   info: {
@@ -1004,6 +1032,10 @@ export interface ApiGalleryGallery extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    gallery_type: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::gallery-type.gallery-type'
+    >;
     image: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true
@@ -1278,6 +1310,8 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     Description: Schema.Attribute.Text;
+    description_image: Schema.Attribute.Media<'images', true>;
+    description_video: Schema.Attribute.Media<'videos', true>;
     discount_coupon: Schema.Attribute.Relation<
       'manyToOne',
       'api::discount-coupon.discount-coupon'
@@ -2162,6 +2196,7 @@ declare module '@strapi/strapi' {
       'api::course.course': ApiCourseCourse;
       'api::discount-coupon.discount-coupon': ApiDiscountCouponDiscountCoupon;
       'api::enquiry-form.enquiry-form': ApiEnquiryFormEnquiryForm;
+      'api::gallery-type.gallery-type': ApiGalleryTypeGalleryType;
       'api::gallery.gallery': ApiGalleryGallery;
       'api::home.home': ApiHomeHome;
       'api::landing-page.landing-page': ApiLandingPageLandingPage;
