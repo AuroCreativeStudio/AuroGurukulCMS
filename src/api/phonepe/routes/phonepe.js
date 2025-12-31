@@ -5,8 +5,8 @@ module.exports = {
       path: "/phonepe/webhook",
       handler: "phonepe.webhook",
       config: {
-        auth: false
-      }
-    }
-  ]
+        auth: false,
+      },
+    },
+  ],
 };

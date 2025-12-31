@@ -15,7 +15,7 @@ module.exports = factories.createCoreController(
     //------------------------------------------------------------------
     async getPhonePeAuthToken(ctx) {
       try {
-        const url = `${process.env.PHONEPE_HOST_IDM}/v1/oauth/token`;
+        const url = `${process.env.PHONEPE_HOST}/v1/oauth/token`;
 
         const params = new URLSearchParams();
         params.append("client_id", process.env.PHONEPE_CLIENT_ID);
@@ -199,7 +199,7 @@ module.exports = factories.createCoreController(
 
         console.log("PHONEPE PAYLOAD:", payload);
 
-        const url = `${process.env.PHONEPE_HOST_PG}${process.env.PHONEPE_BASE}/pay`;
+        const url = `${process.env.PHONEPE_HOST}${process.env.PHONEPE_BASE}/pay`;
         console.log("PAYMENT URL:", url);
 
         const response = await axios.post(url, payload, {
@@ -232,74 +232,58 @@ module.exports = factories.createCoreController(
         console.error("PhonePe Payment Error RESPONSE:", err.response?.data);
         return ctx.internalServerError(
           err.response?.data?.message ||
-            err.message ||
-            "Payment initiation failed"
+          err.message ||
+          "Payment initiation failed"
         );
       }
     },
 
     //------------------------------------------------------------------
-    // VERIFY PAYMENT STATUS
+    // VERIFY PAYMENT STATUS (PHONEPE PG v2 - CORRECT)
     //------------------------------------------------------------------
     async verify(ctx) {
-      console.log("RAW BODY RECEIVED:", ctx.request.body);
-
       try {
-        const internalId = Number(ctx.request.body?.data?.internalId);
+        const { merchantOrderId } = ctx.request.body;
 
-        if (!internalId || isNaN(internalId)) {
-          return ctx.badRequest("internalId must be a valid number");
+        if (!merchantOrderId) {
+          return ctx.badRequest("merchantOrderId is required");
         }
-
-        // Fetch order using internal DB ID
-        const order = await strapi.db.query("api::order.order").findOne({
-          where: { id: internalId },
-        });
-
-        if (!order) return ctx.notFound("Order not found");
-
-        const merchantOrderId = order.Order_ID;
 
         const authToken = await this.getPhonePeAuthToken(ctx);
 
-        // ✔ CORRECT STATUS URL (PG V2)
-        const url = `${process.env.PHONEPE_HOST_PG}${process.env.PHONEPE_BASE}/order/${merchantOrderId}/status`;
-
-        console.log("VERIFY URL:", url);
+        const url = `${process.env.PHONEPE_HOST}${process.env.PHONEPE_BASE}/order/${merchantOrderId}`;
 
         const response = await axios.get(url, {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `O-Bearer ${authToken}`,
+            accept: "application/json",
           },
         });
 
-        console.log("PHONEPE RAW RESPONSE:", response.data);
+        const state = response.data?.state;
+        const isSuccess = state === "COMPLETED";
 
-        const paymentState = response.data.state;
-        const isSuccess = paymentState === "COMPLETED";
-
-        await strapi.db.query("api::order.order").update({
-          where: { id: internalId },
-          data: {
-            Payment_Status: isSuccess,
-            Payment_Response: response.data,
-          },
-        });
+        if (isSuccess) {
+          await strapi.db.query("api::order.order").update({
+            where: { Order_ID: merchantOrderId },
+            data: {
+              Payment_Status: true,
+              Payment_State: state,
+              Payment_Response: response.data,
+            },
+          });
+        }
 
         return {
           success: true,
-          paymentStatus: paymentState,
+          paymentStatus: state,
           isPaymentSuccessful: isSuccess,
-          data: response.data,
         };
       } catch (err) {
-        console.error(
-          "PhonePe Verify Error:",
-          err.response?.data || err.message
-        );
-        return ctx.internalServerError("Payment verification failed");
+        strapi.log.error("VERIFY ERROR:", err.response?.data || err.message);
+        return ctx.internalServerError("Verification failed");
       }
     },
+
   })
 );

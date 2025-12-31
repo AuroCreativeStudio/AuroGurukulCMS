@@ -1,20 +1,24 @@
 "use strict";
 
 module.exports = {
+  //------------------------------------------------------------------
+  // PHONEPE WEBHOOK (PG v2 - SOURCE OF TRUTH)
+  //------------------------------------------------------------------
   async webhook(ctx) {
     try {
+      // -------------------------------------------------------------
+      // 1. BASIC AUTH VERIFICATION (YOUR EXISTING LOGIC - KEPT)
+      // -------------------------------------------------------------
       const auth = ctx.request.headers["authorization"];
 
       if (!auth || !auth.startsWith("Basic ")) {
         return ctx.unauthorized("Missing Authorization Header");
       }
 
-      // Decode username:password
       const base64Credentials = auth.split(" ")[1];
       const decoded = Buffer.from(base64Credentials, "base64").toString("ascii");
       const [username, password] = decoded.split(":");
 
-      // Compare with .env values
       if (
         username !== process.env.PHONEPE_WEBHOOK_USER ||
         password !== process.env.PHONEPE_WEBHOOK_PASS
@@ -22,26 +26,63 @@ module.exports = {
         return ctx.unauthorized("Invalid credentials");
       }
 
-      // webhook body
-      const event = ctx.request.body.event;
-      const data = ctx.request.body.data;
+      // -------------------------------------------------------------
+      // 2. WEBHOOK PAYLOAD
+      // -------------------------------------------------------------
+      const payload = ctx.request.body;
+      const data = payload?.data || payload; // support both formats
 
-      strapi.log.info("WEBHOOK RECEIVED:", event, data);
+      const merchantOrderId = data?.merchantOrderId;
+      const state = data?.state;
 
-      if (event === "pg.order.completed") {
-        const merchantOrderId = data.merchantOrderId;
+      strapi.log.info("PHONEPE WEBHOOK RECEIVED:", payload);
 
-        // update order to success
-        await strapi.db.query("api::order.order").update({
-          where: { Order_ID: merchantOrderId },
-          data: { Payment_Status: true }
-        });
+      if (!merchantOrderId) {
+        strapi.log.warn("Webhook missing merchantOrderId");
+        return ctx.send({ received: true });
       }
 
+      // -------------------------------------------------------------
+      // 3. PROCESS ONLY COMPLETED PAYMENTS
+      // -------------------------------------------------------------
+      if (state === "COMPLETED") {
+        // Idempotency: update only if not already paid
+        const existingOrder = await strapi.db
+          .query("api::order.order")
+          .findOne({
+            where: { Order_ID: merchantOrderId },
+            select: ["Payment_Status"],
+          });
+
+        if (!existingOrder) {
+          strapi.log.warn(`Order not found: ${merchantOrderId}`);
+          return ctx.send({ received: true });
+        }
+
+        if (existingOrder.Payment_Status === true) {
+          strapi.log.info(`Order already paid: ${merchantOrderId}`);
+          return ctx.send({ received: true });
+        }
+
+        await strapi.db.query("api::order.order").update({
+          where: { Order_ID: merchantOrderId },
+          data: {
+            Payment_Status: true,
+            Payment_State: state,
+            Payment_Response: payload,
+          },
+        });
+
+        strapi.log.info(`Order ${merchantOrderId} marked as PAID`);
+      }
+
+      // -------------------------------------------------------------
+      // 4. ALWAYS RETURN 200 OK
+      // -------------------------------------------------------------
       ctx.send({ received: true });
     } catch (err) {
-      strapi.log.error("Webhook Error:", err);
-      ctx.internalServerError("Webhook processing failed");
+      strapi.log.error("PhonePe Webhook Error:", err);
+      ctx.send({ received: true }); // still 200 to stop retries
     }
   },
 };
