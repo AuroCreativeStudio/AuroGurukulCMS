@@ -15,7 +15,7 @@ module.exports = factories.createCoreController(
     //------------------------------------------------------------------
     async getPhonePeAuthToken(ctx) {
       try {
-        const url = `${process.env.PHONEPE_HOST}/v1/oauth/token`;
+        const url = `${process.env.PHONEPE_HOST_IDM}/v1/oauth/token`;
 
         const params = new URLSearchParams();
         params.append("client_id", process.env.PHONEPE_CLIENT_ID);
@@ -199,7 +199,7 @@ module.exports = factories.createCoreController(
 
         console.log("PHONEPE PAYLOAD:", payload);
 
-        const url = `${process.env.PHONEPE_HOST}${process.env.PHONEPE_BASE}/pay`;
+        const url = `${process.env.PHONEPE_HOST_PG}${process.env.PHONEPE_BASE}/pay`;
         console.log("PAYMENT URL:", url);
 
         const response = await axios.post(url, payload, {
