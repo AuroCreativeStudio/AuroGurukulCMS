@@ -803,6 +803,37 @@ export interface ApiContactusFormContactusForm
   };
 }
 
+export interface ApiCookieConsentCookieConsent
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'cookie_consents';
+  info: {
+    displayName: 'CookieConsent';
+    pluralName: 'cookie-consents';
+    singularName: 'cookie-consent';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    consent_type: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Device: Schema.Attribute.String;
+    ip: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::cookie-consent.cookie-consent'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCourseFormCourseForm extends Struct.CollectionTypeSchema {
   collectionName: 'course_forms';
   info: {
@@ -958,6 +989,32 @@ export interface ApiDiscountCouponDiscountCoupon
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     Usage_Limit: Schema.Attribute.Integer;
+  };
+}
+export interface ApiOtpOtp extends Struct.CollectionTypeSchema {
+  collectionName: 'otps';
+  info: {
+    displayName: 'Otp';
+    pluralName: 'otps';
+    singularName: 'otp';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    code: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    email: Schema.Attribute.String;
+    isUsed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::otp.otp'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -2232,6 +2289,7 @@ declare module '@strapi/strapi' {
       'api::cart.cart': ApiCartCart;
       'api::contact.contact': ApiContactContact;
       'api::contactus-form.contactus-form': ApiContactusFormContactusForm;
+      'api::cookie-consent.cookie-consent': ApiCookieConsentCookieConsent;
       'api::course-form.course-form': ApiCourseFormCourseForm;
       'api::course.course': ApiCourseCourse;
       'api::discount-coupon.discount-coupon': ApiDiscountCouponDiscountCoupon;
@@ -2241,6 +2299,7 @@ declare module '@strapi/strapi' {
       'api::home.home': ApiHomeHome;
       'api::landing-page.landing-page': ApiLandingPageLandingPage;
       'api::order.order': ApiOrderOrder;
+      'api::otp.otp': ApiOtpOtp;
       'api::partial-payment-course.partial-payment-course': ApiPartialPaymentCoursePartialPaymentCourse;
       'api::payment.payment': ApiPaymentPayment;
       'api::product-category.product-category': ApiProductCategoryProductCategory;
