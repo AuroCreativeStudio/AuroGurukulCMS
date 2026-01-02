@@ -1,12 +1,33 @@
 'use strict';
 
-const bcrypt = require('bcryptjs'); 
+const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer'); // Import nodemailer directly
+
+// Helper to send mail directly without config/plugins.js
+const sendEmailDirectly = async (to, subject, text, html) => {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail', // Assuming you are using Gmail
+    auth: {
+      user: process.env.SMTP_USERNAME, // Reads directly from .env
+      pass: process.env.SMTP_PASSWORD, // Reads directly from .env
+    },
+  });
+
+  await transporter.sendMail({
+    from: process.env.SMTP_USERNAME, // Send from your email
+    to: to,
+    subject: subject,
+    text: text,
+    html: html,
+  });
+};
 
 module.exports = {
-  // 1. SEND OTP (No changes here - we MUST create it initially to verify it later)
+  // 1. SEND OTP
   async sendOtp(ctx) {
     const { email } = ctx.request.body;
 
+    // FIX: Correct plugin name is 'plugin::users-permissions'
     const user = await strapi.db.query('plugin::users-permissions.user').findOne({
       where: { email },
     });
@@ -26,20 +47,22 @@ module.exports = {
     });
 
     try {
-      await strapi.plugins['email'].services.email.send({
-        to: email,
-        subject: 'Reset Password OTP',
-        text: `Your OTP is ${otp}`,
-        html: `<h4>Your OTP is:</h4><h1>${otp}</h1>`,
-      });
+      // 👇 CHANGED: Using direct nodemailer function instead of Strapi plugin
+      await sendEmailDirectly(
+        email,
+        'Reset Password OTP',
+        `Your OTP is ${otp}`,
+        `<h4>Your OTP is:</h4><h1>${otp}</h1>`
+      );
     } catch (err) {
-      return ctx.internalServerError('Failed to send email');
+      console.error('Email Error:', err);
+      return ctx.internalServerError('Failed to send email. Check server logs.');
     }
 
     return ctx.send({ message: 'OTP sent successfully' });
   },
 
-  // 2. VERIFY OTP (No changes here)
+  // 2. VERIFY OTP
   async verifyOtp(ctx) {
     const { email, otp } = ctx.request.body;
 
@@ -53,7 +76,7 @@ module.exports = {
     return ctx.send({ message: 'OTP Verified' });
   },
 
-  // 3. RESET PASSWORD (UPDATED: Deletes the data)
+  // 3. RESET PASSWORD
   async resetPassword(ctx) {
     const { email, otp, password, passwordConfirmation } = ctx.request.body;
 
@@ -67,20 +90,19 @@ module.exports = {
 
     if (!validOtp) return ctx.badRequest('Invalid Request');
 
+    // FIX: Correct plugin name
     const user = await strapi.db.query('plugin::users-permissions.user').findOne({
       where: { email },
     });
 
     if (!user) return ctx.badRequest('User not found');
 
-    // Update User Password (Plain text, let Strapi hash it automatically as discussed before)
+    // FIX: Correct update path
     await strapi.entityService.update('plugin::users-permissions.user', user.id, {
       data: { password: password }, 
     });
 
-    // ---------------------------------------------------------
-    // 👇 CHANGED HERE: DELETE the OTP immediately
-    // ---------------------------------------------------------
+    // Clean up: Delete the OTP
     await strapi.entityService.delete('api::otp.otp', validOtp.id);
 
     return ctx.send({ message: 'Password updated successfully' });
