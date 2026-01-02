@@ -814,14 +814,16 @@ export interface ApiCourseFormCourseForm extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    city: Schema.Attribute.String;
+    Address: Schema.Attribute.Text;
+    City: Schema.Attribute.String;
     class_section: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    email: Schema.Attribute.String;
-    full_name: Schema.Attribute.String;
+    Email: Schema.Attribute.String;
+    Firstname: Schema.Attribute.String;
     grade: Schema.Attribute.String;
+    Lastname: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -829,14 +831,15 @@ export interface ApiCourseFormCourseForm extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     payment_type: Schema.Attribute.String;
-    phone_number: Schema.Attribute.BigInteger;
+    Phone: Schema.Attribute.BigInteger;
     publishedAt: Schema.Attribute.DateTime;
     school_name: Schema.Attribute.String;
     screenshot: Schema.Attribute.Media<'images' | 'files'>;
-    state: Schema.Attribute.String;
+    State: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    Zipcode: Schema.Attribute.Integer;
   };
 }
 
@@ -1206,19 +1209,26 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     Date: Schema.Attribute.Date;
     Invoice: Schema.Attribute.Component<'invoice.invoice', false>;
+    InvoiceNumber: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::order.order'> &
       Schema.Attribute.Private;
     Order_ID: Schema.Attribute.UID;
+    order_status: Schema.Attribute.Enumeration<
+      ['pending', 'success', 'failed']
+    >;
     Payment_Status: Schema.Attribute.Boolean;
     PhonePe_Order_Id: Schema.Attribute.String;
     Price: Schema.Attribute.String;
     Product_Item: Schema.Attribute.Component<'product-item.product-item', true>;
     publishedAt: Schema.Attribute.DateTime;
+    receipt: Schema.Attribute.Media<'files'>;
     Shipping_Address: Schema.Attribute.Component<
       'shipping-address.shipping-address',
       false
     >;
+    terms: Schema.Attribute.Boolean;
+    Transaction_Id: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1226,6 +1236,36 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
       'oneToOne',
       'plugin::users-permissions.user'
     >;
+  };
+}
+
+export interface ApiPartialPaymentCoursePartialPaymentCourse
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'partial_payment_courses';
+  info: {
+    displayName: 'Partial Payment Course';
+    pluralName: 'partial-payment-courses';
+    singularName: 'partial-payment-course';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Course_Name: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::partial-payment-course.partial-payment-course'
+    > &
+      Schema.Attribute.Private;
+    Price: Schema.Attribute.Integer;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -2201,6 +2241,7 @@ declare module '@strapi/strapi' {
       'api::home.home': ApiHomeHome;
       'api::landing-page.landing-page': ApiLandingPageLandingPage;
       'api::order.order': ApiOrderOrder;
+      'api::partial-payment-course.partial-payment-course': ApiPartialPaymentCoursePartialPaymentCourse;
       'api::payment.payment': ApiPaymentPayment;
       'api::product-category.product-category': ApiProductCategoryProductCategory;
       'api::product.product': ApiProductProduct;

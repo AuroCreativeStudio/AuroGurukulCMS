@@ -11,22 +11,22 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "full_name": {
+    "Firstname": {
       "type": "string"
     },
-    "phone_number": {
+    "Phone": {
       "type": "biginteger"
     },
-    "email": {
+    "Email": {
       "type": "string"
     },
     "school_name": {
       "type": "string"
     },
-    "state": {
+    "State": {
       "type": "string"
     },
-    "city": {
+    "City": {
       "type": "string"
     },
     "payment_type": {
@@ -45,6 +45,15 @@
         "images",
         "files"
       ]
+    },
+    "Lastname": {
+      "type": "string"
+    },
+    "Address": {
+      "type": "text"
+    },
+    "Zipcode": {
+      "type": "integer"
     }
   }
 }

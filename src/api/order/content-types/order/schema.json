@@ -60,6 +60,30 @@
     },
     "PhonePe_Order_Id": {
       "type": "string"
+    },
+    "Transaction_Id": {
+      "type": "string"
+    },
+    "terms": {
+      "type": "boolean"
+    },
+    "receipt": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "order_status": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "success",
+        "failed"
+      ]
+    },
+    "InvoiceNumber": {
+      "type": "string"
     }
   }
 }

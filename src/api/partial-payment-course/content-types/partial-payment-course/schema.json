@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "partial_payment_courses",
+  "info": {
+    "singularName": "partial-payment-course",
+    "pluralName": "partial-payment-courses",
+    "displayName": "Partial Payment Course"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Course_Name": {
+      "type": "string"
+    },
+    "Price": {
+      "type": "integer"
+    }
+  }
+}

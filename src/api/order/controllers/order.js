@@ -15,7 +15,7 @@ module.exports = factories.createCoreController(
     //------------------------------------------------------------------
     async getPhonePeAuthToken(ctx) {
       try {
-        const url = `${process.env.PHONEPE_HOST_IDM}/v1/oauth/token`;
+        const url = `${process.env.PHONEPE_HOST}/v1/oauth/token`;
 
         const params = new URLSearchParams();
         params.append("client_id", process.env.PHONEPE_CLIENT_ID);
@@ -169,18 +169,27 @@ module.exports = factories.createCoreController(
     //------------------------------------------------------------------
     async createPayment(ctx) {
       try {
-        let { orderId, amount, internalId } = ctx.request.body;
+        let { orderId, amount } = ctx.request.body;
 
-        console.log("PAYMENT INIT BODY:", ctx.request.body);
+        console.log("💰 PAYMENT INIT BODY:", ctx.request.body);
 
-        internalId = Number(internalId);
-        if (!orderId || !amount || isNaN(internalId)) {
-          return ctx.badRequest(
-            "orderId, amount & valid internalId are required"
-          );
+        if (!orderId || !amount) {
+          return ctx.badRequest("orderId and amount are required");
         }
 
-        // OAuth Token
+        // ✅ Find order by Order_ID
+        const orders = await strapi.entityService.findMany("api::order.order", {
+          filters: { Order_ID: orderId },
+        });
+
+        if (!orders || orders.length === 0) {
+          console.error("❌ Order not found with Order_ID:", orderId);
+          return ctx.notFound(`Order ${orderId} not found`);
+        }
+
+        const order = orders[0];
+        console.log("✅ Found order - Internal ID:", order.id, "| Order_ID:", order.Order_ID);
+
         const authToken = await this.getPhonePeAuthToken(ctx);
 
         const payload = {
@@ -199,7 +208,7 @@ module.exports = factories.createCoreController(
 
         console.log("PHONEPE PAYLOAD:", payload);
 
-        const url = `${process.env.PHONEPE_HOST_PG}${process.env.PHONEPE_BASE}/pay`;
+        const url = `${process.env.PHONEPE_HOST}${process.env.PHONEPE_BASE}/pay`;
         console.log("PAYMENT URL:", url);
 
         const response = await axios.post(url, payload, {
@@ -211,25 +220,33 @@ module.exports = factories.createCoreController(
 
         console.log("PHONEPE RESPONSE:", response.data);
 
-        const phonepeOrderId = response.data.orderId; // THIS is correct
+        const phonepeOrderId = response.data.orderId;
+        
+        console.log("🆔 Saving PhonePe_Order_Id:", phonepeOrderId, "to order ID:", order.id);
 
-        // ❗ DO NOT extract paymentDetails here — they don't exist yet
+        // ✅ Update using the found order's internal ID
+        const updatedOrder = await strapi.entityService.update(
+          "api::order.order",
+          order.id,
+          {
+            data: {
+              PhonePe_Order_Id: phonepeOrderId,
+            },
+          }
+        );
 
-        // SAVE ONLY the PhonePe internal order id
-        await strapi.db.query("api::order.order").update({
-          where: { id: internalId },
-          data: {
-            PhonePe_Order_Id: phonepeOrderId,
-          },
-        });
+        console.log("✅ Successfully updated order:");
+        console.log("   - Internal ID:", updatedOrder.id);
+        console.log("   - Order_ID:", updatedOrder.Order_ID);
+        console.log("   - PhonePe_Order_Id:", updatedOrder.PhonePe_Order_Id);
 
         return {
           success: true,
           redirectUrl: response.data.redirectUrl,
         };
       } catch (err) {
-        console.error("PhonePe Payment Error RAW:", err);
-        console.error("PhonePe Payment Error RESPONSE:", err.response?.data);
+        console.error("❌ PhonePe Payment Error:", err.message);
+        console.error("❌ Error Details:", err.response?.data || err.stack);
         return ctx.internalServerError(
           err.response?.data?.message ||
           err.message ||
@@ -237,7 +254,6 @@ module.exports = factories.createCoreController(
         );
       }
     },
-
     //------------------------------------------------------------------
     // VERIFY PAYMENT STATUS (PHONEPE PG v2 - CORRECT)
     //------------------------------------------------------------------
@@ -245,13 +261,17 @@ module.exports = factories.createCoreController(
       try {
         const { merchantOrderId } = ctx.request.body;
 
+        console.log("🔍 VERIFYING ORDER:", merchantOrderId);
+
         if (!merchantOrderId) {
           return ctx.badRequest("merchantOrderId is required");
         }
 
         const authToken = await this.getPhonePeAuthToken(ctx);
 
-        const url = `${process.env.PHONEPE_HOST}${process.env.PHONEPE_BASE}/order/${merchantOrderId}`;
+        const url = `${process.env.PHONEPE_HOST}${process.env.PHONEPE_BASE}/order/${merchantOrderId}/status`;
+
+        console.log("📞 Calling PhonePe URL:", url);
 
         const response = await axios.get(url, {
           headers: {
@@ -260,17 +280,49 @@ module.exports = factories.createCoreController(
           },
         });
 
+        console.log("✅ PhonePe Response:", JSON.stringify(response.data, null, 2));
+
         const state = response.data?.state;
         const isSuccess = state === "COMPLETED";
 
+        // ✅ Extract Transaction ID
+        const transactionId = response.data?.paymentDetails?.[0]?.transactionId || null;
+
+        console.log("💳 Payment State:", state, "| Is Success:", isSuccess);
+        console.log("🆔 Transaction ID:", transactionId);
+
         if (isSuccess) {
-          await strapi.db.query("api::order.order").update({
+          // ✅ Get order's internal ID first
+          const order = await strapi.db.query("api::order.order").findOne({
             where: { Order_ID: merchantOrderId },
-            data: {
-              Payment_Status: true,
-              Payment_State: state,
-              Payment_Response: response.data,
-            },
+            select: ['id'],
+          });
+
+          if (!order) {
+            console.error("❌ Order not found for Order_ID:", merchantOrderId);
+            return ctx.notFound("Order not found");
+          }
+
+          // ✅ Use entityService.update with internal ID
+          const updateResult = await strapi.entityService.update(
+            "api::order.order",
+            order.id,
+            {
+              data: {
+                Payment_Status: true,
+                Payment_State: state,
+                Transaction_Id: transactionId,
+                Payment_Response: response.data,
+              },
+            }
+          );
+
+          console.log("📝 DB Update Result:", {
+            id: updateResult.id,
+            Order_ID: updateResult.Order_ID,
+            Payment_Status: updateResult.Payment_Status,
+            PhonePe_Order_Id: updateResult.PhonePe_Order_Id,
+            Transaction_Id: updateResult.Transaction_Id,
           });
         }
 
@@ -278,12 +330,50 @@ module.exports = factories.createCoreController(
           success: true,
           paymentStatus: state,
           isPaymentSuccessful: isSuccess,
+          transactionId,
+          details: response.data,
         };
       } catch (err) {
-        strapi.log.error("VERIFY ERROR:", err.response?.data || err.message);
-        return ctx.internalServerError("Verification failed");
+        console.error("❌ VERIFY ERROR:", err.response?.data || err.message);
+        return ctx.internalServerError({
+          message: "Verification failed",
+          error: err.response?.data || err.message,
+        });
       }
     },
 
+
+    async findByOrderId(ctx) {
+      try {
+        const { orderId } = ctx.params;
+
+        if (!orderId) {
+          return ctx.badRequest("Order ID is required");
+        }
+
+        const orders = await strapi.entityService.findMany("api::order.order", {
+          filters: { Order_ID: orderId },
+          populate: {
+            Product_Item: true,
+            Course_Item: true,
+            Billing_Address: true,
+            Shipping_Address: true,
+            Invoice: {
+              populate: ["file"],
+            },
+            users_permissions_user: true,
+          },
+        });
+
+        if (!orders || orders.length === 0) {
+          return ctx.notFound("Order not found");
+        }
+
+        return orders[0];
+      } catch (error) {
+        strapi.log.error("Find order by Order_ID error:", error);
+        return ctx.internalServerError("Failed to fetch order");
+      }
+    },
   })
 );
