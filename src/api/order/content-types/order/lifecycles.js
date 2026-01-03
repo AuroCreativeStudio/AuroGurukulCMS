@@ -3,7 +3,10 @@ module.exports = {
   async beforeUpdate(event) {
     const { where } = event.params;
     const existingOrder = await strapi.entityService.findOne('api::order.order', where.id, {
-      populate: ['Invoice', 'receipt'], 
+      populate: {
+        Invoice: { populate: ['file'] },
+        receipt: true,
+      }
     });
     event.state = { existingOrder };
   },
@@ -17,33 +20,45 @@ module.exports = {
 
     // --- DETECT CHANGES ---
     const statusChanged = existingOrder.order_status !== result.order_status;
-    
-    // Invoice Check (Compare JSON to detect content changes)
+
+    // Invoice Check (Compare strings)
     const oldInvoiceStr = JSON.stringify(existingOrder.Invoice);
     const newInvoiceStr = JSON.stringify(result.Invoice);
+    // basic check to see if *something* changed in the component
     const invoiceChanged = oldInvoiceStr !== newInvoiceStr && result.Invoice !== null;
 
-    // Receipt Check (Check if it was added OR replaced)
-    // We flag this here but confirm it after fetching full data
-    const receiptChanged = (result.receipt && !existingOrder.receipt) || 
-                           (result.receipt && existingOrder.receipt && result.receipt.id !== existingOrder.receipt.id);
+    // Receipt Check
+    const receiptChanged = (result.receipt && !existingOrder.receipt) ||
+      (result.receipt && existingOrder.receipt && result.receipt.id !== existingOrder.receipt.id);
 
-    // Optimization: If nothing seems to have changed, stop here.
     if (!statusChanged && !invoiceChanged && !receiptChanged) return;
 
     try {
       // --- FETCH FULL DATA ---
       const fullOrder = await strapi.entityService.findOne('api::order.order', result.id, {
-        populate: '*', // Get everything including the new receipt URL
+        populate: {
+          Invoice: { populate: ['file'] },
+          receipt: true,
+          users_permissions_user: true,
+          Product_Item: true,
+          Course_Item: true,
+          Billing_Address: true,
+          Shipping_Address: true
+        },
       });
 
-      // Re-verify Receipt Change with full data (to be safe)
+      // *** 🛑 CRITICAL CHECK: PAYMENT STATUS ***
+      if (fullOrder.Payment_Status !== true) {
+        console.log(`Email skipped for Order #${fullOrder.id} (Payment Pending)`);
+        return;
+      }
+
+      // Re-verify Receipt Change
       const oldReceiptId = existingOrder.receipt ? existingOrder.receipt.id : null;
       // @ts-ignore
       const newReceiptId = fullOrder.receipt ? fullOrder.receipt.id : null;
       const isReceiptUpdate = newReceiptId && (newReceiptId !== oldReceiptId);
 
-      // Final Check: If no actual changes, exit
       if (!statusChanged && !invoiceChanged && !isReceiptUpdate) return;
 
       // @ts-ignore
@@ -54,7 +69,7 @@ module.exports = {
       if (!userEmail) return;
 
       // --- CONFIGURATION ---
-      const BACKEND_URL = process.env.STRAPI_URL || 'http://localhost:1337'; 
+      const BACKEND_URL = process.env.STRAPI_URL || 'http://localhost:1337';
 
       // --- BUILD EMAIL CONTENT ---
       let subject = "";
@@ -62,10 +77,9 @@ module.exports = {
       let finalHtmlBody = "";
 
       if (statusChanged) {
-        // SCENARIO 1: Status Change -> Send Status Banner + Full Table
+        // SCENARIO 1: Status Change
         subject = `Order Status Changed - #${fullOrder.id}`;
         messageTitle = "Order Status Updated";
-        
         const oldStatus = existingOrder.order_status || 'Pending';
         const newStatus = fullOrder.order_status.toUpperCase();
         const detailsTable = generateOrderDetailsHtml(fullOrder);
@@ -76,36 +90,53 @@ module.exports = {
         `;
 
       } else if (isReceiptUpdate) {
-        // SCENARIO 2: Receipt Update -> Send ONLY Download Button
+        // SCENARIO 2: Receipt Update
         subject = `Payment Receipt Updated - #${fullOrder.id}`;
         messageTitle = "Receipt Updated";
-
-        // Fix URL
         // @ts-ignore
         const relativeUrl = fullOrder.receipt.url;
         const finalUrl = relativeUrl.startsWith('http') ? relativeUrl : `${BACKEND_URL}${relativeUrl}`;
 
         finalHtmlBody = `
-          <p>The payment receipt for your order has been updated/uploaded.</p>
-          <p>You can download the updated file using the button below:</p>
+          <p>The payment receipt for your order has been updated.</p>
           <div style="text-align: center; margin: 30px 0;">
-             <a href="${finalUrl}" target="_blank" style="background-color: #214587; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px;">
+             <a href="${finalUrl}" target="_blank" style="background-color: #214587; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold;">
                Download Receipt
              </a>
           </div>
         `;
 
       } else if (invoiceChanged) {
-        // SCENARIO 3: Invoice Data Update -> Send The HTML Invoice Table (The "File" equivalent)
-        subject = `Invoice Details Updated - #${fullOrder.id}`;
-        messageTitle = "Invoice Updated";
+        // SCENARIO 3: Invoice Update
         
-        // We generate the table because this IS the invoice document
+        // @ts-ignore
+        const invoiceFile = fullOrder.Invoice?.file;
+
+        // *** 🛑 FIX: Check if file actually exists inside the Invoice component ***
+        // If the file is missing, we stop here and send NO email.
+        if (!invoiceFile || !invoiceFile.url) {
+            console.log(`Email skipped for Order #${fullOrder.id} (Invoice changed but 'file' field is empty)`);
+            return;
+        }
+
+        subject = `Invoice Updated - #${fullOrder.id}`;
+        messageTitle = "Invoice Updated";
+
+        const relativeUrl = invoiceFile.url;
+        const finalInvoiceUrl = relativeUrl.startsWith('http') ? relativeUrl : `${BACKEND_URL}${relativeUrl}`;
+
         const detailsTable = generateOrderDetailsHtml(fullOrder);
 
         finalHtmlBody = `
           <p>The invoice details for your order have been modified.</p>
-          <p>Please find the updated invoice details below:</p>
+          <div style="text-align: center; margin: 20px 0;">
+            <p>You can download the official invoice file here:</p>
+            <a href="${finalInvoiceUrl}" target="_blank" style="background-color: #214587; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px;">
+              Download Invoice File
+            </a>
+          </div>
+          <hr style="border: 0; border-top: 1px solid #ddd; margin: 20px 0;">
+          <p>Order Summary:</p>
           ${detailsTable}
         `;
       }
@@ -147,11 +178,9 @@ module.exports = {
   },
 };
 
-// --- HELPER FUNCTION ---
+// ... Helper function `generateOrderDetailsHtml` remains exactly the same ...
 function generateOrderDetailsHtml(order) {
-  // ... (Keep the exact same helper function code you already have) ...
-  // This function is now used by BOTH 'Status Change' and 'Invoice Update'
-  
+  // (Paste existing helper function here)
   const items = [];
   const products = order.Product_Item || [];
   

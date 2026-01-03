@@ -56,9 +56,24 @@ module.exports = factories.createCoreController(
           data.users_permissions_user = ctx.state.user.id;
         }
 
-        if (!(data.Course_Item && data.Course_Item.Course_Id)) {
+        // -------------------------------------------------------------
+        // ✅ FIX: HANDLE COURSE ITEM (Array -> Single Object conversion)
+        // -------------------------------------------------------------
+        // The frontend sends an Array [{...}], but Schema expects Object {...}
+        if (Array.isArray(data.Course_Item)) {
+          if (data.Course_Item.length > 0) {
+            // Take the FIRST item from the array to save as the single component
+            data.Course_Item = data.Course_Item[0];
+          } else {
+            // If array is empty, remove the field so Strapi doesn't complain
+            delete data.Course_Item;
+          }
+        }
+        // Fallback: If it's not an array, check if it's a valid object
+        else if (!(data.Course_Item && data.Course_Item.Course_Id)) {
           delete data.Course_Item;
         }
+
 
         if (
           !(Array.isArray(data.Product_Item) && data.Product_Item.length > 0)
