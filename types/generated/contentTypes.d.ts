@@ -1248,6 +1248,7 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
     order_status: Schema.Attribute.Enumeration<
       ['pending', 'success', 'failed']
     >;
+    order_type: Schema.Attribute.Enumeration<['checkout', 'direct_enrollment']>;
     Payment_Status: Schema.Attribute.Boolean;
     PhonePe_Order_Id: Schema.Attribute.String;
     Price: Schema.Attribute.String;

@@ -84,6 +84,13 @@
     },
     "InvoiceNumber": {
       "type": "string"
+    },
+    "order_type": {
+      "type": "enumeration",
+      "enum": [
+        "checkout",
+        "direct_enrollment"
+      ]
     }
   }
 }
