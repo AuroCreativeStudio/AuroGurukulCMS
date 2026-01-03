@@ -3,93 +3,95 @@
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const path = require("path");
+const { Readable } = require("stream");
 
 module.exports = {
   async generateInvoice(order) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       try {
         // ---------------------------------------------------------
-        // 1. DYNAMIC PATH CONFIGURATION
+        // 1. PATHS (READ-ONLY)
         // ---------------------------------------------------------
-        // process.cwd() gets the root folder of your project (e.g., D:/backend/AuroGurukulCMS)
-        const rootDir = process.cwd(); 
-
-        // Define Fonts Directory relative to root
+        const rootDir = process.cwd();
         const fontsDir = path.join(rootDir, "fonts");
-        
-        // Define Output Directory relative to root
-        const invoiceDir = path.join(rootDir, "public", "invoices");
-
-        // Define Logo Path
-        const logoPath = path.join(invoiceDir, "logo.png");
+        const logoPath = path.join(rootDir, "public", "invoices", "logo.png");
 
         // ---------------------------------------------------------
         // 2. FILE SETUP
         // ---------------------------------------------------------
-        const invoiceNumber = "INV-" + Date.now();
+        const invoiceNumber = `INV-${Date.now()}`;
         const fileName = `${invoiceNumber}.pdf`;
 
-        // Ensure directory exists
-        if (!fs.existsSync(invoiceDir)) {
-          fs.mkdirSync(invoiceDir, { recursive: true });
-        }
-
-        const filePath = path.join(invoiceDir, fileName);
-        console.log("Invoice being created at:", filePath);
-
         // ---------------------------------------------------------
-        // 3. PDF GENERATION
+        // 3. PDF GENERATION (IN-MEMORY)
         // ---------------------------------------------------------
         const doc = new PDFDocument({ size: "A4", margin: 40 });
 
-        // Stream to file
-        const stream = fs.createWriteStream(filePath);
-        doc.pipe(stream);
+        const buffers = [];
+        doc.on("data", buffers.push.bind(buffers));
 
-        stream.on("finish", () => resolve({ invoiceNumber, fileName, filePath }));
-        stream.on("error", reject);
+        doc.on("end", async () => {
+          try {
+            const pdfBuffer = Buffer.concat(buffers);
+
+            // -----------------------------------------------------
+            // 4. UPLOAD TO STRAPI (USES YOUR GCS CONFIG)
+            // -----------------------------------------------------
+            const uploadService = strapi
+              .plugin("upload")
+              .service("upload");
+
+            const stream = new Readable();
+            stream.push(pdfBuffer);
+            stream.push(null);
+
+            const uploaded = await uploadService.upload({
+              data: {},
+              files: {
+                path: null,
+                name: fileName,
+                type: "application/pdf",
+                size: pdfBuffer.length,
+                stream,
+              },
+            });
+
+            resolve({
+              invoiceNumber,
+              fileName: uploaded[0].name,
+              url: uploaded[0].url, // ✅ DOWNLOAD THIS
+            });
+          } catch (err) {
+            reject(err);
+          }
+        });
 
         // ---------------------------------------------------------
-        // 4. FONT REGISTRATION (Safe Fallback)
+        // 5. FONT REGISTRATION (SAFE FALLBACK)
         // ---------------------------------------------------------
-        const fontPaths = {
-          regular: path.join(fontsDir, "Inter_18pt-Regular.ttf"),
-          medium:  path.join(fontsDir, "Inter_18pt-Medium.ttf"),
-          bold:    path.join(fontsDir, "Inter_18pt-Bold.ttf")
-        };
-
-        // Helper to register font safely, falls back to Helvetica if missing
-        const registerFontSafe = (name, path) => {
-          if (fs.existsSync(path)) {
-            doc.registerFont(name, path);
+        const registerFontSafe = (name, p) => {
+          if (fs.existsSync(p)) {
+            doc.registerFont(name, p);
           } else {
-            console.warn(`Font missing: ${path}. Using standard font.`);
-            doc.registerFont(name, "Helvetica"); // Fallback
+            doc.registerFont(name, "Helvetica");
           }
         };
 
-        registerFontSafe("Inter", fontPaths.regular);
-        registerFontSafe("InterMedium", fontPaths.medium);
-        registerFontSafe("InterBold", fontPaths.bold);
+        registerFontSafe("Inter", path.join(fontsDir, "Inter_18pt-Regular.ttf"));
+        registerFontSafe("InterMedium", path.join(fontsDir, "Inter_18pt-Medium.ttf"));
+        registerFontSafe("InterBold", path.join(fontsDir, "Inter_18pt-Bold.ttf"));
 
         // ---------------------------------------------------------
-        // 5. DOCUMENT CONTENT
+        // 6. DOCUMENT CONTENT
         // ---------------------------------------------------------
 
         // --- LOGO ---
-        try {
-          if (fs.existsSync(logoPath)) {
-            const pageWidth = doc.page.width;
-            const logoWidth = 50;
-            const logoHeight = 50;
-            const logoX = (pageWidth - logoWidth) / 2;
-            const logoY = 30;
-
-            doc.image(logoPath, logoX, logoY, { fit: [logoWidth, logoHeight] });
-            doc.y = logoY + logoHeight;
-          }
-        } catch (err) {
-          console.warn("Logo skipped:", err.message);
+        if (fs.existsSync(logoPath)) {
+          const pageWidth = doc.page.width;
+          doc.image(logoPath, (pageWidth - 50) / 2, 30, {
+            fit: [50, 50],
+          });
+          doc.moveDown(2);
         }
 
         // --- HEADER ---
@@ -125,7 +127,7 @@ module.exports = {
         );
         doc.moveDown(1.5);
 
-        // --- ITEMS TABLE ---
+        // --- ITEMS ---
         doc.font("InterBold").fontSize(14).text("Items", { underline: true });
         doc.moveDown(0.6);
 
@@ -140,7 +142,6 @@ module.exports = {
         doc.moveTo(40, tableTop + 15).lineTo(500, tableTop + 15).stroke();
         let posY = tableTop + 25;
 
-        // Render Course Item
         if (order.Course_Item) {
           const c = order.Course_Item;
           doc.font("Inter").fontSize(11).text(c.Course_Title, 40, posY, { width: col.item });
@@ -149,7 +150,6 @@ module.exports = {
           posY += 20;
         }
 
-        // Render Product Items
         if (Array.isArray(order.Product_Item)) {
           order.Product_Item.forEach((p) => {
             const qty = p.Quantity ?? p.quantity ?? 1;
