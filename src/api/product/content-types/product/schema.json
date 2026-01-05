@@ -91,6 +91,12 @@
       "type": "uid",
       "targetField": "Title",
       "required": true
+    },
+    "reviews": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::review.review",
+      "mappedBy": "review"
     }
   }
 }

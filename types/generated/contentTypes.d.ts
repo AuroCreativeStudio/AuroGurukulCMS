@@ -1430,6 +1430,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     >;
     Product_Id: Schema.Attribute.UID<'Title'> & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
+    reviews: Schema.Attribute.Relation<'oneToMany', 'api::review.review'>;
     short_description: Schema.Attribute.Text;
     Testimonials_videos: Schema.Attribute.Media<'videos', true>;
     Title: Schema.Attribute.String;
@@ -1472,6 +1473,38 @@ export interface ApiResourceResource extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiReviewReview extends Struct.CollectionTypeSchema {
+  collectionName: 'reviews';
+  info: {
+    displayName: 'Review';
+    pluralName: 'reviews';
+    singularName: 'review';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    comment: Schema.Attribute.Text;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::review.review'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    rating: Schema.Attribute.Integer;
+    review: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;
+    time: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.String;
   };
 }
 
@@ -2307,6 +2340,7 @@ declare module '@strapi/strapi' {
       'api::product-category.product-category': ApiProductCategoryProductCategory;
       'api::product.product': ApiProductProduct;
       'api::resource.resource': ApiResourceResource;
+      'api::review.review': ApiReviewReview;
       'api::school-project.school-project': ApiSchoolProjectSchoolProject;
       'api::science-of-living.science-of-living': ApiScienceOfLivingScienceOfLiving;
       'api::shipping.shipping': ApiShippingShipping;
