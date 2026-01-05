@@ -1607,7 +1607,7 @@ export interface ApiShippingShipping extends Struct.CollectionTypeSchema {
       'api::shipping.shipping'
     > &
       Schema.Attribute.Private;
-    order: Schema.Attribute.Relation<'oneToOne', 'api::order.order'>;
+    Order_ID: Schema.Attribute.String;
     Order_Status: Schema.Attribute.Enumeration<
       [
         'Pending',
@@ -1621,6 +1621,7 @@ export interface ApiShippingShipping extends Struct.CollectionTypeSchema {
         'Refunded',
       ]
     >;
+    Product: Schema.Attribute.Component<'product-item.product-item', true>;
     publishedAt: Schema.Attribute.DateTime;
     Shipping_Cost: Schema.Attribute.BigInteger;
     Shipping_ID: Schema.Attribute.String & Schema.Attribute.Unique;
@@ -1642,6 +1643,10 @@ export interface ApiShippingShipping extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
     Zip_Code: Schema.Attribute.String;
   };
 }

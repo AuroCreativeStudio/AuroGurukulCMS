@@ -40,11 +40,6 @@
         "Refunded"
       ]
     },
-    "order": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::order.order"
-    },
     "Shipping_Cost": {
       "type": "biginteger"
     },
@@ -63,6 +58,19 @@
         "Delivery Failed",
         "Returned"
       ]
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "Product": {
+      "type": "component",
+      "component": "product-item.product-item",
+      "repeatable": true
+    },
+    "Order_ID": {
+      "type": "string"
     }
   }
 }
