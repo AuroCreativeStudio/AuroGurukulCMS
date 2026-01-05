@@ -1595,6 +1595,38 @@ export interface ApiScienceOfLivingScienceOfLiving
   };
 }
 
+export interface ApiShippingRuleShippingRule
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'shipping_rules';
+  info: {
+    displayName: 'Shipping Rule';
+    pluralName: 'shipping-rules';
+    singularName: 'shipping-rule';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Free_Shipping: Schema.Attribute.Boolean;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::shipping-rule.shipping-rule'
+    > &
+      Schema.Attribute.Private;
+    Min_Order_Value: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    shipping_fee: Schema.Attribute.String;
+    Shipping_Method: Schema.Attribute.Enumeration<['Shipping Method']>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiShippingShipping extends Struct.CollectionTypeSchema {
   collectionName: 'shippings';
   info: {
@@ -1606,9 +1638,13 @@ export interface ApiShippingShipping extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    Courier_Partner: Schema.Attribute.Enumeration<
+      ['BlueDart', 'Delhivery', 'XpressBees', 'EcomExpress', 'Shadowfax']
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    Estimated_Delivery: Schema.Attribute.DateTime;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -1648,6 +1684,8 @@ export interface ApiShippingShipping extends Struct.CollectionTypeSchema {
         'Returned',
       ]
     >;
+    Total_price: Schema.Attribute.String;
+    Tracking_Number: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -2356,6 +2394,7 @@ declare module '@strapi/strapi' {
       'api::review.review': ApiReviewReview;
       'api::school-project.school-project': ApiSchoolProjectSchoolProject;
       'api::science-of-living.science-of-living': ApiScienceOfLivingScienceOfLiving;
+      'api::shipping-rule.shipping-rule': ApiShippingRuleShippingRule;
       'api::shipping.shipping': ApiShippingShipping;
       'api::skill-development-form.skill-development-form': ApiSkillDevelopmentFormSkillDevelopmentForm;
       'api::skill-development.skill-development': ApiSkillDevelopmentSkillDevelopment;

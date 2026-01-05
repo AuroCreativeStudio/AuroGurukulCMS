@@ -71,6 +71,25 @@
     },
     "Order_ID": {
       "type": "string"
+    },
+    "Total_price": {
+      "type": "string"
+    },
+    "Tracking_Number": {
+      "type": "string"
+    },
+    "Courier_Partner": {
+      "type": "enumeration",
+      "enum": [
+        "BlueDart",
+        "Delhivery",
+        "XpressBees",
+        "EcomExpress",
+        "Shadowfax"
+      ]
+    },
+    "Estimated_Delivery": {
+      "type": "datetime"
     }
   }
 }

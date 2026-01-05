@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "shipping_rules",
+  "info": {
+    "singularName": "shipping-rule",
+    "pluralName": "shipping-rules",
+    "displayName": "Shipping Rule"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Shipping_Method": {
+      "type": "enumeration",
+      "enum": [
+        "Shipping Method"
+      ]
+    },
+    "Min_Order_Value": {
+      "type": "string"
+    },
+    "shipping_fee": {
+      "type": "string"
+    },
+    "Free_Shipping": {
+      "type": "boolean"
+    }
+  }
+}
