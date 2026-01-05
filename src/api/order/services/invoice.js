@@ -3,109 +3,152 @@
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const path = require("path");
+const os = require("os");
 
 module.exports = {
   async generateInvoice(order) {
     return new Promise((resolve, reject) => {
+      let tempFilePath = null;
+
       try {
-        // ---------------------------------------------------------
-        // 1. DYNAMIC PATH CONFIGURATION
-        // ---------------------------------------------------------
-        // process.cwd() gets the root folder of your project (e.g., D:/backend/AuroGurukulCMS)
-        const rootDir = process.cwd(); 
+        console.log("--- Starting Invoice Generation (Strapi v5 Fix) ---");
 
-        // Define Fonts Directory relative to root
+        // ---------------------------------------------------------
+        // 1. SETUP & PATHS
+        // ---------------------------------------------------------
+        const rootDir = process.cwd();
+        // Point to fonts relative to root
         const fontsDir = path.join(rootDir, "fonts");
-        
-        // Define Output Directory relative to root
-        const invoiceDir = path.join(rootDir, "public", "invoices");
+        const logoPath = path.join(rootDir, "public", "invoices", "logo.png");
 
-        // Define Logo Path
-        const logoPath = path.join(invoiceDir, "logo.png");
-
-        // ---------------------------------------------------------
-        // 2. FILE SETUP
-        // ---------------------------------------------------------
         const invoiceNumber = "INV-" + Date.now();
         const fileName = `${invoiceNumber}.pdf`;
 
-        // Ensure directory exists
-        if (!fs.existsSync(invoiceDir)) {
-          fs.mkdirSync(invoiceDir, { recursive: true });
-        }
-
-        const filePath = path.join(invoiceDir, fileName);
-        console.log("Invoice being created at:", filePath);
+        // Generate temp path
+        tempFilePath = path.join(os.tmpdir(), fileName);
+        console.log("Temp file path:", tempFilePath);
 
         // ---------------------------------------------------------
-        // 3. PDF GENERATION
+        // 2. PDF GENERATION
         // ---------------------------------------------------------
         const doc = new PDFDocument({ size: "A4", margin: 40 });
+        const writeStream = fs.createWriteStream(tempFilePath);
 
-        // Stream to file
-        const stream = fs.createWriteStream(filePath);
-        doc.pipe(stream);
+        doc.pipe(writeStream);
 
-        stream.on("finish", () => resolve({ invoiceNumber, fileName, filePath }));
-        stream.on("error", reject);
+        // Handle generation errors
+        doc.on("error", (err) => {
+           console.error("PDF Creation Error:", err);
+           reject(err);
+        });
+
+        writeStream.on("error", (err) => {
+          console.error("File Write Error:", err);
+          reject(err);
+        });
+
+        writeStream.on("finish", async () => {
+          try {
+            console.log("PDF generated. Preparing upload...");
+            
+            // Verify file exists
+            if (!fs.existsSync(tempFilePath)) {
+               throw new Error(`Temp file not found at ${tempFilePath}`);
+            }
+            const stats = fs.statSync(tempFilePath);
+
+            // ---------------------------------------------------------
+            // 3. UPLOAD WITH MANUAL STREAM OVERRIDE
+            // ---------------------------------------------------------
+            const uploadedFiles = await strapi.plugin("upload").service("upload").upload({
+              data: {
+                fileInfo: {
+                  name: fileName,
+                  caption: `Invoice for Order ${order.Order_ID}`,
+                  alternativeText: invoiceNumber,
+                },
+              },
+              files: {
+                name: fileName,
+                hash: invoiceNumber,
+                ext: ".pdf",
+                mime: "application/pdf",
+                size: stats.size,
+                type: "application/pdf",
+                
+                // Polymorphic paths (for safety)
+                path: tempFilePath,
+                filepath: tempFilePath,
+                
+                // --- THE CRITICAL FIX FOR STRAPI v5 ---
+                // We provide the stream manually so Strapi doesn't have to guess.
+                getStream: () => fs.createReadStream(tempFilePath),
+              },
+            });
+
+            // Strapi returns an array
+            const fileData = uploadedFiles[0];
+            console.log("Upload Success:", fileData?.url);
+
+            // ---------------------------------------------------------
+            // 4. CLEANUP
+            // ---------------------------------------------------------
+            fs.unlink(tempFilePath, (err) => {
+              if (err) console.warn("Cleanup warning:", err.message);
+            });
+
+            resolve({
+              invoiceNumber,
+              fileName,
+              url: fileData?.url,
+              fileId: fileData?.id,
+            });
+
+          } catch (uploadError) {
+            // Ensure cleanup happens even on error
+            if (fs.existsSync(tempFilePath)) fs.unlink(tempFilePath, () => {});
+            
+            console.error("Upload Failed:", uploadError);
+            reject(uploadError);
+          }
+        });
 
         // ---------------------------------------------------------
-        // 4. FONT REGISTRATION (Safe Fallback)
+        // 5. DOC CONTENT & FONTS
         // ---------------------------------------------------------
-        const fontPaths = {
-          regular: path.join(fontsDir, "Inter_18pt-Regular.ttf"),
-          medium:  path.join(fontsDir, "Inter_18pt-Medium.ttf"),
-          bold:    path.join(fontsDir, "Inter_18pt-Bold.ttf")
+        const safeExists = (p) => p && typeof p === "string" && fs.existsSync(p);
+        
+        const registerFontSafe = (name, p) => {
+          if (safeExists(p)) doc.registerFont(name, p);
+          else doc.registerFont(name, "Helvetica");
         };
 
-        // Helper to register font safely, falls back to Helvetica if missing
-        const registerFontSafe = (name, path) => {
-          if (fs.existsSync(path)) {
-            doc.registerFont(name, path);
-          } else {
-            console.warn(`Font missing: ${path}. Using standard font.`);
-            doc.registerFont(name, "Helvetica"); // Fallback
-          }
-        };
+        registerFontSafe("Inter", path.join(fontsDir, "Inter_18pt-Regular.ttf"));
+        registerFontSafe("InterMedium", path.join(fontsDir, "Inter_18pt-Medium.ttf"));
+        registerFontSafe("InterBold", path.join(fontsDir, "Inter_18pt-Bold.ttf"));
 
-        registerFontSafe("Inter", fontPaths.regular);
-        registerFontSafe("InterMedium", fontPaths.medium);
-        registerFontSafe("InterBold", fontPaths.bold);
-
-        // ---------------------------------------------------------
-        // 5. DOCUMENT CONTENT
-        // ---------------------------------------------------------
-
-        // --- LOGO ---
-        try {
-          if (fs.existsSync(logoPath)) {
-            const pageWidth = doc.page.width;
-            const logoWidth = 50;
-            const logoHeight = 50;
-            const logoX = (pageWidth - logoWidth) / 2;
-            const logoY = 30;
-
-            doc.image(logoPath, logoX, logoY, { fit: [logoWidth, logoHeight] });
-            doc.y = logoY + logoHeight;
-          }
-        } catch (err) {
-          console.warn("Logo skipped:", err.message);
+        // Logo
+        if (safeExists(logoPath)) {
+          try {
+            doc.image(logoPath, (doc.page.width - 50) / 2, 30, { fit: [50, 50] });
+            doc.y = 80;
+          } catch (e) { console.warn("Logo skipped:", e.message); }
         }
 
-        // --- HEADER ---
+        // --- INVOICE CONTENT ---
         doc.font("InterBold").fontSize(26).text("AuroGurukul", { align: "center" });
         doc.moveDown(0.2);
         doc.font("InterBold").fontSize(18).text("INVOICE", { align: "center" });
         doc.moveDown(1.2);
 
-        // --- META INFO ---
+        // Meta
         doc.font("Inter").fontSize(12);
         doc.text(`Invoice Number: ${invoiceNumber}`);
-        doc.text(`Order ID: ${order.Order_ID}`);
+        doc.text(`Order ID: ${order.Order_ID || "N/A"}`);
         doc.text(`Date: ${new Date().toLocaleString()}`);
         doc.moveDown();
 
-        // --- BILLING ---
+        // Billing
         const b = order.Billing_Address || {};
         doc.font("InterMedium").fontSize(14).text("Billing Address", { underline: true });
         doc.font("Inter").fontSize(11).text(
@@ -113,9 +156,9 @@ module.exports = {
           `${b.Address || ""}\n${b.City || ""}, ${b.State || ""}\n` +
           `${b.Zipcode || ""}\nPhone: ${b.Phone || ""}\nEmail: ${b.Email || ""}`
         );
-        doc.moveDown(1.2);
+        doc.moveDown();
 
-        // --- SHIPPING ---
+        // Shipping
         const s = order.Shipping_Address || {};
         doc.font("InterMedium").fontSize(14).text("Shipping Address", { underline: true });
         doc.font("Inter").fontSize(11).text(
@@ -125,60 +168,43 @@ module.exports = {
         );
         doc.moveDown(1.5);
 
-        // --- ITEMS TABLE ---
+        // Table
         doc.font("InterBold").fontSize(14).text("Items", { underline: true });
-        doc.moveDown(0.6);
-
-        const tableTop = doc.y;
-        const col = { item: 250, qty: 100, price: 100 };
-
+        const tableTop = doc.y + 15;
         doc.font("InterMedium").fontSize(12);
         doc.text("Item", 40, tableTop);
-        doc.text("Qty", 40 + col.item, tableTop);
-        doc.text("Price", 40 + col.item + col.qty, tableTop);
-
+        doc.text("Qty", 290, tableTop);
+        doc.text("Price", 390, tableTop);
         doc.moveTo(40, tableTop + 15).lineTo(500, tableTop + 15).stroke();
+        
         let posY = tableTop + 25;
 
-        // Render Course Item
         if (order.Course_Item) {
-          const c = order.Course_Item;
-          doc.font("Inter").fontSize(11).text(c.Course_Title, 40, posY, { width: col.item });
-          doc.text("1", 40 + col.item, posY);
-          doc.text(`₹ ${c.Course_Fees}`, 40 + col.item + col.qty, posY);
+          doc.font("Inter").fontSize(11).text(order.Course_Item.Course_Title || "Course", 40, posY, { width: 240 });
+          doc.text("1", 290, posY);
+          doc.text(`₹ ${order.Course_Item.Course_Fees || 0}`, 390, posY);
           posY += 20;
         }
 
-        // Render Product Items
         if (Array.isArray(order.Product_Item)) {
           order.Product_Item.forEach((p) => {
-            const qty = p.Quantity ?? p.quantity ?? 1;
-            doc.font("Inter").fontSize(11).text(p.Product_Title, 40, posY, { width: col.item });
-            doc.text(String(qty), 40 + col.item, posY);
-            doc.text(`₹ ${p.Product_Price}`, 40 + col.item + col.qty, posY);
+            doc.font("Inter").fontSize(11).text(p.Product_Title || "Product", 40, posY, { width: 240 });
+            doc.text(String(p.Quantity || 1), 290, posY);
+            doc.text(`₹ ${p.Product_Price || 0}`, 390, posY);
             posY += 20;
           });
         }
 
         doc.moveDown(2);
-
-        // --- PAYMENT SUMMARY ---
         doc.font("InterBold").fontSize(14).text("Payment Summary", { underline: true });
-        doc.moveDown(0.6);
-
         doc.font("Inter").fontSize(12);
-        doc.text(`Subtotal: ₹ ${order.Price || 0}`);
-        doc.text(`Discount: ₹ ${order.Discount || 0}`);
         doc.text(`Total Paid: ₹ ${order.Total || order.Price || 0}`);
-
-        // --- FOOTER ---
-        doc.moveDown(3);
-        doc.font("Inter").fontSize(10).fillColor("#666")
-          .text("Thank you for choosing Auro Gurukul.", { align: "center" });
 
         doc.end();
 
       } catch (err) {
+        if (tempFilePath && fs.existsSync(tempFilePath)) fs.unlink(tempFilePath, () => {});
+        console.error("General Error:", err);
         reject(err);
       }
     });
