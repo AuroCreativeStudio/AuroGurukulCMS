@@ -205,6 +205,17 @@ export interface DescData extends Struct.ComponentSchema {
   };
 }
 
+export interface DescriptionPointsDescriptionPoints
+  extends Struct.ComponentSchema {
+  collectionName: 'components_description_points_description_points';
+  info: {
+    displayName: 'description_points';
+  };
+  attributes: {
+    description_points: Schema.Attribute.Text;
+  };
+}
+
 export interface DurationDurationComponent extends Struct.ComponentSchema {
   collectionName: 'components_duration_duration_components';
   info: {
@@ -480,6 +491,17 @@ export interface QuoteQuote extends Struct.ComponentSchema {
   };
 }
 
+export interface ResourceHighlightsResourceHighlights
+  extends Struct.ComponentSchema {
+  collectionName: 'components_resource_highlights_resource_highlights';
+  info: {
+    displayName: 'resource_highlights';
+  };
+  attributes: {
+    resource_highlights: Schema.Attribute.Text;
+  };
+}
+
 export interface ResourseResource extends Struct.ComponentSchema {
   collectionName: 'components_resourse_resources';
   info: {
@@ -719,6 +741,7 @@ declare module '@strapi/strapi' {
       'courses.course-list': CoursesCourseList;
       'curriculam.curriculam': CurriculamCurriculam;
       'desc.data': DescData;
+      'description-points.description-points': DescriptionPointsDescriptionPoints;
       'duration.duration-component': DurationDurationComponent;
       'families-points.families-points': FamiliesPointsFamiliesPoints;
       'faq.faq': FaqFaq;
@@ -743,6 +766,7 @@ declare module '@strapi/strapi' {
       'preparation-cards.preparation-cards': PreparationCardsPreparationCards;
       'product-item.product-item': ProductItemProductItem;
       'quote.quote': QuoteQuote;
+      'resource-highlights.resource-highlights': ResourceHighlightsResourceHighlights;
       'resourse.resource': ResourseResource;
       'sample.sampledata': SampleSampledata;
       'school-integral-education-list.school-integral-education-list': SchoolIntegralEducationListSchoolIntegralEducationList;

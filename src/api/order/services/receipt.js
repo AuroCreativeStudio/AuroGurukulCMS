@@ -11,104 +11,128 @@ module.exports = {
       let tempFilePath = null;
 
       try {
-        console.log("--- Starting Receipt Generation (Strapi v5 Fix) ---");
+        console.log("--- Starting Receipt Generation (Smart Environment Check) ---");
 
-        // ---------------------------------------------------------
         // 1. SETUP & PATHS
-        // ---------------------------------------------------------
         const rootDir = process.cwd();
         const fontsDir = path.join(rootDir, "fonts");
         const logoPath = path.join(rootDir, "public", "invoices", "logo.png"); // Re-use logo
 
-        // Create unique receipt number
         const receiptNumber = `RCPT-${order.Order_ID || Date.now()}`;
         const fileName = `${receiptNumber}.pdf`;
 
-        // Generate temp path (Critical for Cloud Uploads)
+        // 2. CREATE TEMP FILE
         tempFilePath = path.join(os.tmpdir(), fileName);
-        console.log("Temp receipt path:", tempFilePath);
 
-        // ---------------------------------------------------------
-        // 2. PDF GENERATION
-        // ---------------------------------------------------------
+        // 3. GENERATE PDF
         const doc = new PDFDocument({ size: "A4", margin: 40 });
         const writeStream = fs.createWriteStream(tempFilePath);
 
         doc.pipe(writeStream);
 
-        // Handle errors
-        doc.on("error", (err) => reject(err));
-        writeStream.on("error", (err) => reject(err));
+        // Handle Errors
+        doc.on("error", (err) => {
+           console.error("PDF Error:", err);
+           reject(err);
+        });
+
+        writeStream.on("error", (err) => {
+          console.error("File Write Error:", err);
+          reject(err);
+        });
 
         writeStream.on("finish", async () => {
           try {
-            console.log("Receipt PDF generated. Preparing upload...");
-            
-            // Verify file exists
-            if (!fs.existsSync(tempFilePath)) {
-               throw new Error(`Temp file not found at ${tempFilePath}`);
-            }
-            const stats = fs.statSync(tempFilePath);
+            // Check if we are in Production
+            const isProduction = process.env.NODE_ENV === 'production';
 
-            // ---------------------------------------------------------
-            // 3. UPLOAD TO GCS (Strapi v5 Compatible)
-            // ---------------------------------------------------------
-            const uploadedFiles = await strapi.plugin("upload").service("upload").upload({
-              data: {
-                fileInfo: {
-                  name: fileName,
-                  caption: `Receipt for Order ${order.Order_ID}`,
-                  alternativeText: receiptNumber,
+            if (isProduction) {
+              // =========================================================
+              // 🚀 PRODUCTION PATH: Use Strapi Upload (GCS)
+              // =========================================================
+              console.log("🚀 Production detected: Uploading Receipt to GCS...");
+              
+              const stats = fs.statSync(tempFilePath);
+              
+              const uploadedFiles = await strapi.plugin("upload").service("upload").upload({
+                data: {
+                  fileInfo: {
+                    name: fileName,
+                    caption: `Receipt for Order ${order.Order_ID}`,
+                    alternativeText: receiptNumber,
+                  },
                 },
-              },
-              files: {
-                name: fileName,
-                hash: receiptNumber,
-                ext: ".pdf",
-                mime: "application/pdf",
-                size: stats.size,
-                type: "application/pdf",
-                
-                // Polymorphic paths (Safety)
-                path: tempFilePath,
-                filepath: tempFilePath,
-                
-                // Manual Stream Override (Critical for v5)
-                getStream: () => fs.createReadStream(tempFilePath),
-              },
-            });
+                files: {
+                  name: fileName,
+                  hash: receiptNumber,
+                  ext: ".pdf",
+                  mime: "application/pdf",
+                  size: stats.size,
+                  type: "application/pdf",
+                  path: tempFilePath,
+                  filepath: tempFilePath,
+                  getStream: () => fs.createReadStream(tempFilePath),
+                },
+              });
 
-            // Strapi returns an array
-            const fileData = uploadedFiles[0];
-            console.log("Receipt Upload Success:", fileData?.url);
+              const fileData = uploadedFiles[0];
+              console.log("✅ GCS Upload Success:", fileData?.url);
 
-            // ---------------------------------------------------------
-            // 4. CLEANUP
-            // ---------------------------------------------------------
-            fs.unlink(tempFilePath, (err) => {
-              if (err) console.warn("Cleanup warning:", err.message);
-            });
+              // Cleanup Temp
+              if (fs.existsSync(tempFilePath)) fs.unlinkSync(tempFilePath);
 
-            resolve({
-              receiptNumber,
-              fileName,
-              url: fileData?.url,
-              fileId: fileData?.id,
-            });
+              resolve({
+                receiptNumber,
+                fileName,
+                url: fileData?.url,
+                fileId: fileData?.id,
+                filePath: fileData?.url 
+              });
+
+            } else {
+              // =========================================================
+              // 🛠️ LOCAL PATH: Bypass Plugin completely
+              // =========================================================
+              console.log("⚠️ Dev Mode: Bypassing GCS for Receipt, saving locally.");
+
+              // Define local storage path (public/receipts)
+              const publicDir = path.join(rootDir, "public", "receipts");
+              if (!fs.existsSync(publicDir)) {
+                fs.mkdirSync(publicDir, { recursive: true });
+              }
+
+              const localFilePath = path.join(publicDir, fileName);
+
+              // Move file from Temp to Public folder
+              fs.copyFileSync(tempFilePath, localFilePath);
+              
+              // Cleanup Temp
+              if (fs.existsSync(tempFilePath)) fs.unlinkSync(tempFilePath);
+
+              console.log("✅ Receipt Saved Locally:", localFilePath);
+
+              resolve({
+                receiptNumber,
+                fileName,
+                // Local URL
+                url: `/receipts/${fileName}`, 
+                // Full Filesystem Path
+                filePath: localFilePath, 
+                fileId: null 
+              });
+            }
 
           } catch (uploadError) {
-            // Ensure cleanup happens even on error
-            if (fs.existsSync(tempFilePath)) fs.unlink(tempFilePath, () => {});
-            
-            console.error("Receipt Upload Failed:", uploadError);
+            console.error("Processing Failed:", uploadError);
+            if (fs.existsSync(tempFilePath)) fs.unlinkSync(tempFilePath);
             reject(uploadError);
           }
         });
 
         // ---------------------------------------------------------
-        // 5. DOC CONTENT & FONTS
+        // 4. PDF CONTENT
         // ---------------------------------------------------------
-        const safeExists = (p) => p && typeof p === "string" && fs.existsSync(p);
+        const safeExists = (p) => fs.existsSync(p);
         
         const registerFontSafe = (name, p) => {
           if (safeExists(p)) doc.registerFont(name, p);
@@ -122,11 +146,14 @@ module.exports = {
         // Logo
         if (safeExists(logoPath)) {
           try {
+            const pageWidth = doc.page.width;
             const logoWidth = 50;
             const logoHeight = 50;
-            const logoX = (doc.page.width - logoWidth) / 2;
-            doc.image(logoPath, logoX, 30, { fit: [logoWidth, logoHeight] });
-            doc.y = 80;
+            const logoX = (pageWidth - logoWidth) / 2;
+            const logoY = 30;
+
+            doc.image(logoPath, logoX, logoY, { fit: [logoWidth, logoHeight] });
+            doc.y = logoY + logoHeight;
           } catch (e) { console.warn("Logo skipped:", e.message); }
         }
 
@@ -163,7 +190,7 @@ module.exports = {
 
         doc.font("InterMedium").fontSize(12);
         doc.text("Item", 40, tableTop);
-        doc.text("Amount", 40 + col.item + 100, tableTop); // Simple 2-col layout for receipt
+        doc.text("Amount", 40 + col.item + 100, tableTop); 
 
         doc.moveTo(40, tableTop + 15).lineTo(500, tableTop + 15).stroke();
         let posY = tableTop + 25;
@@ -198,7 +225,6 @@ module.exports = {
 
         doc.font("Inter").fontSize(12);
         
-        // Payment Status Logic
         const paymentStatus = order.Payment_Status ? "Completed" : "Pending";
         const paymentMode = order.Payment_Response?.paymentDetails?.[0]?.paymentMode || "Online";
 
@@ -215,8 +241,7 @@ module.exports = {
         doc.end();
 
       } catch (err) {
-        // Cleanup on synchronous errors
-        if (tempFilePath && fs.existsSync(tempFilePath)) fs.unlink(tempFilePath, () => {});
+        if (tempFilePath && fs.existsSync(tempFilePath)) fs.unlinkSync(tempFilePath);
         console.error("Receipt generation failed:", err);
         reject(err);
       }

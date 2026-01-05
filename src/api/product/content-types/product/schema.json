@@ -97,6 +97,16 @@
       "relation": "oneToMany",
       "target": "api::review.review",
       "mappedBy": "review"
+    },
+    "description_points": {
+      "type": "component",
+      "component": "description-points.description-points",
+      "repeatable": true
+    },
+    "resource_highlights": {
+      "type": "component",
+      "component": "resource-highlights.resource-highlights",
+      "repeatable": true
     }
   }
 }

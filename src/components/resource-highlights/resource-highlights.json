@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_resource_highlights_resource_highlights",
+  "info": {
+    "displayName": "resource_highlights"
+  },
+  "options": {},
+  "attributes": {
+    "resource_highlights": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

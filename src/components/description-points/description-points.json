@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_description_points_description_points",
+  "info": {
+    "displayName": "description_points"
+  },
+  "options": {},
+  "attributes": {
+    "description_points": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

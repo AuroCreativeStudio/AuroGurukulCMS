@@ -1410,6 +1410,10 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     Description: Schema.Attribute.Text;
     description_image: Schema.Attribute.Media<'images', true>;
+    description_points: Schema.Attribute.Component<
+      'description-points.description-points',
+      true
+    >;
     description_video: Schema.Attribute.Media<'videos', true>;
     discount_coupon: Schema.Attribute.Relation<
       'manyToOne',
@@ -1430,6 +1434,10 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     >;
     Product_Id: Schema.Attribute.UID<'Title'> & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
+    resource_highlights: Schema.Attribute.Component<
+      'resource-highlights.resource-highlights',
+      true
+    >;
     reviews: Schema.Attribute.Relation<'oneToMany', 'api::review.review'>;
     short_description: Schema.Attribute.Text;
     Testimonials_videos: Schema.Attribute.Media<'videos', true>;
