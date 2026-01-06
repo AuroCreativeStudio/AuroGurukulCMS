@@ -15,7 +15,7 @@ module.exports = factories.createCoreController(
     //------------------------------------------------------------------
     async getPhonePeAuthToken(ctx) {
       try {
-        const url = `${process.env.PHONEPE_HOST_IDM}/v1/oauth/token`;
+       const url = `${process.env.PHONEPE_HOST_IDM}/v1/oauth/token`;
         const params = new URLSearchParams();
         params.append("client_id", process.env.PHONEPE_CLIENT_ID);
         params.append("client_secret", process.env.PHONEPE_CLIENT_SECRET);
@@ -37,7 +37,7 @@ module.exports = factories.createCoreController(
     },
 
     //------------------------------------------------------------------
-    // CREATE ORDER + GENERATE INVOICE
+    // CREATE ORDER (Invoice generated on frontend)
     //------------------------------------------------------------------
     async create(ctx) {
       try {
@@ -48,31 +48,20 @@ module.exports = factories.createCoreController(
         data.Date = new Date();
         data.Payment_Status = data.Payment_Status ?? false;
 
-        // Default to checkout if not specified
-        const orderType = data.order_type || "checkout";
-
         if (ctx.state.user) {
           data.users_permissions_user = ctx.state.user.id;
         }
 
-        // -------------------------------------------------------------
-        // ✅ FIX: HANDLE COURSE ITEM (Array -> Single Object conversion)
-        // -------------------------------------------------------------
-        // The frontend sends an Array [{...}], but Schema expects Object {...}
+        // Handle Course Item (Array -> Single Object conversion)
         if (Array.isArray(data.Course_Item)) {
           if (data.Course_Item.length > 0) {
-            // Take the FIRST item from the array to save as the single component
             data.Course_Item = data.Course_Item[0];
           } else {
-            // If array is empty, remove the field so Strapi doesn't complain
             delete data.Course_Item;
           }
-        }
-        // Fallback: If it's not an array, check if it's a valid object
-        else if (!(data.Course_Item && data.Course_Item.Course_Id)) {
+        } else if (!(data.Course_Item && data.Course_Item.Course_Id)) {
           delete data.Course_Item;
         }
-
 
         if (
           !(Array.isArray(data.Product_Item) && data.Product_Item.length > 0)
@@ -91,89 +80,13 @@ module.exports = factories.createCoreController(
           },
         });
 
-        // ✅ Generate Invoice for checkout, Receipt for direct enrollment
-        let documentService;
-        let documentPrefix;
-        let documentType;
-
-        if (orderType === "direct_enrollment") {
-          // For Pay Online - Generate Receipt (will be created after payment)
-          console.log("📝 Direct enrollment - Receipt will be generated after payment");
-          documentService = null; // We'll generate receipt in verify method
-          documentType = "receipt";
-        } else {
-          // For Checkout - Generate Invoice immediately
-          documentService = invoiceService;
-          documentPrefix = entry.Order_ID;
-          documentType = "invoice";
-        }
-
-        let fileEntry = null;
-        let documentUrl = null;
-
-        // Only generate document for checkout orders
-        if (documentService) {
-          const document = await documentService.generateInvoice(entry);
-
-          if (!document?.filePath) throw new Error("Document filePath missing");
-
-          const sourcePath = path.resolve(document.filePath);
-          const fileName = `${documentPrefix}.pdf`;
-
-          const uploadDir = path.join(process.cwd(), "public", "uploads");
-          const destPath = path.join(uploadDir, fileName);
-
-          if (!fs.existsSync(uploadDir)) {
-            fs.mkdirSync(uploadDir, { recursive: true });
-          }
-
-          fs.copyFileSync(sourcePath, destPath);
-
-          if (fs.existsSync(sourcePath)) {
-            fs.unlinkSync(sourcePath);
-          }
-
-          const stats = fs.statSync(destPath);
-          fileEntry = await strapi.entityService.create(
-            "plugin::upload.file",
-            {
-              data: {
-                name: fileName,
-                alternativeText: `${documentType === 'invoice' ? 'Invoice' : 'Receipt'} for ${entry.Order_ID}`,
-                caption: `${documentType === 'invoice' ? 'Invoice' : 'Receipt'} #${entry.Order_ID}`,
-                width: null,
-                height: null,
-                formats: null,
-                hash: entry.Order_ID,
-                ext: ".pdf",
-                mime: "application/pdf",
-                size: (stats.size / 1024).toFixed(2),
-                url: `/uploads/${fileName}`,
-                provider: "local",
-                folderPath: "/",
-              },
-            }
-          );
-
-          console.log(`${documentType === 'invoice' ? 'Invoice' : 'Receipt'} registered manually with ID: ${fileEntry.id}`);
-
-          await strapi.entityService.update("api::order.order", entry.id, {
-            data: {
-              Invoice: {
-                file: fileEntry.id,
-              },
-            },
-          });
-
-          documentUrl = fileEntry.url;
-        }
+        console.log("✅ Order created:", entry.Order_ID);
+        console.log("📝 Invoice will be generated on frontend");
 
         return {
           success: true,
           orderId: entry.Order_ID,
           internalId: entry.id,
-          documentUrl: documentUrl,
-          documentType: documentType,
           entry,
         };
       } catch (error) {
@@ -219,7 +132,6 @@ module.exports = factories.createCoreController(
           return ctx.badRequest("orderId and amount are required");
         }
 
-        // ✅ Find order by Order_ID
         const orders = await strapi.entityService.findMany("api::order.order", {
           filters: { Order_ID: orderId },
         });
@@ -255,7 +167,7 @@ module.exports = factories.createCoreController(
 
         console.log("PHONEPE PAYLOAD:", payload);
 
-        const url = `${process.env.PHONEPE_HOST_PG}${process.env.PHONEPE_BASE}/pay`;
+const url = `${process.env.PHONEPE_HOST_PG}${process.env.PHONEPE_BASE}/pay`;
         console.log("PAYMENT URL:", url);
 
         const response = await axios.post(url, payload, {
@@ -276,7 +188,6 @@ module.exports = factories.createCoreController(
           order.id
         );
 
-        // ✅ Update using the found order's internal ID
         const updatedOrder = await strapi.entityService.update(
           "api::order.order",
           order.id,
@@ -301,29 +212,25 @@ module.exports = factories.createCoreController(
         console.error("❌ Error Details:", err.response?.data || err.stack);
         return ctx.internalServerError(
           err.response?.data?.message ||
-          err.message ||
-          "Payment initiation failed"
+            err.message ||
+            "Payment initiation failed"
         );
       }
     },
+
     //------------------------------------------------------------------
-    // VERIFY PAYMENT STATUS (PHONEPE PG v2 - CORRECT)
+    // VERIFY PAYMENT STATUS (Receipt generated on frontend)
     //------------------------------------------------------------------
     async verify(ctx) {
       try {
         const { merchantOrderId } = ctx.request.body;
-
-        console.log("🔍 VERIFYING ORDER:", merchantOrderId);
-
         if (!merchantOrderId) {
-          return ctx.badRequest("merchantOrderId is required");
+          return ctx.badRequest("merchantOrderId required");
         }
 
-        const authToken = await this.getPhonePeAuthToken(ctx);
+        const authToken = await this.getPhonePeAuthToken();
 
-        const url = `${process.env.PHONEPE_HOST_PG}${process.env.PHONEPE_BASE}/order/${merchantOrderId}/status`;
-        console.log("📞 Calling PhonePe URL:", url);
-
+const url = `${process.env.PHONEPE_HOST_PG}${process.env.PHONEPE_BASE}/order/${merchantOrderId}/status`;
         const response = await axios.get(url, {
           headers: {
             Authorization: `O-Bearer ${authToken}`,
@@ -331,191 +238,59 @@ module.exports = factories.createCoreController(
           },
         });
 
-        console.log(
-          "✅ PhonePe Response:",
-          JSON.stringify(response.data, null, 2)
-        );
-
         const state = response.data?.state;
-        const isSuccess = state === "COMPLETED";
-
+        const success = state === "COMPLETED";
         const transactionId =
           response.data?.paymentDetails?.[0]?.transactionId || null;
 
-        console.log("💳 Payment State:", state, "| Is Success:", isSuccess);
-        console.log("🆔 Transaction ID:", transactionId);
-
-        if (isSuccess) {
-          // ✅ Get order with BOTH id and documentId
-          const orders = await strapi.entityService.findMany(
-            "api::order.order",
-            {
-              filters: { Order_ID: merchantOrderId },
-              populate: {
-                Billing_Address: true,
-                Shipping_Address: true,
-                Course_Item: true,
-                Product_Item: true,
-              },
-            }
-          );
-
-          if (!orders || orders.length === 0) {
-            console.error("❌ Order not found for Order_ID:", merchantOrderId);
-            return ctx.notFound("Order not found");
-          }
-
-          const order = orders[0];
-          console.log("✅ Order found:", {
-            id: order.id,
-            documentId: order.documentId,
-            Order_ID: order.Order_ID,
-            order_type: order.order_type,
-          });
-
-          // Update payment status using id (numeric ID works for updates)
-          const updateResult = await strapi.entityService.update(
-            "api::order.order",
-            order.id,
-            {
-              data: {
-                Payment_Status: true,
-                Payment_State: state,
-                Transaction_Id: transactionId,
-                Payment_Response: response.data,
-              },
-            }
-          );
-
-          console.log("📝 DB Update Result:", {
-            id: updateResult.id,
-            Order_ID: updateResult.Order_ID,
-            Payment_Status: updateResult.Payment_Status,
-            PhonePe_Order_Id: updateResult.PhonePe_Order_Id,
-            Transaction_Id: updateResult.Transaction_Id,
-          });
-
-          // ✅ Generate Receipt for direct enrollment orders
-          console.log("🔍 Checking order type:", order.order_type);
-
-          if (order.order_type === "direct_enrollment") {
-            console.log("📄 Generating receipt for direct enrollment...");
-
-            try {
-              const receiptService = require("../services/receipt");
-              console.log("✅ Receipt service loaded");
-
-              // ✅ We already have the full order with all populated fields!
-              console.log("✅ Using already populated order:", order.Order_ID);
-
-              // Add transaction ID to order for receipt
-              order.Transaction_Id = transactionId;
-              order.Payment_Response = response.data;
-              order.Payment_Status = true; // Ensure this is set for receipt
-
-              console.log("📄 Calling generateReceipt with order:", {
-                Order_ID: order.Order_ID,
-                hasTransactionId: !!order.Transaction_Id,
-                hasBillingAddress: !!order.Billing_Address,
-                hasCourseItem: !!order.Course_Item,
-              });
-
-              const receipt = await receiptService.generateReceipt(order);
-              console.log("✅ Receipt generated:", receipt);
-
-              if (receipt?.filePath) {
-                const sourcePath = path.resolve(receipt.filePath);
-                const fileName = receipt.fileName;
-
-                console.log("📂 Receipt source path:", sourcePath);
-                console.log("📂 Receipt file name:", fileName);
-
-                const uploadDir = path.join(process.cwd(), "public", "uploads");
-                const destPath = path.join(uploadDir, fileName);
-
-                if (!fs.existsSync(uploadDir)) {
-                  fs.mkdirSync(uploadDir, { recursive: true });
-                }
-
-                fs.copyFileSync(sourcePath, destPath);
-                console.log("✅ Receipt copied to uploads");
-
-                if (fs.existsSync(sourcePath)) {
-                  fs.unlinkSync(sourcePath);
-                  console.log("✅ Temp receipt file deleted");
-                }
-
-                const stats = fs.statSync(destPath);
-                const fileEntry = await strapi.entityService.create(
-                  "plugin::upload.file",
-                  {
-                    data: {
-                      name: fileName,
-                      alternativeText: `Receipt for ${order.Order_ID}`,
-                      caption: `Receipt #${order.Order_ID}`,
-                      width: null,
-                      height: null,
-                      formats: null,
-                      hash: order.Order_ID + "_receipt",
-                      ext: ".pdf",
-                      mime: "application/pdf",
-                      size: (stats.size / 1024).toFixed(2),
-                      url: `/uploads/${fileName}`,
-                      provider: "local",
-                      folderPath: "/",
-                    },
-                  }
-                );
-
-                console.log(
-                  `✅ Receipt registered in DB with ID: ${fileEntry.id}`
-                );
-
-                // Update order with receipt
-                await strapi.entityService.update(
-                  "api::order.order",
-                  order.id,
-                  {
-                    data: {
-                      receipt: fileEntry.id,
-                    },
-                  }
-                );
-
-                console.log("✅ Receipt attached to order");
-              } else {
-                console.error("❌ Receipt generation returned no filePath");
-              }
-            } catch (receiptError) {
-              console.error("❌ Receipt generation failed:");
-              console.error("   Error message:", receiptError.message);
-              console.error("   Error stack:", receiptError.stack);
-              // Don't fail the payment verification if receipt generation fails
-            }
-          } else {
-            console.log(
-              "ℹ️  Order type is not direct_enrollment, skipping receipt generation"
-            );
-          }
+        if (!success) {
+          return { success: false, state };
         }
+
+        const orders = await strapi.entityService.findMany("api::order.order", {
+          filters: { Order_ID: merchantOrderId },
+          populate: {
+            Billing_Address: true,
+            Shipping_Address: true,
+            Course_Item: true,
+            Product_Item: true,
+          },
+        });
+
+        if (!orders.length) {
+          return ctx.notFound("Order not found");
+        }
+
+        const order = orders[0];
+
+        await strapi.entityService.update("api::order.order", order.id, {
+          data: {
+            Payment_Status: true,
+            Payment_State: state,
+            Transaction_Id: transactionId,
+            Payment_Response: response.data,
+          },
+        });
+
+        console.log("✅ Payment verified:", transactionId);
+        console.log("📝 Receipt will be generated on frontend");
 
         return {
           success: true,
-          paymentStatus: state,
-          isPaymentSuccessful: isSuccess,
+          paymentState: state,
           transactionId,
-          details: response.data,
         };
+
       } catch (err) {
-        console.error("❌ VERIFY ERROR:", err.response?.data || err.message);
-        return ctx.internalServerError({
-          message: "Verification failed",
-          error: err.response?.data || err.message,
-        });
+        console.error("❌ VERIFY ERROR:", err);
+        console.error("Stack trace:", err.stack);
+        return ctx.internalServerError("Verification failed");
       }
     },
 
-
+    //------------------------------------------------------------------
+    // FIND ORDER BY ORDER_ID
+    //------------------------------------------------------------------
     async findByOrderId(ctx) {
       try {
         const { orderId } = ctx.params;
@@ -534,6 +309,7 @@ module.exports = factories.createCoreController(
             Invoice: {
               populate: ["file"],
             },
+            receipt: true,
             users_permissions_user: true,
           },
         });
