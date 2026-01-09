@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pincode_masters",
+  "info": {
+    "singularName": "pincode-master",
+    "pluralName": "pincode-masters",
+    "displayName": "Pincode_Master"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Pincode": {
+      "type": "string",
+      "unique": true
+    },
+    "State": {
+      "type": "string"
+    },
+    "District": {
+      "type": "string"
+    },
+    "Zone_Tag": {
+      "type": "string"
+    }
+  }
+}

@@ -46,19 +46,6 @@
     "Zip_Code": {
       "type": "string"
     },
-    "Shipping_Status": {
-      "type": "enumeration",
-      "enum": [
-        "Not Shipped",
-        "Packed",
-        "Dispatched",
-        "In Transit",
-        "Out for Delivery",
-        "Delivered",
-        "Delivery Failed",
-        "Returned"
-      ]
-    },
     "users_permissions_user": {
       "type": "relation",
       "relation": "oneToOne",

@@ -1328,12 +1328,13 @@ export interface ApiPartialPaymentCoursePartialPaymentCourse
   };
 }
 
-export interface ApiPaymentPayment extends Struct.CollectionTypeSchema {
-  collectionName: 'payments';
+export interface ApiPincodeMasterPincodeMaster
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'pincode_masters';
   info: {
-    displayName: 'Payment';
-    pluralName: 'payments';
-    singularName: 'payment';
+    displayName: 'Pincode_Master';
+    pluralName: 'pincode-masters';
+    singularName: 'pincode-master';
   };
   options: {
     draftAndPublish: true;
@@ -1342,21 +1343,20 @@ export interface ApiPaymentPayment extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    Date: Schema.Attribute.Date;
+    District: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
-      'api::payment.payment'
+      'api::pincode-master.pincode-master'
     > &
       Schema.Attribute.Private;
-    Order_Details: Schema.Attribute.Text;
-    Payment_ID: Schema.Attribute.UID;
-    Price: Schema.Attribute.String;
+    Pincode: Schema.Attribute.String & Schema.Attribute.Unique;
     publishedAt: Schema.Attribute.DateTime;
-    Transaction_ID: Schema.Attribute.String;
+    State: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    Zone_Tag: Schema.Attribute.String;
   };
 }
 
@@ -1621,6 +1621,7 @@ export interface ApiShippingRuleShippingRule
     publishedAt: Schema.Attribute.DateTime;
     shipping_fee: Schema.Attribute.String;
     Shipping_Method: Schema.Attribute.Enumeration<['Shipping Method']>;
+    state_shipping: Schema.Attribute.Boolean;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1671,18 +1672,6 @@ export interface ApiShippingShipping extends Struct.CollectionTypeSchema {
     Shipping_ID: Schema.Attribute.String & Schema.Attribute.Unique;
     Shipping_Method: Schema.Attribute.Enumeration<
       ['Standard', 'Express', 'Same-Day', 'Free Shipping', 'Pickup']
-    >;
-    Shipping_Status: Schema.Attribute.Enumeration<
-      [
-        'Not Shipped',
-        'Packed',
-        'Dispatched',
-        'In Transit',
-        'Out for Delivery',
-        'Delivered',
-        'Delivery Failed',
-        'Returned',
-      ]
     >;
     Total_price: Schema.Attribute.String;
     Tracking_Number: Schema.Attribute.String;
@@ -1805,6 +1794,38 @@ export interface ApiSocialLinkSocialLink extends Struct.SingleTypeSchema {
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     youtube: Schema.Attribute.String;
+  };
+}
+
+export interface ApiStateShippingRuleStateShippingRule
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'state_shipping_rules';
+  info: {
+    displayName: 'State_Shipping_Rule';
+    pluralName: 'state-shipping-rules';
+    singularName: 'state-shipping-rule';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    availability: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Estimated_Days: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::state-shipping-rule.state-shipping-rule'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    Shipping_Cost: Schema.Attribute.String;
+    State_Name: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -2387,7 +2408,7 @@ declare module '@strapi/strapi' {
       'api::order.order': ApiOrderOrder;
       'api::otp.otp': ApiOtpOtp;
       'api::partial-payment-course.partial-payment-course': ApiPartialPaymentCoursePartialPaymentCourse;
-      'api::payment.payment': ApiPaymentPayment;
+      'api::pincode-master.pincode-master': ApiPincodeMasterPincodeMaster;
       'api::product-category.product-category': ApiProductCategoryProductCategory;
       'api::product.product': ApiProductProduct;
       'api::resource.resource': ApiResourceResource;
@@ -2399,6 +2420,7 @@ declare module '@strapi/strapi' {
       'api::skill-development-form.skill-development-form': ApiSkillDevelopmentFormSkillDevelopmentForm;
       'api::skill-development.skill-development': ApiSkillDevelopmentSkillDevelopment;
       'api::social-link.social-link': ApiSocialLinkSocialLink;
+      'api::state-shipping-rule.state-shipping-rule': ApiStateShippingRuleStateShippingRule;
       'api::wishlist.wishlist': ApiWishlistWishlist;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

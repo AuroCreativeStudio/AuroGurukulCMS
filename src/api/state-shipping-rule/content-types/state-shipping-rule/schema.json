@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "state_shipping_rules",
+  "info": {
+    "singularName": "state-shipping-rule",
+    "pluralName": "state-shipping-rules",
+    "displayName": "State_Shipping_Rule"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "State_Name": {
+      "type": "string"
+    },
+    "Shipping_Cost": {
+      "type": "string"
+    },
+    "Estimated_Days": {
+      "type": "string"
+    },
+    "availability": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

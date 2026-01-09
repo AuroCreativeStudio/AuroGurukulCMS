@@ -25,6 +25,9 @@
     },
     "Free_Shipping": {
       "type": "boolean"
+    },
+    "state_shipping": {
+      "type": "boolean"
     }
   }
 }
