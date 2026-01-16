@@ -638,6 +638,103 @@ export interface ApiAllGradeAllGrade extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiBlueprintFormSubmissionBlueprintFormSubmission
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'blueprint_form_submissions';
+  info: {
+    displayName: 'Blueprint Form Submissions';
+    pluralName: 'blueprint-form-submissions';
+    singularName: 'blueprint-form-submission';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    board: Schema.Attribute.String;
+    class: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    email: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::blueprint-form-submission.blueprint-form-submission'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    pdfSent: Schema.Attribute.Boolean;
+    phone: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    whatsapp_number: Schema.Attribute.String;
+  };
+}
+
+export interface ApiBlueprintPdfBlueprintPdf
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'blueprint_pdfs';
+  info: {
+    displayName: 'Blueprint PDF';
+    pluralName: 'blueprint-pdfs';
+    singularName: 'blueprint-pdf';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    board: Schema.Attribute.Relation<'manyToOne', 'api::board.board'>;
+    class: Schema.Attribute.Relation<'manyToOne', 'api::class.class'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::blueprint-pdf.blueprint-pdf'
+    > &
+      Schema.Attribute.Private;
+    pdf: Schema.Attribute.Media<'files'>;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiBoardBoard extends Struct.CollectionTypeSchema {
+  collectionName: 'boards';
+  info: {
+    displayName: 'Board';
+    pluralName: 'boards';
+    singularName: 'board';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    blueprint_pdfs: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::blueprint-pdf.blueprint-pdf'
+    >;
+    classes: Schema.Attribute.Relation<'manyToMany', 'api::class.class'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::board.board'> &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCareerFormCareerForm extends Struct.CollectionTypeSchema {
   collectionName: 'career_forms';
   info: {
@@ -730,6 +827,36 @@ export interface ApiCartCart extends Struct.CollectionTypeSchema {
       'oneToOne',
       'plugin::users-permissions.user'
     >;
+  };
+}
+
+export interface ApiClassClass extends Struct.CollectionTypeSchema {
+  collectionName: 'classes';
+  info: {
+    displayName: 'Class';
+    pluralName: 'classes';
+    singularName: 'class';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    blueprint_pdfs: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::blueprint-pdf.blueprint-pdf'
+    >;
+    boards: Schema.Attribute.Relation<'manyToMany', 'api::board.board'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::class.class'> &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -2391,9 +2518,13 @@ declare module '@strapi/strapi' {
       'api::all-activity.all-activity': ApiAllActivityAllActivity;
       'api::all-course.all-course': ApiAllCourseAllCourse;
       'api::all-grade.all-grade': ApiAllGradeAllGrade;
+      'api::blueprint-form-submission.blueprint-form-submission': ApiBlueprintFormSubmissionBlueprintFormSubmission;
+      'api::blueprint-pdf.blueprint-pdf': ApiBlueprintPdfBlueprintPdf;
+      'api::board.board': ApiBoardBoard;
       'api::career-form.career-form': ApiCareerFormCareerForm;
       'api::carrer.carrer': ApiCarrerCarrer;
       'api::cart.cart': ApiCartCart;
+      'api::class.class': ApiClassClass;
       'api::contact.contact': ApiContactContact;
       'api::contactus-form.contactus-form': ApiContactusFormContactusForm;
       'api::cookie-consent.cookie-consent': ApiCookieConsentCookieConsent;

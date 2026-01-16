@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "blueprint_pdfs",
+  "info": {
+    "singularName": "blueprint-pdf",
+    "pluralName": "blueprint-pdfs",
+    "displayName": "Blueprint PDF"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "pdf": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "class": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::class.class",
+      "inversedBy": "blueprint_pdfs"
+    },
+    "board": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::board.board",
+      "inversedBy": "blueprint_pdfs"
+    }
+  }
+}

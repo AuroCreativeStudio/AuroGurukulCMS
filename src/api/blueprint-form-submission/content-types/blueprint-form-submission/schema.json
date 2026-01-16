@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "blueprint_form_submissions",
+  "info": {
+    "singularName": "blueprint-form-submission",
+    "pluralName": "blueprint-form-submissions",
+    "displayName": "Blueprint Form Submissions"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "whatsapp_number": {
+      "type": "string"
+    },
+    "pdfSent": {
+      "type": "boolean"
+    },
+    "board": {
+      "type": "string"
+    },
+    "class": {
+      "type": "string"
+    }
+  }
+}
