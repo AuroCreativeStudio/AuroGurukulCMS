@@ -63,6 +63,28 @@
       "component": "online-points.online-points",
       "repeatable": true
     },
+    "human_advantage_headline": {
+      "type": "text"
+    },
+    "human_advantage_subheadline": {
+      "type": "text"
+    },
+    "Human_advantage": {
+      "type": "component",
+      "component": "human-advantage.human-advantage",
+      "repeatable": true
+    },
+    "smart_preparation_headline": {
+      "type": "text"
+    },
+    "smart_preparation_subheadline": {
+      "type": "text"
+    },
+    "smart_preparation": {
+      "type": "component",
+      "component": "smart-preparation.smart-preparation",
+      "repeatable": true
+    },
     "features_description": {
       "type": "text"
     },

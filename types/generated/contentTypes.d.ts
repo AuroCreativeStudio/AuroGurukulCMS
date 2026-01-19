@@ -1298,6 +1298,12 @@ export interface ApiLandingPageLandingPage extends Struct.SingleTypeSchema {
     headline: Schema.Attribute.String;
     headline2: Schema.Attribute.String;
     hero_image: Schema.Attribute.Media<'images'>;
+    Human_advantage: Schema.Attribute.Component<
+      'human-advantage.human-advantage',
+      true
+    >;
+    human_advantage_headline: Schema.Attribute.Text;
+    human_advantage_subheadline: Schema.Attribute.Text;
     JEE_track: Schema.Attribute.Component<'jee-track.jee-track', true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -1328,6 +1334,12 @@ export interface ApiLandingPageLandingPage extends Struct.SingleTypeSchema {
     preparation_heading: Schema.Attribute.Text;
     preparation_subheading: Schema.Attribute.Text;
     publishedAt: Schema.Attribute.DateTime;
+    smart_preparation: Schema.Attribute.Component<
+      'smart-preparation.smart-preparation',
+      true
+    >;
+    smart_preparation_headline: Schema.Attribute.Text;
+    smart_preparation_subheadline: Schema.Attribute.Text;
     Study_heading: Schema.Attribute.Text;
     study_offline: Schema.Attribute.Component<
       'study-offline.study-offline',

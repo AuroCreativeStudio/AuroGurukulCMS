@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_human_advantage_human_advantages",
+  "info": {
+    "displayName": "Human Advantage"
+  },
+  "options": {},
+  "attributes": {
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "heading": {
+      "type": "string"
+    },
+    "content": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

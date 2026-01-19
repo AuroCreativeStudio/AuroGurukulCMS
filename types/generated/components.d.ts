@@ -309,6 +309,18 @@ export interface HighlightHighlight extends Struct.ComponentSchema {
   };
 }
 
+export interface HumanAdvantageHumanAdvantage extends Struct.ComponentSchema {
+  collectionName: 'components_human_advantage_human_advantages';
+  info: {
+    displayName: 'Human Advantage';
+  };
+  attributes: {
+    content: Schema.Attribute.Text;
+    heading: Schema.Attribute.String;
+    icon: Schema.Attribute.Media<'images'>;
+  };
+}
+
 export interface IntegralEducationIntegralEducation
   extends Struct.ComponentSchema {
   collectionName: 'components_integral_education_integral_educations';
@@ -609,6 +621,19 @@ export interface SkillListSkillList extends Struct.ComponentSchema {
   };
 }
 
+export interface SmartPreparationSmartPreparation
+  extends Struct.ComponentSchema {
+  collectionName: 'components_smart_preparation_smart_preparations';
+  info: {
+    displayName: 'Smart Preparation';
+  };
+  attributes: {
+    content: Schema.Attribute.Text;
+    heading: Schema.Attribute.String;
+    icon: Schema.Attribute.Media<'images'>;
+  };
+}
+
 export interface StudyOfflineStudyOffline extends Struct.ComponentSchema {
   collectionName: 'components_study_offline_study_offlines';
   info: {
@@ -750,6 +775,7 @@ declare module '@strapi/strapi' {
       'featured-list.featured-list': FeaturedListFeaturedList;
       'features.features': FeaturesFeatures;
       'highlight.highlight': HighlightHighlight;
+      'human-advantage.human-advantage': HumanAdvantageHumanAdvantage;
       'integral-education.integral-education': IntegralEducationIntegralEducation;
       'integral-education.school-integral-education': IntegralEducationSchoolIntegralEducation;
       'integrated-programs.integrated-programs': IntegratedProgramsIntegratedPrograms;
@@ -776,6 +802,7 @@ declare module '@strapi/strapi' {
       'shipping-address.shipping-address': ShippingAddressShippingAddress;
       'skill-development.skill-development': SkillDevelopmentSkillDevelopment;
       'skill-list.skill-list': SkillListSkillList;
+      'smart-preparation.smart-preparation': SmartPreparationSmartPreparation;
       'study-offline.study-offline': StudyOfflineStudyOffline;
       'study-online.study-online': StudyOnlineStudyOnline;
       'study.study-materials': StudyStudyMaterials;
