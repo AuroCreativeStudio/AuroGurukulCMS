@@ -1169,6 +1169,7 @@ export interface ApiLandingPageLandingPage extends Struct.SingleTypeSchema {
     form_number: Schema.Attribute.String;
     form_subheading: Schema.Attribute.Text;
     headline: Schema.Attribute.String;
+    headline2: Schema.Attribute.String;
     hero_image: Schema.Attribute.Media<'images'>;
     JEE_track: Schema.Attribute.Component<'jee-track.jee-track', true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;

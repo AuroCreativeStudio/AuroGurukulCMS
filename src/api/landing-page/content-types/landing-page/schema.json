@@ -17,6 +17,9 @@
     "headline": {
       "type": "string"
     },
+    "headline2": {
+      "type": "string"
+    },
     "Subheadline": {
       "type": "text"
     },
