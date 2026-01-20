@@ -309,6 +309,16 @@ export interface HighlightHighlight extends Struct.ComponentSchema {
   };
 }
 
+export interface HighlightsHighlights extends Struct.ComponentSchema {
+  collectionName: 'components_highlights_highlights';
+  info: {
+    displayName: 'highlights';
+  };
+  attributes: {
+    highlights: Schema.Attribute.Text;
+  };
+}
+
 export interface HumanAdvantageHumanAdvantage extends Struct.ComponentSchema {
   collectionName: 'components_human_advantage_human_advantages';
   info: {
@@ -775,6 +785,7 @@ declare module '@strapi/strapi' {
       'featured-list.featured-list': FeaturedListFeaturedList;
       'features.features': FeaturesFeatures;
       'highlight.highlight': HighlightHighlight;
+      'highlights.highlights': HighlightsHighlights;
       'human-advantage.human-advantage': HumanAdvantageHumanAdvantage;
       'integral-education.integral-education': IntegralEducationIntegralEducation;
       'integral-education.school-integral-education': IntegralEducationSchoolIntegralEducation;

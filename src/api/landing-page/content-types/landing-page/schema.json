@@ -214,6 +214,11 @@
     },
     "form_addres": {
       "type": "string"
+    },
+    "highlights": {
+      "type": "component",
+      "component": "highlights.highlights",
+      "repeatable": true
     }
   }
 }

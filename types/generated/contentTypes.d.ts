@@ -1298,6 +1298,7 @@ export interface ApiLandingPageLandingPage extends Struct.SingleTypeSchema {
     headline: Schema.Attribute.String;
     headline2: Schema.Attribute.String;
     hero_image: Schema.Attribute.Media<'images'>;
+    highlights: Schema.Attribute.Component<'highlights.highlights', true>;
     Human_advantage: Schema.Attribute.Component<
       'human-advantage.human-advantage',
       true
