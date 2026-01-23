@@ -5,10 +5,13 @@ const nodemailer = require("nodemailer");
 module.exports = {
   async afterCreate(event) {
     const { result } = event;
+    
+    // Check if PDF was already sent
     if (result.pdfSent === true) {
       console.log("🔁 PDF already sent. Skipping.");
       return;
     }
+
     try {
       const userEmail = result.email;
       const boardName = result.board;
@@ -19,11 +22,12 @@ module.exports = {
       console.log("Email:", userEmail);
       console.log("Board:", boardName);
       console.log("Class:", className);
+      console.log("Submission ID:", result.id);
       console.log("=".repeat(60));
 
       if (!userEmail || !boardName || !className) {
-        console.log("❌ Missing required fields");
-        return;
+        console.log("❌ Missing required fields - form saved but no email sent");
+        return; // Form is already saved, just exit without sending email
       }
 
       /* --------------------------------------------------
@@ -40,12 +44,8 @@ module.exports = {
 
       if (!board) {
         console.log("❌ Board not found or not published:", boardName);
-        await strapi.entityService.update(
-          "api::blueprint-form-submission.blueprint-form-submission",
-          result.id,
-          { data: { pdfSent: false } }
-        );
-        return;
+        console.log("✅ Form submission saved to DB without email");
+        return; // Exit without sending email, form already saved
       }
 
       console.log("✅ Board found:", board.name, "(ID:", board.id + ")");
@@ -64,12 +64,8 @@ module.exports = {
 
       if (!studentClass) {
         console.log("❌ Class not found or not published:", className);
-        await strapi.entityService.update(
-          "api::blueprint-form-submission.blueprint-form-submission",
-          result.id,
-          { data: { pdfSent: false } }
-        );
-        return;
+        console.log("✅ Form submission saved to DB without email");
+        return; // Exit without sending email, form already saved
       }
 
       console.log("✅ Class found:", studentClass.name, "(ID:", studentClass.id + ")");
@@ -108,12 +104,8 @@ module.exports = {
           console.log(`     Has PDF: ${pdf.pdf ? 'Yes' : 'No'}`);
         });
 
-        await strapi.entityService.update(
-          "api::blueprint-form-submission.blueprint-form-submission",
-          result.id,
-          { data: { pdfSent: false } }
-        );
-        return;
+        console.log("✅ Form submission saved to DB without email");
+        return; // Exit without sending email, form already saved
       }
 
       console.log("✅ Blueprint PDF found:", blueprintPdf.title || "Untitled");
@@ -150,7 +142,9 @@ module.exports = {
           console.log("📎 Alternative PDF Path:", pdfPath);
           
           if (!fs.existsSync(pdfPath)) {
-            throw new Error(`PDF file not found at: ${pdfPath}`);
+            console.log("❌ PDF file does not exist on filesystem");
+            console.log("✅ Form submission saved to DB without email");
+            return; // Exit without sending email, form already saved
           }
         }
         console.log("✅ PDF file exists");
@@ -201,7 +195,7 @@ module.exports = {
       });
 
       /* --------------------------------------------------
-       6. Update pdfSent = true
+       6. Update pdfSent = true (only if email was sent successfully)
       -------------------------------------------------- */
       await strapi.entityService.update(
         "api::blueprint-form-submission.blueprint-form-submission",
@@ -210,18 +204,17 @@ module.exports = {
       );
 
       console.log("✅ Blueprint PDF sent successfully to:", userEmail);
+      console.log("✅ Submission marked as pdfSent: true");
       console.log("=".repeat(60));
 
     } catch (error) {
-      console.error("❌ Blueprint PDF lifecycle error:");
+      console.error("❌ Error during email sending process:");
       console.error(error);
+      console.log("✅ Form submission saved to DB without email");
       console.log("=".repeat(60));
-
-      await strapi.entityService.update(
-        "api::blueprint-form-submission.blueprint-form-submission",
-        event.result.id,
-        { data: { pdfSent: false } }
-      );
+      
+      // Don't update pdfSent - leave it as false
+      // Form is already saved, we just couldn't send the email
     }
   },
 };
