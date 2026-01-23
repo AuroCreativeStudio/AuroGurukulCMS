@@ -20,6 +20,7 @@
     "@strapi/plugin-users-permissions": "5.27.0",
     "@strapi/provider-email-nodemailer": "^5.33.1",
     "@strapi/strapi": "5.27.0",
+    "axios": "^1.13.2",
     "bcryptjs": "^3.0.3",
     "better-sqlite3": "^12.4.1",
     "nodemailer": "^7.0.12",

@@ -1,6 +1,7 @@
 "use strict";
 
 const nodemailer = require("nodemailer");
+const axios = require("axios");
 
 module.exports = {
   async afterCreate(event) {
@@ -27,7 +28,19 @@ module.exports = {
 
       if (!userEmail || !boardName || !className) {
         console.log("❌ Missing required fields - form saved but no email sent");
-        return; // Form is already saved, just exit without sending email
+        return;
+      }
+
+      /* --------------------------------------------------
+       SEND DATA TO ZOHO CRM (First, before email)
+      -------------------------------------------------- */
+      try {
+        console.log("📤 Sending data to Zoho CRM...");
+        await sendToZohoCRM(result);
+        console.log("✅ Data sent to Zoho CRM successfully");
+      } catch (zohoError) {
+        console.error("❌ Failed to send data to Zoho CRM:", zohoError.message);
+        // Continue with email sending even if Zoho fails
       }
 
       /* --------------------------------------------------
@@ -45,7 +58,7 @@ module.exports = {
       if (!board) {
         console.log("❌ Board not found or not published:", boardName);
         console.log("✅ Form submission saved to DB without email");
-        return; // Exit without sending email, form already saved
+        return;
       }
 
       console.log("✅ Board found:", board.name, "(ID:", board.id + ")");
@@ -65,7 +78,7 @@ module.exports = {
       if (!studentClass) {
         console.log("❌ Class not found or not published:", className);
         console.log("✅ Form submission saved to DB without email");
-        return; // Exit without sending email, form already saved
+        return;
       }
 
       console.log("✅ Class found:", studentClass.name, "(ID:", studentClass.id + ")");
@@ -89,7 +102,6 @@ module.exports = {
         console.log("   Board ID:", board.id, "(" + board.name + ")");
         console.log("   Class ID:", studentClass.id, "(" + studentClass.name + ")");
         
-        // List all available PDFs for debugging
         const allPdfs = await strapi.db
           .query("api::blueprint-pdf.blueprint-pdf")
           .findMany({
@@ -105,7 +117,7 @@ module.exports = {
         });
 
         console.log("✅ Form submission saved to DB without email");
-        return; // Exit without sending email, form already saved
+        return;
       }
 
       console.log("✅ Blueprint PDF found:", blueprintPdf.title || "Untitled");
@@ -114,37 +126,29 @@ module.exports = {
        4. Build PDF Path for email attachment
       -------------------------------------------------- */
       const pdf = blueprintPdf.pdf;
-      
-      // Use the absolute file system path for attachment
       const path = require('path');
       const fs = require('fs');
       
-      // Construct the full file system path
       let pdfPath;
       if (pdf.url.startsWith('http')) {
-        // External URL - use URL directly
         pdfPath = pdf.url;
         console.log("📎 PDF URL (external):", pdfPath);
       } else {
-        // Local file - use file system path
-        // Remove leading slash and construct path
         const relativePath = pdf.url.startsWith('/') ? pdf.url.slice(1) : pdf.url;
         pdfPath = path.join(process.cwd(), 'public', relativePath);
         console.log("📎 PDF Path (local):", pdfPath);
         
-        // Verify file exists
         if (!fs.existsSync(pdfPath)) {
           console.log("❌ PDF file not found at:", pdfPath);
           console.log("   Trying alternative path...");
           
-          // Try alternative path without 'public'
           pdfPath = path.join(process.cwd(), relativePath);
           console.log("📎 Alternative PDF Path:", pdfPath);
           
           if (!fs.existsSync(pdfPath)) {
             console.log("❌ PDF file does not exist on filesystem");
             console.log("✅ Form submission saved to DB without email");
-            return; // Exit without sending email, form already saved
+            return;
           }
         }
         console.log("✅ PDF file exists");
@@ -189,13 +193,13 @@ module.exports = {
         attachments: [
           {
             filename: pdf.name || "Blueprint.pdf",
-            path: pdfPath, // Use the file system path or URL
+            path: pdfPath,
           },
         ],
       });
 
       /* --------------------------------------------------
-       6. Update pdfSent = true (only if email was sent successfully)
+       6. Update pdfSent = true
       -------------------------------------------------- */
       await strapi.entityService.update(
         "api::blueprint-form-submission.blueprint-form-submission",
@@ -212,9 +216,91 @@ module.exports = {
       console.error(error);
       console.log("✅ Form submission saved to DB without email");
       console.log("=".repeat(60));
-      
-      // Don't update pdfSent - leave it as false
-      // Form is already saved, we just couldn't send the email
     }
   },
 };
+
+/* --------------------------------------------------
+ ZOHO CRM INTEGRATION FUNCTIONS
+-------------------------------------------------- */
+async function sendToZohoCRM(formData) {
+  const zohoConfig = {
+    clientId: process.env.ZOHO_CLIENT_ID,
+    clientSecret: process.env.ZOHO_CLIENT_SECRET,
+    refreshToken: process.env.ZOHO_REFRESH_TOKEN,
+    apiDomain: process.env.ZOHO_API_DOMAIN || 'https://www.zohoapis.in',
+    accountsDomain: process.env.ZOHO_ACCOUNTS_DOMAIN || 'https://accounts.zoho.in',
+  };
+
+  try {
+    // Step 1: Get Access Token
+    const accessToken = await getZohoAccessToken(zohoConfig);
+
+    // Step 2: Prepare Lead Data
+    const leadData = {
+      data: [
+        {
+          Last_Name: formData.name,
+          Email: formData.email,
+          Phone: formData.phone,
+          Mobile: formData.whatsapp_number,
+          Lead_Source: "Website Form - Blueprint Request",
+          Description: `Board: ${formData.board}\nClass: ${formData.class}`,
+          // Custom fields (if you have them in Zoho)
+          // Board: formData.board,
+          // Class: formData.class,
+          
+        }
+      ]
+    };
+
+    // Step 3: Create Lead in Zoho CRM
+    const response = await axios.post(
+      `${zohoConfig.apiDomain}/crm/v3/Leads`,
+      leadData,
+      {
+        headers: {
+          'Authorization': `Zoho-oauthtoken ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    console.log("📊 Zoho CRM Response:", JSON.stringify(response.data, null, 2));
+    return response.data;
+
+  } catch (error) {
+    console.error("❌ Zoho CRM Error:", error.response?.data || error.message);
+    throw error;
+  }
+}
+
+async function getZohoAccessToken(config) {
+  try {
+    console.log("🔑 Getting Zoho access token...");
+    console.log("   Client ID:", config.clientId ? "Present" : "MISSING");
+    console.log("   Client Secret:", config.clientSecret ? "Present" : "MISSING");
+    console.log("   Refresh Token:", config.refreshToken ? "Present" : "MISSING");
+    console.log("   Accounts Domain:", config.accountsDomain);
+
+    const response = await axios.post(
+      `${config.accountsDomain}/oauth/v2/token`,
+      null,
+      {
+        params: {
+          refresh_token: config.refreshToken,
+          client_id: config.clientId,
+          client_secret: config.clientSecret,
+          grant_type: 'refresh_token',
+        },
+      }
+    );
+
+    console.log("✅ Access token received");
+    return response.data.access_token;
+  } catch (error) {
+    console.error("❌ Failed to get Zoho access token:");
+    console.error("   Error:", error.response?.data || error.message);
+    throw error;
+  }
+}
